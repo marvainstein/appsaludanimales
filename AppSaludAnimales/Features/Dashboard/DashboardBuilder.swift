@@ -42,7 +42,7 @@ enum DashboardBuilder {
         DashboardSnapshot(
             today: todayItems(for: companion, on: referenceDate, calendar: calendar),
             upcoming: upcomingItems(for: companion, on: referenceDate, calendar: calendar),
-            currentStatus: currentStatusItems(for: companion),
+            currentStatus: currentStatusItems(for: companion, on: referenceDate),
             recentActivity: recentActivityItems(for: companion, on: referenceDate)
         )
     }
@@ -154,7 +154,13 @@ enum DashboardBuilder {
                 )
             }
 
-        if let birthday = companion.nextBirthday, isUpcoming(birthday) {
+        let birthday = CompanionAgeCalculator.nextBirthday(
+            birthDate: companion.birthDate,
+            on: referenceDate,
+            calendar: calendar
+        )
+
+        if let birthday, isUpcoming(birthday) {
             items.append(
                 DashboardItem(
                     title: String(localized: "Cumpleaños de \(companion.displayName)"),
@@ -170,8 +176,11 @@ enum DashboardBuilder {
 
     // MARK: - Estado actual
 
-    private static func currentStatusItems(for companion: Companion) -> [DashboardItem] {
-        let medications = companion.activeMedications
+    private static func currentStatusItems(
+        for companion: Companion,
+        on referenceDate: Date
+    ) -> [DashboardItem] {
+        let medications = companion.activeMedications(on: referenceDate)
             .sorted { $0.startDate > $1.startDate }
             .map { medication in
                 DashboardItem(
@@ -179,11 +188,11 @@ enum DashboardBuilder {
                     detail: medication.dose,
                     symbolName: HealthCategory.medication.symbolName,
                     date: medication.startDate,
-                    badge: medication.status.badge
+                    badge: medication.status(on: referenceDate).badge
                 )
             }
 
-        let treatments = companion.activeTreatments
+        let treatments = companion.activeTreatments(on: referenceDate)
             .sorted { $0.startDate > $1.startDate }
             .map { treatment in
                 DashboardItem(
@@ -191,7 +200,7 @@ enum DashboardBuilder {
                     detail: treatment.category,
                     symbolName: HealthCategory.treatment.symbolName,
                     date: treatment.startDate,
-                    badge: treatment.status.badge
+                    badge: treatment.status(on: referenceDate).badge
                 )
             }
 

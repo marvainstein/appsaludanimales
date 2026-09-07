@@ -52,11 +52,14 @@ final class Medication {
 }
 
 extension Medication {
-    var status: ActivityStatus {
+    /// El estado depende de cuándo se lo mire: una medicación que terminó ayer
+    /// estaba activa anteayer. Quien pregunta dice desde qué momento.
+    func status(on referenceDate: Date = .now) -> ActivityStatus {
         MedicationStatusResolver.status(
             startDate: startDate,
             endDate: endDate,
-            isSuspended: isSuspended
+            isSuspended: isSuspended,
+            on: referenceDate
         )
     }
 
@@ -82,7 +85,7 @@ extension Medication: HealthTimelineItem {
     var timelineDate: Date { startDate }
     var timelineTitle: String { name }
     var timelineCategory: HealthCategory { .medication }
-    var timelineStatus: (any StatusPresentable)? { status }
+    var timelineStatus: (any StatusPresentable)? { status() }
 }
 
 @Model

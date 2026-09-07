@@ -132,6 +132,33 @@ struct DashboardBuilderTests {
         #expect(snapshot.recentActivity.first?.title == "Nota 7")
     }
 
+    /// El dashboard tiene que responder "qué pasa en esta fecha", no "qué pasa
+    /// ahora mismo": si alguna sección mira el reloj en vez de la fecha que se
+    /// le pasa, deja de ser consistente consigo misma.
+    @Test
+    func todasLasSeccionesSeEvaluanEnLaFechaDeReferencia() throws {
+        let companion = try makeCompanion()
+        companion.medications.append(
+            Medication(
+                name: "Amoxicilina",
+                startDate: .test(2024, 5, 1),
+                endDate: .test(2024, 5, 15)
+            )
+        )
+
+        let duranteElTratamiento = DashboardBuilder.snapshot(
+            for: companion,
+            on: .test(2024, 5, 10),
+            calendar: .test
+        )
+        #expect(duranteElTratamiento.currentStatus.map(\.title) == ["Amoxicilina"])
+        #expect(duranteElTratamiento.upcoming.map(\.title) == ["Amoxicilina"])
+
+        let despues = DashboardBuilder.snapshot(for: companion, on: today, calendar: .test)
+        #expect(despues.currentStatus.isEmpty)
+        #expect(despues.upcoming.isEmpty)
+    }
+
     @Test
     func unCompanieroReciencreadoNoTieneNadaQueMostrar() throws {
         let companion = try makeCompanion()

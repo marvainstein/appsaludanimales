@@ -108,12 +108,12 @@ extension Companion {
         return name
     }
 
-    var activeMedications: [Medication] {
-        medications.filter { $0.status == .active }
+    func activeMedications(on referenceDate: Date = .now) -> [Medication] {
+        medications.filter { $0.status(on: referenceDate) == .active }
     }
 
-    var activeTreatments: [Treatment] {
-        treatments.filter { $0.status == .active }
+    func activeTreatments(on referenceDate: Date = .now) -> [Treatment] {
+        treatments.filter { $0.status(on: referenceDate) == .active }
     }
 
     var openEpisodes: [HealthEpisode] {

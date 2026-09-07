@@ -63,8 +63,8 @@ struct PersistenceTests {
         context.insert(companion)
         try context.save()
 
-        #expect(companion.activeMedications.count == 1)
-        #expect(companion.activeMedications.first?.name == "Gabapentina")
+        #expect(companion.activeMedications().count == 1)
+        #expect(companion.activeMedications().first?.name == "Gabapentina")
     }
 
     private func makeContext() throws -> ModelContext {

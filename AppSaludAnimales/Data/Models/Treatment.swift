@@ -40,11 +40,12 @@ final class Treatment {
 }
 
 extension Treatment {
-    var status: ActivityStatus {
+    func status(on referenceDate: Date = .now) -> ActivityStatus {
         MedicationStatusResolver.status(
             startDate: startDate,
             endDate: endDate,
-            isSuspended: isSuspended
+            isSuspended: isSuspended,
+            on: referenceDate
         )
     }
 }
@@ -53,7 +54,7 @@ extension Treatment: HealthTimelineItem {
     var timelineDate: Date { startDate }
     var timelineTitle: String { name }
     var timelineCategory: HealthCategory { isPreventive ? .preventive : .treatment }
-    var timelineStatus: (any StatusPresentable)? { status }
+    var timelineStatus: (any StatusPresentable)? { status() }
 }
 
 @Model
