@@ -53,6 +53,8 @@ struct DashboardView: View {
                     items: snapshot.recentActivity,
                     emptyMessage: String(localized: "Todavía no hay nada registrado. Lo que anotes va a quedar guardado acá.")
                 )
+
+                historyLink
             }
             .padding(Spacing.lg)
         }
@@ -129,6 +131,43 @@ struct DashboardView: View {
         return "\(companion.species.label) · \(age.formatted)"
     }
 
+    private var historyLink: some View {
+        NavigationLink {
+            HistoryView(companion: companion)
+        } label: {
+            HStack(spacing: Spacing.md) {
+                Image(systemName: "list.bullet.rectangle")
+                    .foregroundStyle(Palette.accent)
+                    .accessibilityHidden(true)
+
+                Text("Ver todo el historial")
+                    .font(AppFont.cardTitle)
+                    .foregroundStyle(Palette.ink)
+
+                Spacer(minLength: 0)
+
+                Image(systemName: "chevron.right")
+                    .font(AppFont.caption)
+                    .foregroundStyle(Palette.inkMuted)
+                    .accessibilityHidden(true)
+            }
+            .padding(Spacing.lg)
+            .frame(minHeight: Spacing.minimumTapTarget)
+            .background(
+                RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
+                    .fill(Palette.surface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
+                    .strokeBorder(Palette.separator, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("Ver todo el historial"))
+        .accessibilityAddTraits(.isButton)
+    }
+
     /// La acción central vive siempre a la vista, no escondida en un menú: es lo
     /// que la persona más va a hacer, muchas veces con una sola mano.
     private var recordBar: some View {
@@ -169,6 +208,20 @@ struct DashboardView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            NavigationLink {
+                HistoryView(companion: companion)
+            } label: {
+                Label {
+                    Text("Historial")
+                } icon: {
+                    Image(systemName: "list.bullet.rectangle")
+                }
+            }
+            .accessibilityLabel(Text("Historial"))
+            .accessibilityHint(Text("Ver todo lo registrado, ordenado por fecha"))
+        }
+
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
                 if companions.count > 1 {

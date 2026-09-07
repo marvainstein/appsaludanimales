@@ -5,8 +5,9 @@ sigan la salud de sus compañeros y compañeras.
 
 Estado actual: los **cimientos** (modelo de datos, dominio, sistema de diseño
 accesible, infraestructura de lenguaje), la **primera porción usable**
-—bienvenida, alta y edición de compañeros, dashboard de "Hoy"— y el **registro
-rápido** de medicaciones, episodios, peso, vacunas y notas.
+—bienvenida, alta y edición de compañeros, dashboard de "Hoy"—, el **registro
+rápido** de medicaciones, episodios, peso, vacunas y notas, y el **historial**
+con filtros, detalle de cada registro y eliminación.
 
 ## Abrir y compilar
 
@@ -128,12 +129,30 @@ significan lo mismo para cualquiera.
 **El peso se lee con coma o con punto.** Acá se escribe "24,3" y en otros lados
 "24.3": los dos son válidos y ninguno debería devolver un error.
 
+**Poder deshacer no es una función más.** Si algo se anota mal y no hay forma de
+arreglarlo, la próxima vez se anota con miedo. Por eso el detalle de cada
+registro permite eliminarlo y cambiarle el estado desde el mismo lugar donde se
+consulta.
+
+**El historial se agrupa por mes**, que es como se recuerda ("eso fue en mayo"),
+no por distancia en días.
+
+**Los filtros solo ofrecen categorías que tienen algo.** Un filtro que no filtra
+nada es ruido, y en una app que se define por la simplicidad el ruido se paga
+caro.
+
+**Un conjunto de filtros vacío significa "todo".** Es más simple que mantener
+todas las categorías seleccionadas por defecto y sincronizarlas cada vez que
+aparece una nueva.
+
 ## Pendiente
 
 - Decisión definitiva sobre compartir datos entre varias personas responsables
   (SwiftData con CloudKit vs. Core Data con `NSPersistentCloudKitContainer` y
   `CKShare`), a validar con una prueba de concepto en dispositivo antes de V1.
-- Historial completo, documentos y modo emergencia.
-- Recordatorios locales, exportación a PDF y adjuntos.
+- Editar un registro ya guardado campo por campo: hoy se puede consultar,
+  cambiar su estado y eliminarlo.
+- Documentos y modo emergencia.
+- Recordatorios locales y exportación a PDF.
 - Barra de pestañas: se incorpora cuando existan las pantallas que va a
   contener, no antes.
