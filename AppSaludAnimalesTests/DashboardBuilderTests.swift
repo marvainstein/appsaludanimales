@@ -159,6 +159,23 @@ struct DashboardBuilderTests {
         #expect(despues.upcoming.isEmpty)
     }
 
+    /// Lo registrado hoy tiene que verse hoy, aunque la hora anotada sea
+    /// posterior al momento en que se abrió la pantalla.
+    @Test
+    func laActividadRecienteIncluyeTodoLoDelDia() throws {
+        let companion = try makeCompanion()
+        companion.notes.append(
+            CompanionNote(text: "Anotado más tarde", date: .test(2024, 5, 20, hour: 23))
+        )
+        companion.notes.append(
+            CompanionNote(text: "Anotado mañana", date: .test(2024, 5, 21, hour: 8))
+        )
+
+        let snapshot = DashboardBuilder.snapshot(for: companion, on: today, calendar: .test)
+
+        #expect(snapshot.recentActivity.map(\.title) == ["Anotado más tarde"])
+    }
+
     @Test
     func unCompanieroReciencreadoNoTieneNadaQueMostrar() throws {
         let companion = try makeCompanion()

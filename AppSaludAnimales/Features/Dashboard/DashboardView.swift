@@ -10,8 +10,14 @@ struct DashboardView: View {
     var companions: [Companion] = []
     var onSelectCompanion: (Companion) -> Void = { _ in }
 
+    @Environment(\.scenePhase) private var scenePhase
+
     @State private var isAddingCompanion = false
     @State private var isRecording = false
+
+    /// Momento desde el que se mira el dashboard. Se refresca al volver de un
+    /// registro y al volver a la app: si se queda vieja, lo recién registrado
+    /// queda "en el futuro" y desaparece de la actividad reciente.
     @State private var referenceDate = Date()
 
     private var snapshot: DashboardSnapshot {
@@ -54,17 +60,26 @@ struct DashboardView: View {
         .navigationTitle(Text("Hoy"))
         .safeAreaInset(edge: .bottom) { recordBar }
         .toolbar { toolbarContent }
-        .sheet(isPresented: $isRecording) {
+        .sheet(isPresented: $isRecording, onDismiss: refreshReferenceDate) {
             QuickRecordSheet(companion: companion)
         }
-        .sheet(isPresented: $isAddingCompanion) {
+        .sheet(isPresented: $isAddingCompanion, onDismiss: refreshReferenceDate) {
             NavigationStack {
                 CompanionFormView(mode: .create) { newCompanion in
                     onSelectCompanion(newCompanion)
                 }
             }
         }
-        .onAppear { referenceDate = Date() }
+        .onAppear(perform: refreshReferenceDate)
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                refreshReferenceDate()
+            }
+        }
+    }
+
+    private func refreshReferenceDate() {
+        referenceDate = Date()
     }
 
     // MARK: - Encabezado

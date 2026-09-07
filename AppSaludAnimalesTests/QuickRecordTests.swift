@@ -114,6 +114,29 @@ struct DoseRecordingTests {
     }
 }
 
+struct MedicationDuplicationTests {
+    @Test
+    func reconoceElMismoNombreEscritoDistinto() {
+        #expect(MedicationDuplicationCheck.isSameMedication("Vitamina", "vitamina"))
+        #expect(MedicationDuplicationCheck.isSameMedication("Vitamina", "  VITAMINA  "))
+        #expect(MedicationDuplicationCheck.isSameMedication("Gabapentina", "gabapentína"))
+    }
+
+    @Test
+    func noConfundeMedicacionesDistintas() {
+        #expect(!MedicationDuplicationCheck.isSameMedication("Vitamina", "Vitamina B12"))
+        #expect(!MedicationDuplicationCheck.isSameMedication("Meloxicam", "Gabapentina"))
+    }
+
+    @Test
+    func elAvisoProponeRegistrarUnaToma() {
+        let message = MedicationDuplicationCheck.warningMessage(for: "Vitamina")
+
+        #expect(message.contains("Vitamina"))
+        #expect(message.contains("registrar una toma"))
+    }
+}
+
 struct EpisodeIntensityTests {
     @Test(arguments: EpisodeIntensity.allCases)
     func cadaNivelTieneUnNombreEnTexto(level: EpisodeIntensity) {

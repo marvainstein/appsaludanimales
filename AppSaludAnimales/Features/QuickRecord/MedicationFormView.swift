@@ -19,10 +19,35 @@ struct MedicationFormView: View {
     @State private var hasEndDate = false
     @State private var endDate = Date()
     @State private var indications = ""
-    @State private var saveErrorMessage: String?
+    @State private var activeAlert: ActiveAlert?
+
+    /// Un único aviso por vez: dos alertas sobre la misma vista compiten entre
+    /// sí y solo una llega a mostrarse.
+    private enum ActiveAlert {
+        case duplicate(message: String)
+        case saveFailed
+
+        var title: String {
+            switch self {
+            case .duplicate: String(localized: "¿La agregamos igual?")
+            case .saveFailed: String(localized: "No pudimos guardar")
+            }
+        }
+
+        var message: String {
+            switch self {
+            case let .duplicate(message): message
+            case .saveFailed: String(localized: "La medicación no se guardó. Podés intentar de nuevo en un momento.")
+            }
+        }
+    }
 
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private var trimmedName: String {
+        name.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     var body: some View {
@@ -103,21 +128,29 @@ struct MedicationFormView: View {
                 title: String(localized: "Guardar la medicación"),
                 hint: canSave ? nil : String(localized: "Escribí el nombre para poder guardarla"),
                 isEnabled: canSave,
-                action: save
+                action: { save(force: false) }
             )
         }
         .navigationTitle(Text("Medicación nueva"))
         .navigationBarTitleDisplayMode(.inline)
         .alert(
-            Text("No pudimos guardar"),
+            Text(activeAlert?.title ?? ""),
             isPresented: Binding(
-                get: { saveErrorMessage != nil },
-                set: { if !$0 { saveErrorMessage = nil } }
+                get: { activeAlert != nil },
+                set: { if !$0 { activeAlert = nil } }
             )
         ) {
-            Button("Entendido", role: .cancel) { saveErrorMessage = nil }
+            if case .duplicate = activeAlert {
+                Button("Agregar igual") {
+                    activeAlert = nil
+                    save(force: true)
+                }
+                Button("Mejor no", role: .cancel) { activeAlert = nil }
+            } else {
+                Button("Entendido", role: .cancel) { activeAlert = nil }
+            }
         } message: {
-            Text(saveErrorMessage ?? "")
+            Text(activeAlert?.message ?? "")
         }
     }
 
@@ -129,9 +162,17 @@ struct MedicationFormView: View {
         }
     }
 
-    private func save() {
+    /// Antes de guardar, avisa si ya hay una medicación en curso con el mismo
+    /// nombre y propone registrar una toma, que suele ser lo que se quería
+    /// hacer. Igual que con las dosis: es un aviso, no un candado.
+    private func save(force: Bool) {
+        if !force, let existing = duplicateMedication() {
+            activeAlert = .duplicate(message: MedicationDuplicationCheck.warningMessage(for: existing.name))
+            return
+        }
+
         let medication = Medication(
-            name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+            name: trimmedName,
             dose: optional(dose),
             startDate: startDate,
             endDate: hasEndDate ? endDate : nil
@@ -144,7 +185,13 @@ struct MedicationFormView: View {
             try modelContext.save()
             onFinished()
         } catch {
-            saveErrorMessage = String(localized: "La medicación no se guardó. Podés intentar de nuevo en un momento.")
+            activeAlert = .saveFailed
+        }
+    }
+
+    private func duplicateMedication() -> Medication? {
+        companion.activeMedications().first {
+            MedicationDuplicationCheck.isSameMedication($0.name, trimmedName)
         }
     }
 
