@@ -3,10 +3,9 @@
 Aplicación iOS para que las personas responsables de perros y gatos organicen y
 sigan la salud de sus compañeros y compañeras.
 
-Este repositorio contiene, por ahora, los **cimientos**: modelo de datos,
-dominio, sistema de diseño accesible y la infraestructura de lenguaje del
-producto. Todavía no hay pantallas de producto más allá de una vista raíz
-mínima que confirma que la persistencia funciona.
+Estado actual: los **cimientos** (modelo de datos, dominio, sistema de diseño
+accesible, infraestructura de lenguaje) y la **primera porción usable** —
+bienvenida, alta y edición de compañeros, y el dashboard de "Hoy".
 
 ## Abrir y compilar
 
@@ -46,6 +45,7 @@ AppSaludAnimales/
   App/            Punto de entrada y vista raíz
   Domain/         Reglas de negocio, sin dependencia de persistencia ni de UI
   Data/           Entidades SwiftData y contenedor de persistencia
+  Features/       Pantallas, agrupadas por funcionalidad
   DesignSystem/   Tokens de color, tipografía, espaciado y componentes base
   Resources/      Catálogo de strings y assets
 AppSaludAnimalesTests/
@@ -92,11 +92,31 @@ temporal y lo dice con un mensaje claro, en vez de cerrarse.
 derivan de los estilos de texto del sistema, que es lo que permite que la
 interfaz funcione en los tamaños de accesibilidad más grandes.
 
+**La bienvenida se deduce de los datos.** No hay una marca de "ya completó el
+onboarding": si no hay ningún compañero registrado, se muestra la bienvenida. Un
+interruptor aparte sería una segunda fuente de verdad que puede contradecir a la
+primera.
+
+**Una sola pantalla de alta, no cinco pasos.** La especificación describe foto,
+nombre, especie y cumpleaños como pasos separados. Son cuatro campos: un
+formulario corto es menos pasos que cuatro pantallas encadenadas, y el principio
+rector es registrar sin fricción.
+
+**La descripción accesible de la foto es un campo del formulario**, no algo
+generado automáticamente. Quien conoce a su compañero es quien puede escribir
+"Luli, galga negra y blanca". Si no la completa, se usa una descripción armada
+con el nombre.
+
+**Las secciones del dashboard se arman fuera de la vista.** Qué aparece en "Hoy"
+y qué en "Próximamente" es una regla de producto, así que vive en
+`DashboardBuilder` y tiene pruebas propias, sin necesidad de dibujar nada.
+
 ## Pendiente
 
 - Decisión definitiva sobre compartir datos entre varias personas responsables
   (SwiftData con CloudKit vs. Core Data con `NSPersistentCloudKitContainer` y
   `CKShare`), a validar con una prueba de concepto en dispositivo antes de V1.
-- Pantallas del MVP: dashboard, registro rápido, historial, perfil, documentos,
-  modo emergencia.
+- Registro rápido, historial, documentos y modo emergencia.
 - Recordatorios locales, exportación a PDF y adjuntos.
+- Barra de pestañas: se incorpora cuando existan las pantallas que va a
+  contener, no antes.

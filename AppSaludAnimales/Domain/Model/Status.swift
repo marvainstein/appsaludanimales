@@ -17,6 +17,20 @@ protocol StatusPresentable {
     var tone: StatusTone { get }
 }
 
+/// Estado convertido en valor, para poder compararlo y probarlo sin arrastrar el
+/// tipo concreto que lo originó.
+struct StatusBadge: Equatable, Sendable, StatusPresentable {
+    var label: String
+    var symbolName: String
+    var tone: StatusTone
+}
+
+extension StatusPresentable {
+    var badge: StatusBadge {
+        StatusBadge(label: label, symbolName: symbolName, tone: tone)
+    }
+}
+
 /// Estado de una medicación, tratamiento o tratamiento preventivo.
 enum ActivityStatus: String, Codable, CaseIterable, Sendable, StatusPresentable {
     case active

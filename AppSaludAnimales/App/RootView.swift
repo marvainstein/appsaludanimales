@@ -1,67 +1,40 @@
 import SwiftData
 import SwiftUI
 
-/// Punto de entrada de la interfaz. Por ahora lista los compañeros registrados:
-/// confirma que la persistencia funciona de punta a punta y es la semilla de la
-/// pantalla real de compañeros.
+/// Decide qué ve la persona al abrir: la bienvenida mientras no haya ningún
+/// compañero registrado, y el dashboard apenas exista el primero.
+///
+/// No hay una marca de "ya completó la bienvenida": el estado se deduce de los
+/// datos, así no hay dos fuentes de verdad que puedan contradecirse.
 struct RootView: View {
     var storageIsTemporary: Bool = false
 
-    @Query(sort: \Companion.name) private var companions: [Companion]
+    @Query(sort: \Companion.createdAt) private var companions: [Companion]
+    @State private var selectedCompanionID: UUID?
+
+    private var selectedCompanion: Companion? {
+        companions.first { $0.id == selectedCompanionID } ?? companions.first
+    }
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if companions.isEmpty {
-                    emptyState
-                } else {
-                    companionList
+        Group {
+            if let companion = selectedCompanion {
+                NavigationStack {
+                    DashboardView(
+                        companion: companion,
+                        companions: companions,
+                        onSelectCompanion: { selectedCompanionID = $0.id }
+                    )
                 }
-            }
-            .navigationTitle(Text("Compañeros"))
-            .background(Palette.background)
-            .safeAreaInset(edge: .top) {
-                if storageIsTemporary {
-                    temporaryStorageNotice
-                }
+            } else {
+                OnboardingView()
             }
         }
-    }
-
-    private var emptyState: some View {
-        ContentUnavailableView {
-            Label {
-                Text("Todavía no hay compañeros")
-            } icon: {
-                Image(systemName: "pawprint")
+        .safeAreaInset(edge: .top) {
+            if storageIsTemporary {
+                temporaryStorageNotice
             }
-        } description: {
-            Text("Cuando agregues a tu compañero o compañera, su información va a vivir acá.")
         }
-    }
-
-    private var companionList: some View {
-        List(companions) { companion in
-            VStack(alignment: .leading, spacing: Spacing.xs) {
-                Text(companion.displayName)
-                    .font(AppFont.cardTitle)
-
-                Text(companionSubtitle(for: companion))
-                    .font(AppFont.secondary)
-                    .foregroundStyle(Palette.inkMuted)
-            }
-            .padding(.vertical, Spacing.xs)
-            .accessibilityElement(children: .combine)
-        }
-        .listStyle(.insetGrouped)
-    }
-
-    private func companionSubtitle(for companion: Companion) -> String {
-        guard let age = companion.age else {
-            return companion.species.label
-        }
-
-        return "\(companion.species.label) · \(age.formatted)"
     }
 
     private var temporaryStorageNotice: some View {
@@ -71,10 +44,11 @@ struct RootView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(Spacing.md)
             .background(StatusTone.attention.softBackground)
+            .accessibilityAddTraits(.isStaticText)
     }
 }
 
-#Preview("Sin compañeros") {
+#Preview("Bienvenida") {
     RootView()
         .modelContainer(for: AppSchema.models, inMemory: true)
 }

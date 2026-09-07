@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Paleta del producto: neutros cálidos y tonos desaturados, con contraste
 /// verificado en modo claro y oscuro.
