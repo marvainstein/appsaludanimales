@@ -268,20 +268,12 @@ struct CompanionFormView: View {
     }
 
     private var saveSection: some View {
-        Section {
-            Button(action: save) {
-                Text(mode.saveTitle)
-                    .font(AppFont.cardTitle)
-                    .frame(maxWidth: .infinity, minHeight: Spacing.minimumTapTarget)
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(!canSave)
-            .accessibilityHint(canSave
-                ? Text("")
-                : Text("Completá el nombre para poder continuar"))
-        }
-        .listRowInsets(EdgeInsets())
-        .listRowBackground(Color.clear)
+        PrimaryButtonSection(
+            title: mode.saveTitle,
+            hint: canSave ? nil : String(localized: "Completá el nombre para poder continuar"),
+            isEnabled: canSave,
+            action: save
+        )
     }
 
     // MARK: - Acciones

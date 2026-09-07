@@ -4,8 +4,9 @@ Aplicación iOS para que las personas responsables de perros y gatos organicen y
 sigan la salud de sus compañeros y compañeras.
 
 Estado actual: los **cimientos** (modelo de datos, dominio, sistema de diseño
-accesible, infraestructura de lenguaje) y la **primera porción usable** —
-bienvenida, alta y edición de compañeros, y el dashboard de "Hoy".
+accesible, infraestructura de lenguaje), la **primera porción usable**
+—bienvenida, alta y edición de compañeros, dashboard de "Hoy"— y el **registro
+rápido** de medicaciones, episodios, peso, vacunas y notas.
 
 ## Abrir y compilar
 
@@ -111,12 +112,28 @@ con el nombre.
 y qué en "Próximamente" es una regla de producto, así que vive en
 `DashboardBuilder` y tiene pruebas propias, sin necesidad de dibujar nada.
 
+**El estado depende de cuándo se lo mire.** `status(on:)` es una consulta con
+fecha, no un dato fijo: una medicación que terminó ayer estaba activa anteayer.
+Cuando el estado se calculaba contra el reloj, el dashboard dejaba de ser
+consistente con la fecha que se le pedía; hay una prueba que cubre ese caso.
+
+**Aviso de dosis repetida, no candado.** Si ya hay una toma registrada dentro de
+la hora, la app pregunta antes de guardar otra y la persona decide. Impedirlo
+sería peor: a veces la segunda toma existe de verdad.
+
+**Intensidad en tres niveles, no en una escala de cinco.** Quien registra está
+describiendo lo que ve, no midiendo. Tres opciones se eligen de un vistazo y
+significan lo mismo para cualquiera.
+
+**El peso se lee con coma o con punto.** Acá se escribe "24,3" y en otros lados
+"24.3": los dos son válidos y ninguno debería devolver un error.
+
 ## Pendiente
 
 - Decisión definitiva sobre compartir datos entre varias personas responsables
   (SwiftData con CloudKit vs. Core Data con `NSPersistentCloudKitContainer` y
   `CKShare`), a validar con una prueba de concepto en dispositivo antes de V1.
-- Registro rápido, historial, documentos y modo emergencia.
+- Historial completo, documentos y modo emergencia.
 - Recordatorios locales, exportación a PDF y adjuntos.
 - Barra de pestañas: se incorpora cuando existan las pantallas que va a
   contener, no antes.

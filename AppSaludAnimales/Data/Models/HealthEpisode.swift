@@ -13,9 +13,9 @@ final class HealthEpisode {
     var date: Date = Date()
     var durationDescription: String?
 
-    /// Intensidad de 1 a 5, opcional. Se muestra siempre con texto además de
-    /// cualquier representación visual.
-    var intensity: Int?
+    /// Intensidad, opcional. Se guarda el valor crudo de `EpisodeIntensity` y se
+    /// muestra siempre con texto, nunca solo como una barra o un color.
+    var intensityRawValue: Int?
     var statusRawValue: String = EpisodeStatus.active.rawValue
     var resolvedAt: Date?
     var notes: String?
@@ -48,9 +48,14 @@ extension HealthEpisode {
         }
     }
 
+    var intensity: EpisodeIntensity? {
+        get { intensityRawValue.flatMap(EpisodeIntensity.init(rawValue:)) }
+        set { intensityRawValue = newValue?.rawValue }
+    }
+
     var intensityLabel: String? {
         guard let intensity else { return nil }
-        return String(localized: "Intensidad \(intensity) de 5")
+        return String(localized: "Intensidad \(intensity.label.lowercased())")
     }
 }
 

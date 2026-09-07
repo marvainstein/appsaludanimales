@@ -11,6 +11,7 @@ struct DashboardView: View {
     var onSelectCompanion: (Companion) -> Void = { _ in }
 
     @State private var isAddingCompanion = false
+    @State private var isRecording = false
     @State private var referenceDate = Date()
 
     private var snapshot: DashboardSnapshot {
@@ -51,7 +52,11 @@ struct DashboardView: View {
         }
         .background(Palette.background)
         .navigationTitle(Text("Hoy"))
+        .safeAreaInset(edge: .bottom) { recordBar }
         .toolbar { toolbarContent }
+        .sheet(isPresented: $isRecording) {
+            QuickRecordSheet(companion: companion)
+        }
         .sheet(isPresented: $isAddingCompanion) {
             NavigationStack {
                 CompanionFormView(mode: .create) { newCompanion in
@@ -107,6 +112,21 @@ struct DashboardView: View {
         }
 
         return "\(companion.species.label) · \(age.formatted)"
+    }
+
+    /// La acción central vive siempre a la vista, no escondida en un menú: es lo
+    /// que la persona más va a hacer, muchas veces con una sola mano.
+    private var recordBar: some View {
+        PrimaryButton(
+            title: String(localized: "Registrar"),
+            symbolName: "plus",
+            hint: String(localized: "Anotar una medicación, un síntoma, el peso, una vacuna o una nota")
+        ) {
+            isRecording = true
+        }
+        .padding(.horizontal, Spacing.lg)
+        .padding(.vertical, Spacing.md)
+        .background(.bar)
     }
 
     // MARK: - Secciones
