@@ -160,7 +160,7 @@ struct CompanionFormView: View {
                         : photoDescription))
             } else {
                 Image(systemName: species.symbolName)
-                    .font(.system(size: 44))
+                    .font(AppFont.heroSymbol)
                     .foregroundStyle(Palette.onAccentSoft)
                     .frame(width: 120, height: 120)
                     .background(Palette.accentSoft)

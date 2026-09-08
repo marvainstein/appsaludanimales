@@ -43,6 +43,18 @@ Para que la regla no dependa de la memoria de quien escribe:
 Falla si aparece un término fuera del vocabulario del producto. Conviene
 ejecutarlo en integración continua junto con las pruebas.
 
+## Accesibilidad
+
+```bash
+./Scripts/check-accessibility.sh
+```
+
+Verifica lo que se puede comprobar leyendo el código: que no haya tamaños de
+fuente fijos y que ningún estado se apoye solo en el color. Lo que necesita un
+dispositivo y una persona —VoiceOver, tamaño de texto grande, control por voz,
+control por botón— está en [docs/accesibilidad.md](docs/accesibilidad.md), con
+el criterio de terminado y el recorrido a probar.
+
 ## Estructura
 
 ```

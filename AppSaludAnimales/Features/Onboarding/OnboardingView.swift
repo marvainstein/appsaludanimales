@@ -33,7 +33,7 @@ struct OnboardingView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             Image(systemName: "pawprint")
-                .font(.system(size: 44))
+                .font(AppFont.heroSymbol)
                 .foregroundStyle(Palette.accent)
                 .accessibilityHidden(true)
 

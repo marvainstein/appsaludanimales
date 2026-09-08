@@ -14,6 +14,10 @@ enum AppFont {
     static let caption = Font.footnote
     static let chip = Font.footnote.weight(.semibold)
 
+    /// Símbolo grande y decorativo. Deriva de un estilo del sistema para que
+    /// crezca con el resto del texto en vez de quedarse fijo.
+    static let heroSymbol = Font.largeTitle
+
     /// El modo emergencia se lee de un vistazo, con el pulso acelerado y a veces
     /// con el teléfono en la mano de otra persona: un escalón más grande que el
     /// resto de la app, sin dejar de responder a Dynamic Type.
