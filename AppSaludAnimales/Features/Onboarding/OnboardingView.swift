@@ -22,6 +22,7 @@ struct OnboardingView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .accessibilityHint(Text("Abre el formulario para agregar a tu compañero o compañera"))
+                    .accessibilityIdentifier("onboarding.start")
                 }
                 .padding(Spacing.xl)
                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -16,7 +16,8 @@ struct QuickRecordSheet: View {
                     option(
                         title: String(localized: "Medicación"),
                         detail: String(localized: "Una toma o una medicación nueva"),
-                        symbol: HealthCategory.medication.symbolName
+                        symbol: HealthCategory.medication.symbolName,
+                        identifier: "quickRecord.medication"
                     ) {
                         MedicationRecordView(companion: companion, onFinished: finish)
                     }
@@ -24,7 +25,8 @@ struct QuickRecordSheet: View {
                     option(
                         title: String(localized: "Síntoma o episodio"),
                         detail: String(localized: "Algo que notaste"),
-                        symbol: HealthCategory.episode.symbolName
+                        symbol: HealthCategory.episode.symbolName,
+                        identifier: "quickRecord.episode"
                     ) {
                         EpisodeRecordView(companion: companion, onFinished: finish)
                     }
@@ -32,7 +34,8 @@ struct QuickRecordSheet: View {
                     option(
                         title: String(localized: "Peso"),
                         detail: String(localized: "El peso de hoy"),
-                        symbol: HealthCategory.measurement.symbolName
+                        symbol: HealthCategory.measurement.symbolName,
+                        identifier: "quickRecord.weight"
                     ) {
                         WeightRecordView(companion: companion, onFinished: finish)
                     }
@@ -40,7 +43,8 @@ struct QuickRecordSheet: View {
                     option(
                         title: String(localized: "Vacuna"),
                         detail: String(localized: "Una aplicación y la próxima"),
-                        symbol: HealthCategory.vaccination.symbolName
+                        symbol: HealthCategory.vaccination.symbolName,
+                        identifier: "quickRecord.vaccination"
                     ) {
                         VaccinationRecordView(companion: companion, onFinished: finish)
                     }
@@ -48,7 +52,8 @@ struct QuickRecordSheet: View {
                     option(
                         title: String(localized: "Documento"),
                         detail: String(localized: "Un estudio, una receta, un informe"),
-                        symbol: HealthCategory.document.symbolName
+                        symbol: HealthCategory.document.symbolName,
+                        identifier: "quickRecord.document"
                     ) {
                         DocumentRecordView(companion: companion, onFinished: finish)
                     }
@@ -56,7 +61,8 @@ struct QuickRecordSheet: View {
                     option(
                         title: String(localized: "Nota"),
                         detail: String(localized: "Cualquier cosa que quieras recordar"),
-                        symbol: HealthCategory.note.symbolName
+                        symbol: HealthCategory.note.symbolName,
+                        identifier: "quickRecord.note"
                     ) {
                         NoteRecordView(companion: companion, onFinished: finish)
                     }
@@ -82,6 +88,7 @@ struct QuickRecordSheet: View {
         title: String,
         detail: String,
         symbol: String,
+        identifier: String,
         @ViewBuilder destination: @escaping () -> some View
     ) -> some View {
         NavigationLink {
@@ -106,6 +113,7 @@ struct QuickRecordSheet: View {
             .padding(.vertical, Spacing.sm)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier(identifier)
     }
 
     private func finish() {

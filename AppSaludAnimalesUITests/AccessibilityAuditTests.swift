@@ -23,13 +23,7 @@ final class AccessibilityAuditTests: XCTestCase {
     @MainActor
     func testElDashboardPasaLaAuditoria() throws {
         let app = launchApp()
-
         try startUsingTheApp(app)
-
-        XCTAssertTrue(
-            app.buttons["Registrar"].waitForExistence(timeout: 5),
-            "Se esperaba llegar al dashboard, con su acción de registrar a la vista"
-        )
 
         try app.performAccessibilityAudit()
     }
@@ -37,17 +31,19 @@ final class AccessibilityAuditTests: XCTestCase {
     @MainActor
     func testElRegistroRapidoPasaLaAuditoria() throws {
         let app = launchApp()
-
         try startUsingTheApp(app)
 
-        let record = app.buttons["Registrar"]
-        XCTAssertTrue(record.waitForExistence(timeout: 5))
-        record.tap()
+        app.buttons["dashboard.record"].tap()
 
-        XCTAssertTrue(app.staticTexts["Peso"].waitForExistence(timeout: 5))
+        XCTAssertTrue(
+            app.buttons["quickRecord.weight"].waitForExistence(timeout: 5),
+            "Se esperaban las opciones del registro rápido"
+        )
 
         try app.performAccessibilityAudit()
     }
+
+    // MARK: - Recorrido
 
     /// Arranca la app con datos limpios, para que el recorrido sea siempre el
     /// mismo y una falla signifique siempre lo mismo.
@@ -60,17 +56,28 @@ final class AccessibilityAuditTests: XCTestCase {
     }
 
     /// Deja la app en el dashboard creando un compañero desde la bienvenida.
+    ///
+    /// Los controles se buscan por identificador y no por su texto: "Empezar"
+    /// aparece dos veces en el recorrido, y el texto visible cambia con el
+    /// idioma.
     @MainActor
     private func startUsingTheApp(_ app: XCUIApplication) throws {
-        let start = app.buttons["Empezar"]
+        let start = app.buttons["onboarding.start"]
         XCTAssertTrue(start.waitForExistence(timeout: 10), "Se esperaba la bienvenida")
         start.tap()
 
-        let nameField = app.textFields.firstMatch
-        XCTAssertTrue(nameField.waitForExistence(timeout: 5))
+        let nameField = app.textFields["companionForm.name"]
+        XCTAssertTrue(nameField.waitForExistence(timeout: 5), "Se esperaba el campo de nombre")
         nameField.tap()
         nameField.typeText("Luli")
 
-        app.buttons["Empezar"].firstMatch.tap()
+        let save = app.buttons["companionForm.save"]
+        XCTAssertTrue(save.waitForExistence(timeout: 5), "Se esperaba el botón de guardar")
+        save.tap()
+
+        XCTAssertTrue(
+            app.buttons["dashboard.record"].waitForExistence(timeout: 10),
+            "Se esperaba llegar al dashboard, con su acción de registrar a la vista"
+        )
     }
 }

@@ -13,6 +13,7 @@ struct LabeledTextField: View {
     var isRequired: Bool = false
     var autocapitalization: TextInputAutocapitalization = .sentences
     var keyboardType: UIKeyboardType = .default
+    var identifier: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
@@ -36,6 +37,7 @@ struct LabeledTextField: View {
                 .keyboardType(keyboardType)
                 .accessibilityLabel(Text(accessibilityLabel))
                 .accessibilityHint(Text(hint ?? ""))
+                .accessibilityIdentifier(identifier ?? "")
 
             if let hint {
                 Text(hint)

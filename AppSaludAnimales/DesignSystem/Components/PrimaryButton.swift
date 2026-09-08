@@ -10,6 +10,10 @@ struct PrimaryButton: View {
     var symbolName: String?
     var hint: String?
     var isEnabled: Bool = true
+
+    /// Nombre estable para las pruebas de interfaz: el texto visible cambia con
+    /// el idioma y con el contexto, el identificador no.
+    var identifier: String?
     let action: () -> Void
 
     var body: some View {
@@ -28,6 +32,7 @@ struct PrimaryButton: View {
         .buttonStyle(.borderedProminent)
         .disabled(!isEnabled)
         .accessibilityHint(Text(hint ?? ""))
+        .accessibilityIdentifier(identifier ?? "")
     }
 }
 
@@ -37,11 +42,18 @@ struct PrimaryButtonSection: View {
     let title: String
     var hint: String?
     var isEnabled: Bool = true
+    var identifier: String?
     let action: () -> Void
 
     var body: some View {
         Section {
-            PrimaryButton(title: title, hint: hint, isEnabled: isEnabled, action: action)
+            PrimaryButton(
+                title: title,
+                hint: hint,
+                isEnabled: isEnabled,
+                identifier: identifier,
+                action: action
+            )
         }
         .listRowInsets(EdgeInsets())
         .listRowBackground(Color.clear)

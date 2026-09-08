@@ -176,7 +176,8 @@ struct CompanionFormView: View {
                 label: String(localized: "Nombre"),
                 text: $name,
                 isRequired: true,
-                autocapitalization: .words
+                autocapitalization: .words,
+                identifier: "companionForm.name"
             )
 
             Picker(selection: $species) {
@@ -272,6 +273,7 @@ struct CompanionFormView: View {
             title: mode.saveTitle,
             hint: canSave ? nil : String(localized: "Completá el nombre para poder continuar"),
             isEnabled: canSave,
+            identifier: "companionForm.save",
             action: save
         )
     }

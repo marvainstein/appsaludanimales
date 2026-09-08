@@ -181,7 +181,8 @@ struct DashboardView: View {
         PrimaryButton(
             title: String(localized: "Registrar"),
             symbolName: "plus",
-            hint: String(localized: "Anotar una medicación, un síntoma, el peso, una vacuna o una nota")
+            hint: String(localized: "Anotar una medicación, un síntoma, el peso, una vacuna o una nota"),
+            identifier: "dashboard.record"
         ) {
             isRecording = true
         }
