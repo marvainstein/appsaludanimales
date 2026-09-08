@@ -7,8 +7,8 @@ Estado actual: los **cimientos** (modelo de datos, dominio, sistema de diseño
 accesible, infraestructura de lenguaje), la **primera porción usable**
 —bienvenida, alta y edición de compañeros, dashboard de "Hoy"—, el **registro
 rápido** de medicaciones, episodios, peso, vacunas y notas, el **historial**
-con filtros, detalle de cada registro y eliminación, y el **modo emergencia**
-con los contactos a los que llamar.
+con filtros, detalle de cada registro y eliminación, el **modo emergencia**
+con los contactos a los que llamar, y los **recordatorios** locales.
 
 ## Abrir y compilar
 
@@ -156,6 +156,20 @@ que puede cambiar una decisión clínica (alergias y condiciones), después lo q
 recibe ahora, y al final a quién llamar. Su tipografía es un escalón más grande
 que la del resto de la app, sin dejar de responder a Dynamic Type.
 
+**Los recordatorios son locales y tienen presupuesto.** No hay servidor: no
+sale del dispositivo ningún dato de salud para que suene una notificación. Y hay
+un tope de avisos programados, porque iOS conserva 64 y porque una app que
+notifica de más se termina silenciando entera. Si hay que recortar, se recorta lo
+que se repite todos los días y vuelve a aparecer mañana, no lo que tiene fecha.
+
+**El permiso de notificaciones se pide cuando la persona activa un aviso**, no al
+abrir la app: pedirlo antes de haber mostrado para qué sirve es la forma más
+rápida de que lo rechacen.
+
+**Los avisos preguntan, no reprochan.** "¿Le diste Gabapentina?" y no "Olvidaste
+darle la medicación". El de medicación trae además un botón para registrar la
+toma sin abrir la app.
+
 **Los teléfonos se aceptan como los escribe la gente.** "(011) 4567-8900",
 "011 4567 8900" y "+54 9 11 4567-8900" tienen que poder tocarse para llamar; la
 app se encarga de convertirlos, no la persona.
@@ -168,6 +182,6 @@ app se encarga de convertirlos, no la persona.
 - Editar un registro ya guardado campo por campo: hoy se puede consultar,
   cambiar su estado y eliminarlo.
 - Documentos adjuntos.
-- Recordatorios locales y exportación a PDF.
+- Exportación a PDF.
 - Barra de pestañas: se incorpora cuando existan las pantallas que va a
   contener, no antes.

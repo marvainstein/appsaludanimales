@@ -19,6 +19,7 @@ struct MedicationFormView: View {
     @State private var hasEndDate = false
     @State private var endDate = Date()
     @State private var indications = ""
+    @State private var reminderEnabled = true
     @State private var activeAlert: ActiveAlert?
 
     /// Un único aviso por vez: dos alertas sobre la misma vista compiten entre
@@ -124,6 +125,14 @@ struct MedicationFormView: View {
                 Text("Duración")
             }
 
+            Section {
+                Toggle(isOn: $reminderEnabled) {
+                    Text("Avisarme cuando toca")
+                }
+            } footer: {
+                Text("Usa los momentos del día que elegiste. Podés cambiarlo después desde Recordatorios.")
+            }
+
             PrimaryButtonSection(
                 title: String(localized: "Guardar la medicación"),
                 hint: canSave ? nil : String(localized: "Escribí el nombre para poder guardarla"),
@@ -179,6 +188,7 @@ struct MedicationFormView: View {
         )
         medication.timesOfDay = TimeOfDay.allCases.filter(timesOfDay.contains)
         medication.indications = optional(indications)
+        medication.reminderEnabled = reminderEnabled
         companion.medications.append(medication)
 
         do {

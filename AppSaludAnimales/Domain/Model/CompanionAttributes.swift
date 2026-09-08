@@ -64,3 +64,17 @@ enum TimeOfDay: String, Codable, CaseIterable, Sendable {
         }
     }
 }
+
+extension TimeOfDay {
+    /// Hora en la que avisa un recordatorio cuando el horario es aproximado.
+    /// "Según necesidad" no avisa: no hay un momento que anticipar.
+    var defaultReminderHour: Int? {
+        switch self {
+        case .morning: 8
+        case .midday: 12
+        case .afternoon: 16
+        case .night: 21
+        case .asNeeded: nil
+        }
+    }
+}

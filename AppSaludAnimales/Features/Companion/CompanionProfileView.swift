@@ -95,6 +95,21 @@ struct CompanionProfileView: View {
             } footer: {
                 Text("Son los teléfonos a los que se puede llamar desde el modo emergencia.")
             }
+
+            Section {
+                NavigationLink {
+                    ReminderSettingsView(companion: companion)
+                } label: {
+                    Label {
+                        Text("Recordatorios")
+                    } icon: {
+                        Image(systemName: "bell")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+            } footer: {
+                Text("Qué te avisa la app y cuándo.")
+            }
         }
         .navigationTitle(Text("Perfil"))
         .navigationBarTitleDisplayMode(.inline)
