@@ -8,8 +8,9 @@ accesible, infraestructura de lenguaje), la **primera porción usable**
 —bienvenida, alta y edición de compañeros, dashboard de "Hoy"—, el **registro
 rápido** de medicaciones, episodios, peso, vacunas y notas, el **historial**
 con filtros, detalle de cada registro y eliminación, el **modo emergencia**
-con los contactos a los que llamar, los **recordatorios** locales y los
-**documentos adjuntos**.
+con los contactos a los que llamar, los **recordatorios** locales, los
+**documentos adjuntos** y la **exportación del resumen en PDF**. Con esto queda
+cubierto el alcance del MVP.
 
 ## Abrir y compilar
 
@@ -177,6 +178,19 @@ archivos, y las dos vías guardan lo mismo. Al compartir, el archivo sale con un
 nombre que se entiende —"Luli - Análisis de sangre.pdf"— y no con el nombre
 críptico que traía.
 
+**El PDF es texto de verdad, no una captura de pantalla.** Se puede
+seleccionar, copiar y buscar, y las tecnologías asistivas pueden leerlo; el orden
+de dibujo es el orden de lectura. El etiquetado semántico completo (PDF/UA) tiene
+soporte limitado desde iOS y quedó fuera de este alcance a propósito.
+
+**El resumen ordena lo registrado y no concluye nada.** No interpreta, no infiere
+y no diagnostica: reúne lo que la persona anotó para que se pueda leer de
+corrido, y el PDF lo dice explícitamente al pie.
+
+**Qué incluir en el resumen lo elige la persona.** Lo que se comparte con un
+veterinario no siempre es todo, y esa decisión no debería tomarla la app. Los
+contactos vienen desmarcados por eso mismo.
+
 **Los teléfonos se aceptan como los escribe la gente.** "(011) 4567-8900",
 "011 4567 8900" y "+54 9 11 4567-8900" tienen que poder tocarse para llamar; la
 app se encarga de convertirlos, no la persona.
@@ -188,6 +202,5 @@ app se encarga de convertirlos, no la persona.
   `CKShare`), a validar con una prueba de concepto en dispositivo antes de V1.
 - Editar un registro ya guardado campo por campo: hoy se puede consultar,
   cambiar su estado y eliminarlo.
-- Exportación a PDF.
 - Barra de pestañas: se incorpora cuando existan las pantallas que va a
   contener, no antes.

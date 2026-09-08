@@ -107,8 +107,19 @@ struct CompanionProfileView: View {
                     }
                     .frame(minHeight: Spacing.minimumTapTarget)
                 }
+
+                NavigationLink {
+                    ExportReportView(companion: companion)
+                } label: {
+                    Label {
+                        Text("Resumen en PDF")
+                    } icon: {
+                        Image(systemName: "doc.richtext")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
             } footer: {
-                Text("Qué te avisa la app y cuándo.")
+                Text("Qué te avisa la app, y cómo llevar la información al veterinario.")
             }
         }
         .navigationTitle(Text("Perfil"))
