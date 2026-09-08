@@ -35,6 +35,14 @@ struct HealthRecordDetailView: View {
                 .accessibilityElement(children: .combine)
             }
 
+            if case let .document(document) = entry.reference {
+                Section {
+                    DocumentPreview(document: document, companionName: companion.displayName)
+                } header: {
+                    Text("Archivo")
+                }
+            }
+
             Section {
                 ForEach(fields, id: \.label) { field in
                     row(label: field.label, value: field.value)

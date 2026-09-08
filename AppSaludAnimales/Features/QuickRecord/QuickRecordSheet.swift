@@ -46,6 +46,14 @@ struct QuickRecordSheet: View {
                     }
 
                     option(
+                        title: String(localized: "Documento"),
+                        detail: String(localized: "Un estudio, una receta, un informe"),
+                        symbol: HealthCategory.document.symbolName
+                    ) {
+                        DocumentRecordView(companion: companion, onFinished: finish)
+                    }
+
+                    option(
                         title: String(localized: "Nota"),
                         detail: String(localized: "Cualquier cosa que quieras recordar"),
                         symbol: HealthCategory.note.symbolName

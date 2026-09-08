@@ -8,7 +8,8 @@ accesible, infraestructura de lenguaje), la **primera porción usable**
 —bienvenida, alta y edición de compañeros, dashboard de "Hoy"—, el **registro
 rápido** de medicaciones, episodios, peso, vacunas y notas, el **historial**
 con filtros, detalle de cada registro y eliminación, el **modo emergencia**
-con los contactos a los que llamar, y los **recordatorios** locales.
+con los contactos a los que llamar, los **recordatorios** locales y los
+**documentos adjuntos**.
 
 ## Abrir y compilar
 
@@ -170,6 +171,12 @@ rápida de que lo rechacen.
 darle la medicación". El de medicación trae además un botón para registrar la
 toma sin abrir la app.
 
+**Los documentos entran por donde llegan.** Un análisis llega por correo como
+PDF y una receta se saca con la cámara: se puede adjuntar desde fotos o desde
+archivos, y las dos vías guardan lo mismo. Al compartir, el archivo sale con un
+nombre que se entiende —"Luli - Análisis de sangre.pdf"— y no con el nombre
+críptico que traía.
+
 **Los teléfonos se aceptan como los escribe la gente.** "(011) 4567-8900",
 "011 4567 8900" y "+54 9 11 4567-8900" tienen que poder tocarse para llamar; la
 app se encarga de convertirlos, no la persona.
@@ -181,7 +188,6 @@ app se encarga de convertirlos, no la persona.
   `CKShare`), a validar con una prueba de concepto en dispositivo antes de V1.
 - Editar un registro ya guardado campo por campo: hoy se puede consultar,
   cambiar su estado y eliminarlo.
-- Documentos adjuntos.
 - Exportación a PDF.
 - Barra de pestañas: se incorpora cuando existan las pantallas que va a
   contener, no antes.
