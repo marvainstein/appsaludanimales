@@ -29,3 +29,46 @@ servicio de terceros.
 alcanza. La integración completa se justifica solo si mucha gente tiene su
 archivo organizado afuera y la importación manual sigue siendo el motivo por el
 que abandonan.
+
+## Espacios de difusión: marcas y refugios
+
+**La idea.** Sumar algún espacio de publicidad no invasiva —una marca de
+alimento, por ejemplo— y/o difundir refugios, en conjunto con la app.
+
+**Lo que sí cierra.** La parte de refugios es la más fuerte de las dos, y no
+solo por lo que aporta: encaja con lo que la app ya es. Alguien que lleva la
+historia de salud de su compañera es exactamente quien puede adoptar, donar o
+difundir. Un espacio así se siente parte del producto y no un peaje. Además es
+la puerta más natural para que refugios y protectoras recomienden la app, que
+es distribución genuina y gratis.
+
+**Lo que hay que mirar de frente.** Esta app se mete en un tema sensible: la
+salud de alguien a quien se quiere. La confianza es el activo principal y es lo
+más fácil de romper. Tres riesgos concretos:
+
+1. **Confusión con consejo de salud.** Una marca de alimento al lado de un
+   episodio o de una medicación se lee como recomendación. La app tiene
+   prohibido diagnosticar y recomendar; una publicidad ubicada sin cuidado
+   rompe esa promesa aunque el texto legal diga otra cosa.
+2. **Datos.** Las redes de publicidad habituales viven de perfilar. Hoy ningún
+   dato de salud sale del teléfono, y eso está dicho en el producto. Si algún
+   día hay publicidad, no puede segmentarse con datos de salud, ni mandar
+   identificadores afuera.
+3. **La pantalla principal.** Es la que se abre con apuro, a veces con el animal
+   enfermo al lado. Es la peor pantalla posible para meter algo que compite por
+   la atención.
+
+**Cómo lo haría.** Nada de red publicitaria: acuerdos directos, pocos, elegidos.
+Un módulo propio, servido por la app, sin rastreo. Ubicación en pantallas de
+calma —perfil, historial, un lugar propio tipo "Comunidad"— nunca en Hoy, nunca
+en emergencia, nunca dentro del registro de un síntoma. Siempre marcado como
+espacio patrocinado, con texto e ícono, no solo con un color. Y arrancaría por
+refugios: es lo que se puede probar sin poner en juego la confianza, y si eso no
+funciona, la publicidad paga tampoco va a funcionar.
+
+**Cómo decidirlo.** Primero mirar cuánta gente usa la app de forma sostenida.
+Monetizar antes de eso resuelve un problema que todavía no existe y crea uno
+nuevo. Si hace falta ingreso, comparar contra las alternativas que no tocan la
+confianza: una función paga opcional (sincronización entre personas a cargo,
+resúmenes ilimitados) suele rendir más que la publicidad y no cambia lo que la
+app es.

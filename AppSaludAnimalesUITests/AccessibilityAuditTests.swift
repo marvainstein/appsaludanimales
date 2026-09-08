@@ -9,6 +9,9 @@ import XCTest
 /// No reemplaza probar con VoiceOver —eso está en docs/accesibilidad.md— pero
 /// encuentra sola lo que es mecánico, en cada vuelta y sin acordarse.
 final class AccessibilityAuditTests: XCTestCase {
+    /// Si el recorrido hasta la pantalla falla, no tiene sentido auditar lo que
+    /// haya quedado en pantalla: paramos ahí. La auditoría en sí junta todos sus
+    /// hallazgos y los reporta de una sola vez, así que no pierde ninguno.
     override func setUp() {
         continueAfterFailure = false
     }
@@ -17,7 +20,7 @@ final class AccessibilityAuditTests: XCTestCase {
     func testLaPrimeraPantallaPasaLaAuditoria() throws {
         let app = launchApp()
 
-        try app.performAccessibilityAudit()
+        try audit(app, pantalla: "la bienvenida")
     }
 
     @MainActor
@@ -25,7 +28,7 @@ final class AccessibilityAuditTests: XCTestCase {
         let app = launchApp(withCompanion: true)
         try waitForDashboard(app)
 
-        try app.performAccessibilityAudit()
+        try audit(app, pantalla: "el dashboard")
     }
 
     @MainActor
@@ -40,7 +43,72 @@ final class AccessibilityAuditTests: XCTestCase {
             "Se esperaban las opciones del registro rápido"
         )
 
-        try app.performAccessibilityAudit()
+        try audit(app, pantalla: "el registro rápido")
+    }
+
+    // MARK: - Auditoría
+
+    /// Corre la auditoría y, si algo falla, lo cuenta con nombre y apellido:
+    /// qué pantalla, qué problema y sobre qué elemento.
+    ///
+    /// El mensaje que da XCTest por su cuenta obliga a abrir el detalle en Xcode
+    /// para saber qué elemento está señalado. Acá lo dejamos escrito en la línea
+    /// de la falla, que es lo único que se ve de un vistazo y lo único que se
+    /// puede copiar y pegar para pedir ayuda.
+    @MainActor
+    private func audit(_ app: XCUIApplication, pantalla: String) throws {
+        var problemas: [String] = []
+
+        try app.performAccessibilityAudit { issue in
+            problemas.append(
+                """
+                • \(issue.compactDescription)
+                  Elemento: \(Self.describe(issue.element))
+                  Detalle: \(issue.detailedDescription)
+                """
+            )
+            // Lo reportamos nosotros, más abajo y con más contexto.
+            return true
+        }
+
+        if !problemas.isEmpty {
+            XCTFail(
+                """
+                La auditoría de accesibilidad encontró \(problemas.count) \
+                problema(s) en \(pantalla):
+
+                \(problemas.joined(separator: "\n"))
+                """
+            )
+        }
+    }
+
+    /// Descripción corta y legible de un elemento señalado por la auditoría.
+    ///
+    /// `debugDescription` de XCUIElement imprime el árbol entero y es ilegible;
+    /// lo que sirve para encontrarlo en el código es el identificador, el texto
+    /// y dónde está en pantalla.
+    @MainActor
+    private static func describe(_ element: XCUIElement?) -> String {
+        guard let element else { return "sin elemento asociado" }
+
+        var partes: [String] = ["tipo \(element.elementType.rawValue)"]
+
+        if !element.identifier.isEmpty {
+            partes.append("identificador “\(element.identifier)”")
+        }
+
+        if !element.label.isEmpty {
+            partes.append("texto “\(element.label)”")
+        }
+
+        let marco = element.frame
+        partes.append(
+            "en x \(Int(marco.origin.x)), y \(Int(marco.origin.y)), "
+            + "ancho \(Int(marco.width)), alto \(Int(marco.height))"
+        )
+
+        return partes.joined(separator: ", ")
     }
 
     // MARK: - Recorrido
