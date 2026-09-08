@@ -1,7 +1,407 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "¿Eliminamos este registro?" : {
 
+    },
+    "“%@” deja de aparecer en la historia de %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "“%1$@” deja de aparecer en la historia de %2$@."
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%@: %@ líneas" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@ líneas"
+          }
+        }
+      }
+    },
+    "%@. %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@. %2$@"
+          }
+        }
+      }
+    },
+    "A quién llamar" : {
+
+    },
+    "Abre el formulario para agregar a tu compañero o compañera" : {
+
+    },
+    "Abre el perfil" : {
+
+    },
+    "Abre la aplicación de teléfono" : {
+
+    },
+    "Abre las opciones del sistema para enviar o guardar el documento" : {
+
+    },
+    "Accesibilidad" : {
+
+    },
+    "Acciones" : {
+
+    },
+    "Agregar compañero" : {
+
+    },
+    "Agregar una medicación nueva" : {
+
+    },
+    "Archivo" : {
+
+    },
+    "Avisarme cuando toca" : {
+
+    },
+    "Cambiar de compañero" : {
+
+    },
+    "Cambiar de compañero o agregar uno nuevo" : {
+
+    },
+    "Cancelar" : {
+
+    },
+    "Cerrar" : {
+
+    },
+    "Compañeros" : {
+
+    },
+    "Compartir" : {
+
+    },
+    "Con lo que elegiste no hay nada para incluir todavía. Probá con otro período o marcá más secciones." : {
+
+    },
+    "Contactos" : {
+
+    },
+    "Cuándo" : {
+
+    },
+    "Cuándo se administra" : {
+
+    },
+    "Cumpleaños" : {
+
+    },
+    "Datos" : {
+
+    },
+    "Datos básicos" : {
+
+    },
+    "Detalles" : {
+
+    },
+    "Documento" : {
+
+    },
+    "Duración" : {
+
+    },
+    "Editar" : {
+
+    },
+    "Editar contactos" : {
+
+    },
+    "Editar los datos de %@" : {
+
+    },
+    "El aviso llega con un botón para registrar la toma sin abrir la app." : {
+
+    },
+    "El registro sigue guardado. Podés intentar de nuevo en un momento." : {
+
+    },
+    "Eliminar este registro" : {
+
+    },
+    "Emergencia" : {
+
+    },
+    "Empezar" : {
+
+    },
+    "Empieza" : {
+
+    },
+    "Episodio" : {
+
+    },
+    "Especie" : {
+
+    },
+    "Esta información aparece en el modo emergencia." : {
+
+    },
+    "Este es el lugar donde va a vivir la historia de salud de tu compañero o compañera." : {
+
+    },
+    "Fecha" : {
+
+    },
+    "Fecha de aplicación" : {
+
+    },
+    "Fecha de cumpleaños" : {
+
+    },
+    "Fecha del documento" : {
+
+    },
+    "Filtrar" : {
+
+    },
+    "Foto" : {
+
+    },
+    "Historial" : {
+
+    },
+    "Hola" : {
+
+    },
+    "Hoy" : {
+
+    },
+    "Intensidad" : {
+
+    },
+    "Las secciones sin información no aparecen en el PDF, aunque estén marcadas." : {
+
+    },
+    "Llamar a %@" : {
+
+    },
+    "Los avisos están activados" : {
+
+    },
+    "Los avisos están desactivados para esta app." : {
+
+    },
+    "Los contactos no se guardaron. Podés intentar de nuevo en un momento." : {
+
+    },
+    "Los datos de esta sesión no se están guardando. Podés seguir usando la app y volver a intentarlo más tarde." : {
+
+    },
+    "Más información" : {
+
+    },
+    "Medicación" : {
+
+    },
+    "Medicación nueva" : {
+
+    },
+    "Medicaciones" : {
+
+    },
+    "Modo emergencia" : {
+
+    },
+    "Muchos compañeros llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada." : {
+
+    },
+    "Muestra los datos urgentes de %@ y los teléfonos para llamar" : {
+
+    },
+    "No pudimos eliminar" : {
+
+    },
+    "No pudimos generar el PDF" : {
+
+    },
+    "No pudimos guardar" : {
+
+    },
+    "Nota" : {
+
+    },
+    "Otra persona a cargo" : {
+
+    },
+    "Para avisarte, la app necesita tu permiso." : {
+
+    },
+    "Para cuando el cuidado se comparte entre dos personas. Las dos aparecen en el modo emergencia. Si dejás un nombre vacío, ese contacto se quita." : {
+
+    },
+    "Para que esta pantalla sirva más, podés agregar %@ desde el perfil de %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Para que esta pantalla sirva más, podés agregar %1$@ desde el perfil de %2$@."
+          }
+        }
+      }
+    },
+    "Perfil" : {
+
+    },
+    "Período" : {
+
+    },
+    "Período del resumen" : {
+
+    },
+    "Permiso" : {
+
+    },
+    "Persona a cargo" : {
+
+    },
+    "Peso" : {
+
+    },
+    "Podés activarlos desde Ajustes del teléfono, en Notificaciones." : {
+
+    },
+    "Podés adjuntar una foto o un archivo, por ejemplo un PDF de un análisis." : {
+
+    },
+    "Podés elegir más de uno, o ninguno si todavía no lo sabés." : {
+
+    },
+    "Próxima" : {
+
+    },
+    "Próxima aplicación" : {
+
+    },
+    "Qué incluir" : {
+
+    },
+    "Qué querés registrar de %@" : {
+
+    },
+    "Qué sabés de la fecha" : {
+
+    },
+    "Qué te avisa la app, y cómo llevar la información al veterinario." : {
+
+    },
+    "Quitar la foto" : {
+
+    },
+    "Recordatorios" : {
+
+    },
+    "Registra una toma ahora" : {
+
+    },
+    "Registrar" : {
+
+    },
+    "Registrar una toma" : {
+
+    },
+    "Resumen en PDF" : {
+
+    },
+    "Salud" : {
+
+    },
+    "Sé cuándo toca la próxima" : {
+
+    },
+    "Se elimina solo de la historia de %@. No se puede deshacer." : {
+
+    },
+    "Se guarda como episodio activo. Podés marcarlo en seguimiento o resuelto más adelante." : {
+
+    },
+    "Se guarda con la hora de este momento." : {
+
+    },
+    "Sexo" : {
+
+    },
+    "Si cargás la próxima fecha, aparece en Próximamente cuando se acerque." : {
+
+    },
+    "Sin especificar" : {
+
+    },
+    "Síntoma" : {
+
+    },
+    "Son los teléfonos a los que se puede llamar desde el modo emergencia." : {
+
+    },
+    "Sugerencias" : {
+
+    },
+    "Termina" : {
+
+    },
+    "Tiene fecha de finalización" : {
+
+    },
+    "Todavía no hay medicaciones en curso. Podés agregar una acá abajo." : {
+
+    },
+    "Todavía no hay nada que pueda avisarte. Cuando cargues una medicación, una vacuna con próxima fecha o un turno, aparecen acá." : {
+
+    },
+    "Todo esto es opcional y podés completarlo cuando quieras." : {
+
+    },
+    "Turnos" : {
+
+    },
+    "Usa esta sugerencia como síntoma" : {
+
+    },
+    "Usa los momentos del día que elegiste. Podés cambiarlo después desde Recordatorios." : {
+
+    },
+    "Vacuna" : {
+
+    },
+    "Vacunas" : {
+
+    },
+    "Ver todo el historial" : {
+
+    },
+    "Veterinario de cabecera" : {
+
+    },
+    "Vista previa" : {
+
+    },
+    "Vuelve a la pantalla anterior" : {
+
+    }
   },
   "version" : "1.0"
 }
