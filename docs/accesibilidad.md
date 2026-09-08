@@ -10,8 +10,20 @@ Hay tres niveles, del más automático al más humano:
    `AppSaludAnimalesUITests`: detecta elementos sin etiqueta, contraste
    insuficiente, áreas de toque chicas y texto cortado. Es la misma auditoría
    del Accessibility Inspector de Xcode, pero sin tener que acordarse de
-   abrirlo. Si una de esas pruebas falla, el detalle del error dice qué elemento
-   y por qué.
+   abrirlo. Si una de esas pruebas falla, el mensaje dice qué elemento, con qué
+   identificador, qué texto y en qué parte de la pantalla: alcanza con leer la
+   línea de la falla, sin abrir el detalle.
+
+   **Lo que la auditoría no cubre.** En las pantallas con una lista más larga
+   que la pantalla, la verificación de tamaño de texto queda apagada. Esa
+   verificación agranda el texto al máximo y vuelve a medir: todo lo que queda
+   debajo del borde inferior lo mide sin haber crecido y lo reporta como si su
+   tipografía no escalara, y lo mismo hace con los botones de la barra de
+   navegación, que dibuja el sistema. Se comprobó en el registro rápido, donde
+   las seis filas usan la misma función y la misma tipografía y solo se
+   reportaban las cuatro de abajo. Como esa verificación ahí no dice nada útil,
+   el tamaño de texto en esas pantallas **se prueba a mano**, en el paso de
+   Dynamic Type de más abajo. Todo el resto de la auditoría sigue corriendo.
 3. Lo que sigue en este documento, que se prueba a mano y no lleva más de veinte
    minutos por vuelta.
 

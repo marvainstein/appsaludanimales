@@ -112,7 +112,14 @@ struct QuickRecordSheet: View {
             }
             .padding(.vertical, Spacing.sm)
         }
-        .accessibilityElement(children: .combine)
+        // Dentro de una lista, `.combine` no llega a unir el título con su
+        // detalle: la auditoría los encuentra como dos elementos sueltos, y con
+        // VoiceOver eso son doce paradas en vez de seis. Con la etiqueta y la
+        // pista escritas a mano, cada fila es una sola cosa: se anuncia "Peso" y
+        // el detalle queda como pista, que es donde corresponde.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(title))
+        .accessibilityHint(Text(detail))
         .accessibilityIdentifier(identifier)
     }
 

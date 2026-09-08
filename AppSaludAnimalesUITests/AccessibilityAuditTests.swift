@@ -43,10 +43,32 @@ final class AccessibilityAuditTests: XCTestCase {
             "Se esperaban las opciones del registro rápido"
         )
 
-        try audit(app, pantalla: "el registro rápido")
+        try audit(app, pantalla: "el registro rápido", tipos: Self.sinTamanoDeTexto)
     }
 
     // MARK: - Auditoría
+
+    /// Todo menos el tamaño de texto.
+    ///
+    /// La verificación de Dynamic Type de Apple agranda el texto al máximo y
+    /// vuelve a medir cada elemento. En una pantalla con una lista más larga que
+    /// la pantalla, todo lo que queda debajo del borde inferior se mide sin
+    /// haber crecido y se reporta como si su tipografía no escalara. Lo mismo
+    /// pasa con los botones de la barra de navegación, que dibuja el sistema y
+    /// que iOS no agranda por diseño.
+    ///
+    /// Se ve claro en la evidencia: en el registro rápido las seis filas usan la
+    /// misma función y la misma tipografía, y solo se reportaban las cuatro de
+    /// abajo. Si la fuente no escalara, se reportarían las seis.
+    ///
+    /// Así que en esas pantallas esta verificación puntual no dice nada útil, y
+    /// dejarla reportando lo mismo en cada vuelta es peor que sacarla: enseña a
+    /// ignorar el color rojo. El tamaño de texto en pantallas con lista se
+    /// verifica a mano, con el teléfono y el texto al máximo, según el protocolo
+    /// de docs/accesibilidad.md. Todo el resto de la auditoría sigue corriendo
+    /// acá, incluidas las que sí encontraron problemas reales.
+    private static let sinTamanoDeTexto: XCUIAccessibilityAuditType =
+        XCUIAccessibilityAuditType.all.subtracting(.dynamicType)
 
     /// Corre la auditoría y, si algo falla, lo cuenta con nombre y apellido:
     /// qué pantalla, qué problema y sobre qué elemento.
@@ -56,10 +78,14 @@ final class AccessibilityAuditTests: XCTestCase {
     /// de la falla, que es lo único que se ve de un vistazo y lo único que se
     /// puede copiar y pegar para pedir ayuda.
     @MainActor
-    private func audit(_ app: XCUIApplication, pantalla: String) throws {
+    private func audit(
+        _ app: XCUIApplication,
+        pantalla: String,
+        tipos: XCUIAccessibilityAuditType = .all
+    ) throws {
         var problemas: [String] = []
 
-        try app.performAccessibilityAudit { issue in
+        try app.performAccessibilityAudit(for: tipos) { issue in
             problemas.append(
                 """
                 • \(issue.compactDescription)
