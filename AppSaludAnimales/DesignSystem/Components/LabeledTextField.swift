@@ -15,6 +15,8 @@ struct LabeledTextField: View {
     var keyboardType: UIKeyboardType = .default
     var identifier: String?
 
+    @FocusState private var isFocused: Bool
+
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             HStack(spacing: Spacing.xs) {
@@ -35,6 +37,9 @@ struct LabeledTextField: View {
                 .font(AppFont.body)
                 .textInputAutocapitalization(autocapitalization)
                 .keyboardType(keyboardType)
+                .focused($isFocused)
+                .submitLabel(.done)
+                .onSubmit { isFocused = false }
                 .accessibilityLabel(Text(accessibilityLabel))
                 .accessibilityHint(Text(hint ?? ""))
                 .accessibilityIdentifier(identifier ?? "")
@@ -47,6 +52,32 @@ struct LabeledTextField: View {
             }
         }
         .padding(.vertical, Spacing.xs)
+        // Una salida del teclado que no dependa de tocar en el lugar correcto de
+        // la pantalla.
+        //
+        // Tocando afuera el teclado se cerraba, así que a la vista parecía que
+        // no faltaba nada. Con VoiceOver no hay "afuera": después de escribir el
+        // nombre no había forma de volver al formulario, y el botón de guardar
+        // quedaba tapado por el teclado. El teclado numérico del peso es peor
+        // todavía, porque ni siquiera tiene tecla de retorno.
+        //
+        // El botón aparece solo para el campo que está escribiendo: si cada
+        // campo pusiera el suyo, se apilarían varios sobre el mismo teclado.
+        .toolbar {
+            if isFocused {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+
+                    Button {
+                        isFocused = false
+                    } label: {
+                        Text("Listo")
+                    }
+                    .accessibilityHint(Text("Cierra el teclado y vuelve al formulario"))
+                    .accessibilityIdentifier("keyboard.done")
+                }
+            }
+        }
     }
 
     private var accessibilityLabel: String {

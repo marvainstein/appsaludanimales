@@ -40,6 +40,9 @@ Una funcionalidad está lista cuando:
 - Sigue funcionando con el tamaño de texto más grande.
 - Tiene contraste suficiente en modo claro y oscuro.
 - Ningún estado se comunica solo con color.
+- Todo campo de texto tiene una salida del teclado que no dependa de tocar
+  afuera. "Tocar afuera" no existe para quien navega con VoiceOver, y el teclado
+  numérico ni siquiera trae tecla de retorno.
 - Cada control dice qué es y qué va a pasar al activarlo.
 
 Si algo de esto falla, la funcionalidad no está terminada, aunque se vea bien.
