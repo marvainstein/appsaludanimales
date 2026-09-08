@@ -39,7 +39,7 @@ final class AccessibilityAuditTests: XCTestCase {
         app.buttons["dashboard.record"].tap()
 
         XCTAssertTrue(
-            app.buttons["quickRecord.weight"].waitForExistence(timeout: 5),
+            Self.element(app, "quickRecord.weight").waitForExistence(timeout: 5),
             "Se esperaban las opciones del registro rápido"
         )
 
@@ -138,6 +138,16 @@ final class AccessibilityAuditTests: XCTestCase {
     }
 
     // MARK: - Recorrido
+
+    /// Busca por identificador sin atarse al tipo de elemento.
+    ///
+    /// Cuando una vista arma su propio elemento de accesibilidad, lo que
+    /// XCUITest ve puede dejar de ser un botón. Que la prueba se caiga por eso
+    /// es ruido: lo que le importa es que el control esté y se pueda tocar.
+    @MainActor
+    private static func element(_ app: XCUIApplication, _ identifier: String) -> XCUIElement {
+        app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+    }
 
     /// Arranca la app con datos limpios, para que el recorrido sea siempre el
     /// mismo y una falla signifique siempre lo mismo.

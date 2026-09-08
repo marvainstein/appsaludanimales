@@ -120,6 +120,10 @@ struct QuickRecordSheet: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(title))
         .accessibilityHint(Text(detail))
+        // Al reemplazar el elemento por uno propio se pierde el rasgo de botón
+        // que el enlace traía solo, y sin él VoiceOver anuncia "Peso" sin decir
+        // que se puede tocar.
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier(identifier)
     }
 
