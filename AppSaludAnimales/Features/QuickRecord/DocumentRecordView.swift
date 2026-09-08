@@ -12,18 +12,39 @@ struct DocumentRecordView: View {
     let companion: Companion
     var onFinished: () -> Void = {}
 
+    /// Con un documento ya guardado, la misma pantalla lo edita: el archivo
+    /// adjunto se mantiene, y se puede cambiar por otro si hacía falta.
+    private let editing: HealthDocument?
+
     @Environment(\.modelContext) private var modelContext
 
-    @State private var title = ""
-    @State private var category = ""
-    @State private var date = Date()
-    @State private var accessibilityDescription = ""
+    @State private var title: String
+    @State private var category: String
+    @State private var date: Date
+    @State private var accessibilityDescription: String
     @State private var fileData: Data?
     @State private var fileName: String?
     @State private var contentTypeIdentifier: String?
     @State private var photoItem: PhotosPickerItem?
     @State private var isImportingFile = false
     @State private var errorMessage: String?
+
+    init(
+        companion: Companion,
+        editing: HealthDocument? = nil,
+        onFinished: @escaping () -> Void = {}
+    ) {
+        self.companion = companion
+        self.editing = editing
+        self.onFinished = onFinished
+        _title = State(initialValue: editing?.title ?? "")
+        _category = State(initialValue: editing?.category ?? "")
+        _date = State(initialValue: editing?.date ?? Date())
+        _accessibilityDescription = State(initialValue: editing?.accessibilityDescription ?? "")
+        _fileData = State(initialValue: editing?.fileData)
+        _fileName = State(initialValue: editing?.fileName)
+        _contentTypeIdentifier = State(initialValue: editing?.contentTypeIdentifier)
+    }
 
     private var canSave: Bool {
         fileData != nil && !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -100,13 +121,17 @@ struct DocumentRecordView: View {
             }
 
             PrimaryButtonSection(
-                title: String(localized: "Guardar el documento"),
+                title: editing == nil
+                    ? String(localized: "Guardar el documento")
+                    : String(localized: "Guardar los cambios"),
                 hint: canSave ? nil : missingHint,
                 isEnabled: canSave,
                 action: save
             )
         }
-        .navigationTitle(Text("Documento"))
+        .navigationTitle(Text(editing == nil
+            ? String(localized: "Documento")
+            : String(localized: "Editar el documento")))
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: photoItem) { _, item in loadPhoto(item) }
         .fileImporter(
@@ -210,16 +235,19 @@ struct DocumentRecordView: View {
     }
 
     private func save() {
-        let document = HealthDocument(
-            title: title.trimmingCharacters(in: .whitespacesAndNewlines),
-            category: optional(category),
-            date: date
-        )
+        let document = editing ?? HealthDocument(date: date)
+
+        document.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        document.category = optional(category)
+        document.date = date
         document.fileData = fileData
         document.fileName = fileName
         document.contentTypeIdentifier = contentTypeIdentifier
         document.accessibilityDescription = optional(accessibilityDescription)
-        companion.documents.append(document)
+
+        if editing == nil {
+            companion.documents.append(document)
+        }
 
         do {
             try modelContext.save()

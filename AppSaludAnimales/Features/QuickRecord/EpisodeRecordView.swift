@@ -10,13 +10,32 @@ struct EpisodeRecordView: View {
     let companion: Companion
     var onFinished: () -> Void = {}
 
+    /// Con un episodio ya guardado, la misma pantalla lo edita. El estado
+    /// —activo, en seguimiento, resuelto— no se toca acá: se cambia desde el
+    /// detalle, que es donde se lo mira.
+    private let editing: HealthEpisode?
+
     @Environment(\.modelContext) private var modelContext
 
-    @State private var symptom = ""
-    @State private var episodeDescription = ""
-    @State private var date = Date()
+    @State private var symptom: String
+    @State private var episodeDescription: String
+    @State private var date: Date
     @State private var intensity: EpisodeIntensity?
     @State private var saveErrorMessage: String?
+
+    init(
+        companion: Companion,
+        editing: HealthEpisode? = nil,
+        onFinished: @escaping () -> Void = {}
+    ) {
+        self.companion = companion
+        self.editing = editing
+        self.onFinished = onFinished
+        _symptom = State(initialValue: editing?.symptom ?? "")
+        _episodeDescription = State(initialValue: editing?.episodeDescription ?? "")
+        _date = State(initialValue: editing?.date ?? Date())
+        _intensity = State(initialValue: editing?.intensity)
+    }
 
     private var canSave: Bool {
         !symptom.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -68,13 +87,17 @@ struct EpisodeRecordView: View {
             }
 
             PrimaryButtonSection(
-                title: String(localized: "Guardar el episodio"),
+                title: editing == nil
+                    ? String(localized: "Guardar el episodio")
+                    : String(localized: "Guardar los cambios"),
                 hint: canSave ? nil : String(localized: "Escribí qué notaste para poder guardarlo"),
                 isEnabled: canSave,
                 action: save
             )
         }
-        .navigationTitle(Text("Episodio"))
+        .navigationTitle(Text(editing == nil
+            ? String(localized: "Episodio")
+            : String(localized: "Editar el episodio")))
         .navigationBarTitleDisplayMode(.inline)
         .alert(
             Text("No pudimos guardar"),
@@ -116,16 +139,17 @@ struct EpisodeRecordView: View {
     }
 
     private func save() {
-        let episode = HealthEpisode(
-            symptom: symptom.trimmingCharacters(in: .whitespacesAndNewlines),
-            date: date,
-            episodeDescription: episodeDescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                ? nil
-                : episodeDescription.trimmingCharacters(in: .whitespacesAndNewlines),
-            status: .active
-        )
+        let trimmedDescription = episodeDescription.trimmingCharacters(in: .whitespacesAndNewlines)
+        let episode = editing ?? HealthEpisode(date: date, status: .active)
+
+        episode.symptom = symptom.trimmingCharacters(in: .whitespacesAndNewlines)
+        episode.date = date
+        episode.episodeDescription = trimmedDescription.isEmpty ? nil : trimmedDescription
         episode.intensity = intensity
-        companion.episodes.append(episode)
+
+        if editing == nil {
+            companion.episodes.append(episode)
+        }
 
         do {
             try modelContext.save()

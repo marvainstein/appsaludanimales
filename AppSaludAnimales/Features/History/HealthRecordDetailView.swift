@@ -15,6 +15,7 @@ struct HealthRecordDetailView: View {
 
     @State private var isConfirmingDeletion = false
     @State private var deletionFailed = false
+    @State private var isEditing = false
 
     var body: some View {
         List {
@@ -24,10 +25,11 @@ struct HealthRecordDetailView: View {
                         .font(AppFont.caption)
                         .foregroundStyle(Palette.inkMuted)
 
-                    Text(entry.title)
+                    Text(currentTitle)
                         .font(AppFont.sectionTitle)
+                        .fixedSize(horizontal: false, vertical: true)
 
-                    if let badge = entry.badge {
+                    if let badge = currentBadge {
                         StatusChip(status: badge)
                     }
                 }
@@ -85,6 +87,22 @@ struct HealthRecordDetailView: View {
         }
         .navigationTitle(Text(entry.category.label))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if isEditable {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isEditing = true
+                    } label: {
+                        Text("Editar")
+                    }
+                    .accessibilityHint(Text("Abre el registro para corregir lo que cargaste"))
+                    .accessibilityIdentifier("record.edit")
+                }
+            }
+        }
+        .sheet(isPresented: $isEditing) {
+            editSheet
+        }
         .confirmationDialog(
             Text("¿Eliminamos este registro?"),
             isPresented: $isConfirmingDeletion,
@@ -93,7 +111,7 @@ struct HealthRecordDetailView: View {
             Button("Eliminar", role: .destructive, action: delete)
             Button("Mejor no", role: .cancel) {}
         } message: {
-            Text("“\(entry.title)” deja de aparecer en la historia de \(companion.displayName).")
+            Text("“\(currentTitle)” deja de aparecer en la historia de \(companion.displayName).")
         }
         .alert(
             Text("No pudimos eliminar"),
@@ -105,7 +123,107 @@ struct HealthRecordDetailView: View {
         }
     }
 
+    // MARK: - Editar
+
+    /// Se edita lo que se puede cargar desde la app. Tratamientos y turnos
+    /// todavía no tienen formulario propio, así que ofrecer editarlos sería
+    /// prometer una pantalla que no existe.
+    private var isEditable: Bool {
+        switch entry.reference {
+        case .medication, .vaccination, .episode, .document, .note: true
+        case let .measurement(measurement): measurement.kind == .weight
+        case .treatment, .appointment: false
+        }
+    }
+
+    private var editSheet: some View {
+        NavigationStack {
+            editForm
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            isEditing = false
+                        } label: {
+                            Text("Cancelar")
+                        }
+                    }
+                }
+        }
+    }
+
+    /// Editar usa el mismo formulario con el que se cargó: si el de peso cambia,
+    /// cambia en los dos lados. Dos pantallas parecidas para lo mismo terminan
+    /// siempre en dos comportamientos distintos.
+    @ViewBuilder
+    private var editForm: some View {
+        switch entry.reference {
+        case let .medication(medication):
+            MedicationFormView(companion: companion, editing: medication, onFinished: finishEditing)
+
+        case let .vaccination(vaccination):
+            VaccinationRecordView(companion: companion, editing: vaccination, onFinished: finishEditing)
+
+        case let .episode(episode):
+            EpisodeRecordView(companion: companion, editing: episode, onFinished: finishEditing)
+
+        case let .measurement(measurement):
+            WeightRecordView(companion: companion, editing: measurement, onFinished: finishEditing)
+
+        case let .document(document):
+            DocumentRecordView(companion: companion, editing: document, onFinished: finishEditing)
+
+        case let .note(note):
+            NoteRecordView(companion: companion, editing: note, onFinished: finishEditing)
+
+        case .treatment, .appointment:
+            EmptyView()
+        }
+    }
+
+    private func finishEditing() {
+        isEditing = false
+    }
+
     // MARK: - Contenido
+
+    /// El título, la fecha y el estado se leen del registro real y no de la
+    /// línea del historial con la que se llegó hasta acá. Esa línea es una foto
+    /// del momento en que se armó la lista: después de editar el registro —o de
+    /// cambiarle el estado desde esta misma pantalla— mostraría lo viejo.
+    private var currentTitle: String {
+        switch entry.reference {
+        case let .medication(medication): medication.name
+        case let .treatment(treatment): treatment.name
+        case let .vaccination(vaccination): vaccination.name
+        case let .episode(episode): episode.symptom
+        case let .measurement(measurement): measurement.formattedValue
+        case let .appointment(appointment): appointment.title
+        case let .document(document): document.title
+        case let .note(note): note.text
+        }
+    }
+
+    private var currentDate: Date {
+        switch entry.reference {
+        case let .medication(medication): medication.startDate
+        case let .treatment(treatment): treatment.startDate
+        case let .vaccination(vaccination): vaccination.date
+        case let .episode(episode): episode.date
+        case let .measurement(measurement): measurement.date
+        case let .appointment(appointment): appointment.date
+        case let .document(document): document.date
+        case let .note(note): note.date
+        }
+    }
+
+    private var currentBadge: StatusBadge? {
+        switch entry.reference {
+        case let .medication(medication): medication.status().badge
+        case let .treatment(treatment): treatment.status().badge
+        case let .episode(episode): episode.status.badge
+        default: nil
+        }
+    }
 
     private struct Field {
         let label: String
@@ -120,7 +238,7 @@ struct HealthRecordDetailView: View {
 
     private var fields: [Field] {
         var fields: [Field] = [
-            Field(label: String(localized: "Fecha"), value: DateDescription.absolute(entry.date))
+            Field(label: String(localized: "Fecha"), value: DateDescription.absolute(currentDate))
         ]
 
         switch entry.reference {
@@ -293,6 +411,8 @@ struct HealthRecordDetailView: View {
     private func apply(_ change: () -> Void) {
         change()
         try? modelContext.save()
+        // Suspender o finalizar también apaga sus avisos.
+        ReminderSync.refresh(using: modelContext)
     }
 
     private func delete() {
@@ -309,6 +429,9 @@ struct HealthRecordDetailView: View {
 
         do {
             try modelContext.save()
+            // Un aviso de una medicación eliminada sigue sonando hasta la
+            // próxima vez que se abre la app. Se cancela ahora.
+            ReminderSync.refresh(using: modelContext)
             dismiss()
         } catch {
             deletionFailed = true

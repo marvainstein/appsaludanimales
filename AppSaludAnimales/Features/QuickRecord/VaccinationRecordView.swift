@@ -6,14 +6,32 @@ struct VaccinationRecordView: View {
     let companion: Companion
     var onFinished: () -> Void = {}
 
+    /// Con una vacuna ya guardada, la misma pantalla la edita.
+    private let editing: Vaccination?
+
     @Environment(\.modelContext) private var modelContext
 
-    @State private var name = ""
-    @State private var date = Date()
-    @State private var hasNextDueDate = false
-    @State private var nextDueDate = Date()
-    @State private var notes = ""
+    @State private var name: String
+    @State private var date: Date
+    @State private var hasNextDueDate: Bool
+    @State private var nextDueDate: Date
+    @State private var notes: String
     @State private var saveErrorMessage: String?
+
+    init(
+        companion: Companion,
+        editing: Vaccination? = nil,
+        onFinished: @escaping () -> Void = {}
+    ) {
+        self.companion = companion
+        self.editing = editing
+        self.onFinished = onFinished
+        _name = State(initialValue: editing?.name ?? "")
+        _date = State(initialValue: editing?.date ?? Date())
+        _hasNextDueDate = State(initialValue: editing?.nextDueDate != nil)
+        _nextDueDate = State(initialValue: editing?.nextDueDate ?? Date())
+        _notes = State(initialValue: editing?.notes ?? "")
+    }
 
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -58,13 +76,17 @@ struct VaccinationRecordView: View {
             }
 
             PrimaryButtonSection(
-                title: String(localized: "Guardar la vacuna"),
+                title: editing == nil
+                    ? String(localized: "Guardar la vacuna")
+                    : String(localized: "Guardar los cambios"),
                 hint: canSave ? nil : String(localized: "Escribí qué vacuna para poder guardarla"),
                 isEnabled: canSave,
                 action: save
             )
         }
-        .navigationTitle(Text("Vacuna"))
+        .navigationTitle(Text(editing == nil
+            ? String(localized: "Vacuna")
+            : String(localized: "Editar la vacuna")))
         .navigationBarTitleDisplayMode(.inline)
         .alert(
             Text("No pudimos guardar"),
@@ -80,17 +102,21 @@ struct VaccinationRecordView: View {
     }
 
     private func save() {
-        let vaccination = Vaccination(
-            name: name.trimmingCharacters(in: .whitespacesAndNewlines),
-            date: date,
-            nextDueDate: hasNextDueDate ? nextDueDate : nil
-        )
         let trimmedNotes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
+        let vaccination = editing ?? Vaccination(name: "", date: date)
+
+        vaccination.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        vaccination.date = date
+        vaccination.nextDueDate = hasNextDueDate ? nextDueDate : nil
         vaccination.notes = trimmedNotes.isEmpty ? nil : trimmedNotes
-        companion.vaccinations.append(vaccination)
+
+        if editing == nil {
+            companion.vaccinations.append(vaccination)
+        }
 
         do {
             try modelContext.save()
+            ReminderSync.refresh(using: modelContext)
             onFinished()
         } catch {
             saveErrorMessage = String(localized: "La vacuna no se guardó. Podés intentar de nuevo en un momento.")
@@ -104,11 +130,26 @@ struct NoteRecordView: View {
     let companion: Companion
     var onFinished: () -> Void = {}
 
+    /// Con una nota ya guardada, la misma pantalla la edita.
+    private let editing: CompanionNote?
+
     @Environment(\.modelContext) private var modelContext
 
-    @State private var text = ""
-    @State private var date = Date()
+    @State private var text: String
+    @State private var date: Date
     @State private var saveErrorMessage: String?
+
+    init(
+        companion: Companion,
+        editing: CompanionNote? = nil,
+        onFinished: @escaping () -> Void = {}
+    ) {
+        self.companion = companion
+        self.editing = editing
+        self.onFinished = onFinished
+        _text = State(initialValue: editing?.text ?? "")
+        _date = State(initialValue: editing?.date ?? Date())
+    }
 
     private var canSave: Bool {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -131,13 +172,17 @@ struct NoteRecordView: View {
             }
 
             PrimaryButtonSection(
-                title: String(localized: "Guardar la nota"),
+                title: editing == nil
+                    ? String(localized: "Guardar la nota")
+                    : String(localized: "Guardar los cambios"),
                 hint: canSave ? nil : String(localized: "Escribí la nota para poder guardarla"),
                 isEnabled: canSave,
                 action: save
             )
         }
-        .navigationTitle(Text("Nota"))
+        .navigationTitle(Text(editing == nil
+            ? String(localized: "Nota")
+            : String(localized: "Editar la nota")))
         .navigationBarTitleDisplayMode(.inline)
         .alert(
             Text("No pudimos guardar"),
@@ -153,11 +198,13 @@ struct NoteRecordView: View {
     }
 
     private func save() {
-        let note = CompanionNote(
-            text: text.trimmingCharacters(in: .whitespacesAndNewlines),
-            date: date
-        )
-        companion.notes.append(note)
+        let note = editing ?? CompanionNote(text: "", date: date)
+        note.text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        note.date = date
+
+        if editing == nil {
+            companion.notes.append(note)
+        }
 
         do {
             try modelContext.save()

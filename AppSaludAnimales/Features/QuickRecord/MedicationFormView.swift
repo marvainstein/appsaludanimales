@@ -10,17 +10,40 @@ struct MedicationFormView: View {
     let companion: Companion
     var onFinished: () -> Void = {}
 
+    /// Con una medicación ya guardada, la misma pantalla la edita: cambiar una
+    /// dosis mal anotada no debería obligar a borrar y volver a cargar todo,
+    /// porque eso también borraría las tomas ya registradas.
+    private let editing: Medication?
+
     @Environment(\.modelContext) private var modelContext
 
-    @State private var name = ""
-    @State private var dose = ""
-    @State private var timesOfDay: Set<TimeOfDay> = []
-    @State private var startDate = Date()
-    @State private var hasEndDate = false
-    @State private var endDate = Date()
-    @State private var indications = ""
-    @State private var reminderEnabled = true
+    @State private var name: String
+    @State private var dose: String
+    @State private var timesOfDay: Set<TimeOfDay>
+    @State private var startDate: Date
+    @State private var hasEndDate: Bool
+    @State private var endDate: Date
+    @State private var indications: String
+    @State private var reminderEnabled: Bool
     @State private var activeAlert: ActiveAlert?
+
+    init(
+        companion: Companion,
+        editing: Medication? = nil,
+        onFinished: @escaping () -> Void = {}
+    ) {
+        self.companion = companion
+        self.editing = editing
+        self.onFinished = onFinished
+        _name = State(initialValue: editing?.name ?? "")
+        _dose = State(initialValue: editing?.dose ?? "")
+        _timesOfDay = State(initialValue: Set(editing?.timesOfDay ?? []))
+        _startDate = State(initialValue: editing?.startDate ?? Date())
+        _hasEndDate = State(initialValue: editing?.endDate != nil)
+        _endDate = State(initialValue: editing?.endDate ?? Date())
+        _indications = State(initialValue: editing?.indications ?? "")
+        _reminderEnabled = State(initialValue: editing?.reminderEnabled ?? true)
+    }
 
     /// Un único aviso por vez: dos alertas sobre la misma vista compiten entre
     /// sí y solo una llega a mostrarse.
@@ -134,13 +157,17 @@ struct MedicationFormView: View {
             }
 
             PrimaryButtonSection(
-                title: String(localized: "Guardar la medicación"),
+                title: editing == nil
+                    ? String(localized: "Guardar la medicación")
+                    : String(localized: "Guardar los cambios"),
                 hint: canSave ? nil : String(localized: "Escribí el nombre para poder guardarla"),
                 isEnabled: canSave,
                 action: { save(force: false) }
             )
         }
-        .navigationTitle(Text("Medicación nueva"))
+        .navigationTitle(Text(editing == nil
+            ? String(localized: "Medicación nueva")
+            : String(localized: "Editar la medicación")))
         .navigationBarTitleDisplayMode(.inline)
         .alert(
             Text(activeAlert?.title ?? ""),
@@ -180,28 +207,34 @@ struct MedicationFormView: View {
             return
         }
 
-        let medication = Medication(
-            name: trimmedName,
-            dose: optional(dose),
-            startDate: startDate,
-            endDate: hasEndDate ? endDate : nil
-        )
+        let medication = editing ?? Medication(startDate: startDate)
+
+        medication.name = trimmedName
+        medication.dose = optional(dose)
+        medication.startDate = startDate
+        medication.endDate = hasEndDate ? endDate : nil
         medication.timesOfDay = TimeOfDay.allCases.filter(timesOfDay.contains)
         medication.indications = optional(indications)
         medication.reminderEnabled = reminderEnabled
-        companion.medications.append(medication)
+
+        if editing == nil {
+            companion.medications.append(medication)
+        }
 
         do {
             try modelContext.save()
+            ReminderSync.refresh(using: modelContext)
             onFinished()
         } catch {
             activeAlert = .saveFailed
         }
     }
 
+    /// Al editar, la propia medicación no cuenta como duplicado de sí misma.
     private func duplicateMedication() -> Medication? {
         companion.activeMedications().first {
-            MedicationDuplicationCheck.isSameMedication($0.name, trimmedName)
+            $0.id != editing?.id
+                && MedicationDuplicationCheck.isSameMedication($0.name, trimmedName)
         }
     }
 
