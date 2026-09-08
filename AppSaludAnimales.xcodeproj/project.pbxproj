@@ -9,6 +9,7 @@
 /* Begin PBXFileReference section */
 		4B0A000000000000000001A5 /* AppSaludAnimales.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppSaludAnimales.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B0A000000000000000001B7 /* AppSaludAnimalesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppSaludAnimalesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B0A000000000000000001D1 /* AppSaludAnimalesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppSaludAnimalesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -20,6 +21,11 @@
 		4B0A000000000000000001B8 /* AppSaludAnimalesTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AppSaludAnimalesTests;
+			sourceTree = "<group>";
+		};
+		4B0A000000000000000001D2 /* AppSaludAnimalesUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AppSaludAnimalesUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -39,6 +45,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4B0A000000000000000001D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -47,6 +60,7 @@
 			children = (
 				4B0A000000000000000001A6 /* AppSaludAnimales */,
 				4B0A000000000000000001B8 /* AppSaludAnimalesTests */,
+				4B0A000000000000000001D2 /* AppSaludAnimalesUITests */,
 				4B0A000000000000000001A3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +70,7 @@
 			children = (
 				4B0A000000000000000001A5 /* AppSaludAnimales.app */,
 				4B0A000000000000000001B7 /* AppSaludAnimalesTests.xctest */,
+				4B0A000000000000000001D1 /* AppSaludAnimalesUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,6 +119,27 @@
 			productReference = 4B0A000000000000000001B7 /* AppSaludAnimalesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		4B0A000000000000000001D0 /* AppSaludAnimalesUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B0A000000000000000001D6 /* Build configuration list for PBXNativeTarget "AppSaludAnimalesUITests" */;
+			buildPhases = (
+				4B0A000000000000000001D3 /* Sources */,
+				4B0A000000000000000001D4 /* Frameworks */,
+				4B0A000000000000000001D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4B0A000000000000000001D9 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4B0A000000000000000001D2 /* AppSaludAnimalesUITests */,
+			);
+			name = AppSaludAnimalesUITests;
+			productName = AppSaludAnimalesUITests;
+			productReference = 4B0A000000000000000001D1 /* AppSaludAnimalesUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -118,6 +154,10 @@
 						CreatedOnToolsVersion = 16.0;
 					};
 					4B0A000000000000000001B6 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 4B0A000000000000000001A4;
+					};
+					4B0A000000000000000001D0 = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 4B0A000000000000000001A4;
 					};
@@ -139,6 +179,7 @@
 			targets = (
 				4B0A000000000000000001A4 /* AppSaludAnimales */,
 				4B0A000000000000000001B6 /* AppSaludAnimalesTests */,
+				4B0A000000000000000001D0 /* AppSaludAnimalesUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -152,6 +193,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		4B0A000000000000000001C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B0A000000000000000001D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -175,6 +223,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4B0A000000000000000001D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -183,10 +238,22 @@
 			target = 4B0A000000000000000001A4 /* AppSaludAnimales */;
 			targetProxy = 4B0A000000000000000001C6 /* PBXContainerItemProxy */;
 		};
+		4B0A000000000000000001D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4B0A000000000000000001A4 /* AppSaludAnimales */;
+			targetProxy = 4B0A000000000000000001DA /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXContainerItemProxy section */
 		4B0A000000000000000001C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B0A000000000000000001A1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4B0A000000000000000001A4;
+			remoteInfo = AppSaludAnimales;
+		};
+		4B0A000000000000000001DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4B0A000000000000000001A1 /* Project object */;
 			proxyType = 1;
@@ -403,6 +470,34 @@
 			};
 			name = Release;
 		};
+		4B0A000000000000000001D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appsaludanimales.compania.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AppSaludAnimales;
+			};
+			name = Debug;
+		};
+		4B0A000000000000000001D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appsaludanimales.compania.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AppSaludAnimales;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -429,6 +524,15 @@
 			buildConfigurations = (
 				4B0A000000000000000001C3 /* Debug */,
 				4B0A000000000000000001C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4B0A000000000000000001D6 /* Build configuration list for PBXNativeTarget "AppSaludAnimalesUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B0A000000000000000001D7 /* Debug */,
+				4B0A000000000000000001D8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

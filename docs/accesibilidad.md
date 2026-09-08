@@ -1,9 +1,22 @@
 # Cómo probar la accesibilidad
 
 La accesibilidad no está terminada porque el código la contemple: está terminada
-cuando alguien la usa y funciona. Lo que se puede verificar leyendo el código lo
-hace `Scripts/check-accessibility.sh`. Todo lo demás se prueba acá, a mano, y no
-lleva más de veinte minutos por vuelta.
+cuando alguien la usa y funciona.
+
+Hay tres niveles, del más automático al más humano:
+
+1. `Scripts/check-accessibility.sh` verifica reglas que se leen en el código.
+2. La **auditoría automática** corre con `⌘U`, dentro de
+   `AppSaludAnimalesUITests`: detecta elementos sin etiqueta, contraste
+   insuficiente, áreas de toque chicas y texto cortado. Es la misma auditoría
+   del Accessibility Inspector de Xcode, pero sin tener que acordarse de
+   abrirlo. Si una de esas pruebas falla, el detalle del error dice qué elemento
+   y por qué.
+3. Lo que sigue en este documento, que se prueba a mano y no lleva más de veinte
+   minutos por vuelta.
+
+Los tres son necesarios: los dos primeros encuentran lo mecánico, y solo el
+tercero dice si la app **se puede usar**.
 
 ## Criterio de terminado
 
