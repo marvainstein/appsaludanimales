@@ -15,7 +15,10 @@ final class Medication {
     var startDate: Date = Date()
     var endDate: Date?
     var isSuspended: Bool = false
-    var reminderEnabled: Bool = false
+    /// Igual que vacunas y turnos: una medicación en curso avisa salvo que se
+    /// pida lo contrario. Que la app organice es el punto; apagarlo está a un
+    /// toque en Recordatorios.
+    var reminderEnabled: Bool = true
     var createdAt: Date = Date()
 
     /// Momentos del día (mañana, noche, según necesidad). Se guardan los valores
