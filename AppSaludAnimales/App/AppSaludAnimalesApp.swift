@@ -20,11 +20,22 @@ struct AppSaludAnimalesApp: App {
         ProcessInfo.processInfo.arguments.contains("-uiTesting")
     }
 
+    /// Las pruebas que auditan pantallas de adentro arrancan con un compañero ya
+    /// cargado. Hacerlas pasar por la bienvenida escribiendo en un campo las
+    /// volvía frágiles por algo que no tiene nada que ver con lo que miden.
+    private static var shouldSeedCompanion: Bool {
+        ProcessInfo.processInfo.arguments.contains("-uiTestingSeedCompanion")
+    }
+
     init() {
         if Self.isRunningUITests,
            let container = try? ModelContainerFactory.makeContainer(inMemory: true) {
             self.container = container
             self.storageIsTemporary = false
+
+            if Self.shouldSeedCompanion {
+                Self.seedCompanion(in: container)
+            }
         } else if let container = try? ModelContainerFactory.makeContainer() {
             self.container = container
             self.storageIsTemporary = false
@@ -47,6 +58,12 @@ struct AppSaludAnimalesApp: App {
             guard phase == .active else { return }
             syncReminders()
         }
+    }
+
+    private static func seedCompanion(in container: ModelContainer) {
+        let context = ModelContext(container)
+        context.insert(Companion(name: "Luli", species: .dog))
+        try? context.save()
     }
 
     /// Los avisos se rearman al volver a la app: es el momento en que los datos
