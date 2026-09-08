@@ -116,6 +116,15 @@ extension Companion {
         treatments.filter { $0.status(on: referenceDate) == .active }
     }
 
+    /// Personas a cargo con la principal primero, y después por orden de carga.
+    var orderedResponsiblePeople: [ResponsiblePerson] {
+        responsiblePeople.sorted { lhs, rhs in
+            lhs.isPrimary == rhs.isPrimary
+                ? lhs.createdAt < rhs.createdAt
+                : lhs.isPrimary
+        }
+    }
+
     var openEpisodes: [HealthEpisode] {
         episodes.filter { $0.status != .resolved }
     }

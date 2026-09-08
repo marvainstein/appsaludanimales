@@ -128,11 +128,23 @@ struct EmergencyView: View {
                 emptyValue: String(localized: "No hay un veterinario cargado")
             )
 
-            contactCard(
-                title: String(localized: "Persona responsable"),
-                contact: profile.responsiblePerson,
-                emptyValue: String(localized: "No hay una persona responsable cargada")
-            )
+            if profile.responsiblePeople.isEmpty {
+                contactCard(
+                    title: String(localized: "Persona a cargo"),
+                    contact: nil,
+                    emptyValue: String(localized: "No hay una persona a cargo cargada")
+                )
+            } else {
+                ForEach(Array(profile.responsiblePeople.enumerated()), id: \.offset) { index, person in
+                    contactCard(
+                        title: profile.responsiblePeople.count > 1
+                            ? String(localized: "Persona a cargo \(index + 1)")
+                            : String(localized: "Persona a cargo"),
+                        contact: person,
+                        emptyValue: ""
+                    )
+                }
+            }
         }
     }
 

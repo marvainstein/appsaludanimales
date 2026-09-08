@@ -115,6 +115,33 @@ struct EmergencyProfileTests {
     }
 
     @Test
+    func muestraTodasLasPersonasACargoConLaPrincipalPrimero() throws {
+        let companion = try makeCompanion()
+        companion.responsiblePeople.append(ResponsiblePerson(name: "Bruno", phone: "1133445566"))
+        companion.responsiblePeople.append(
+            ResponsiblePerson(name: "Marina", phone: "1122334455", isPrimary: true)
+        )
+
+        let profile = EmergencyProfileBuilder.profile(for: companion, on: .test(2024, 5, 20))
+
+        #expect(profile.responsiblePeople.map(\.name) == ["Marina", "Bruno"])
+    }
+
+    @Test
+    func alcanzaConQueUnaPersonaACargoTengaTelefono() throws {
+        let companion = try makeCompanion()
+        companion.professionals.append(
+            Professional(name: "Dra. Molina", phone: "1145678900", isPrimaryVeterinarian: true)
+        )
+        companion.responsiblePeople.append(ResponsiblePerson(name: "Bruno", isPrimary: true))
+        companion.responsiblePeople.append(ResponsiblePerson(name: "Marina", phone: "1122334455"))
+
+        let profile = EmergencyProfileBuilder.profile(for: companion, on: .test(2024, 5, 20))
+
+        #expect(profile.missingEssentials.isEmpty)
+    }
+
+    @Test
     func noQuedaNadaPendienteCuandoLosDosTelefonosEstanCargados() throws {
         let companion = try makeCompanion()
         companion.professionals.append(

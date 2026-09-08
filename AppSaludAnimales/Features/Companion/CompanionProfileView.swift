@@ -71,10 +71,14 @@ struct CompanionProfileView: View {
                     label: String(localized: "Veterinario de cabecera"),
                     value: veterinarianValue
                 )
-                row(
-                    label: String(localized: "Persona responsable"),
-                    value: responsiblePersonValue
-                )
+                ForEach(Array(responsiblePeopleValues.enumerated()), id: \.offset) { index, value in
+                    row(
+                        label: responsiblePeopleValues.count > 1
+                            ? String(localized: "Persona a cargo \(index + 1)")
+                            : String(localized: "Persona a cargo"),
+                        value: value
+                    )
+                }
 
                 NavigationLink {
                     CompanionContactsView(companion: companion)
@@ -120,13 +124,18 @@ struct CompanionProfileView: View {
             .joined(separator: " · ")
     }
 
-    private var responsiblePersonValue: String? {
-        let profile = EmergencyProfileBuilder.profile(for: companion)
-        guard let person = profile.responsiblePerson else { return nil }
+    /// Siempre al menos una fila: sin nadie cargado, la fila vacía es la que
+    /// invita a cargarlo.
+    private var responsiblePeopleValues: [String?] {
+        let people = EmergencyProfileBuilder.profile(for: companion).responsiblePeople
 
-        return [person.name, person.phone]
-            .compactMap { $0 }
-            .joined(separator: " · ")
+        guard !people.isEmpty else { return [nil] }
+
+        return people.map { person in
+            [person.name, person.phone]
+                .compactMap { $0 }
+                .joined(separator: " · ")
+        }
     }
 
     private var birthDateValue: String? {

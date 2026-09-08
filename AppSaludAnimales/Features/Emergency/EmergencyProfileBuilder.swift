@@ -24,7 +24,10 @@ struct EmergencyProfile: Equatable {
     var medications: [String]
     var treatments: [String]
     var veterinarian: EmergencyContact?
-    var responsiblePerson: EmergencyContact?
+
+    /// Puede haber más de una persona a cargo. Aparecen en orden: primero la
+    /// principal, después las demás.
+    var responsiblePeople: [EmergencyContact]
 
     /// Lo que falta cargar, para poder ofrecerlo con amabilidad en vez de
     /// mostrar huecos sin explicación.
@@ -35,8 +38,8 @@ struct EmergencyProfile: Equatable {
             missing.append(String(localized: "el teléfono del veterinario"))
         }
 
-        if responsiblePerson?.callURL == nil {
-            missing.append(String(localized: "el teléfono de la persona responsable"))
+        if !responsiblePeople.contains(where: { $0.callURL != nil }) {
+            missing.append(String(localized: "el teléfono de una persona a cargo"))
         }
 
         return missing
@@ -61,7 +64,15 @@ enum EmergencyProfileBuilder {
                 .sorted { $0.name < $1.name }
                 .map(\.name),
             veterinarian: veterinarian(for: companion),
-            responsiblePerson: responsiblePerson(for: companion)
+            responsiblePeople: companion.orderedResponsiblePeople.map { person in
+                EmergencyContact(
+                    name: person.name,
+                    role: person.isPrimary && companion.responsiblePeople.count > 1
+                        ? String(localized: "Contacto principal")
+                        : nil,
+                    phone: nonEmpty(person.phone)
+                )
+            }
         )
     }
 
@@ -82,19 +93,6 @@ enum EmergencyProfileBuilder {
             name: professional.name,
             role: nonEmpty(professional.clinic) ?? nonEmpty(professional.role),
             phone: nonEmpty(professional.phone)
-        )
-    }
-
-    private static func responsiblePerson(for companion: Companion) -> EmergencyContact? {
-        let person = companion.responsiblePeople.first(where: \.isPrimary)
-            ?? companion.responsiblePeople.first
-
-        guard let person else { return nil }
-
-        return EmergencyContact(
-            name: person.name,
-            role: nil,
-            phone: nonEmpty(person.phone)
         )
     }
 

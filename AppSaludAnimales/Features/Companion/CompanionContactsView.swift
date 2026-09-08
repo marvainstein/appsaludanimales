@@ -16,6 +16,8 @@ struct CompanionContactsView: View {
     @State private var veterinarianPhone = ""
     @State private var responsibleName = ""
     @State private var responsiblePhone = ""
+    @State private var secondResponsibleName = ""
+    @State private var secondResponsiblePhone = ""
     @State private var hasLoaded = false
     @State private var saveFailed = false
 
@@ -57,9 +59,25 @@ struct CompanionContactsView: View {
                     keyboardType: .phonePad
                 )
             } header: {
-                Text("Persona responsable")
+                Text("Persona a cargo")
+            }
+
+            Section {
+                LabeledTextField(
+                    label: String(localized: "Nombre"),
+                    text: $secondResponsibleName,
+                    autocapitalization: .words
+                )
+
+                LabeledTextField(
+                    label: String(localized: "Teléfono"),
+                    text: $secondResponsiblePhone,
+                    keyboardType: .phonePad
+                )
+            } header: {
+                Text("Otra persona a cargo")
             } footer: {
-                Text("Si dejás un nombre vacío, ese contacto se quita.")
+                Text("Para cuando el cuidado se comparte entre dos personas. Las dos aparecen en el modo emergencia. Si dejás un nombre vacío, ese contacto se quita.")
             }
 
             PrimaryButtonSection(
@@ -89,9 +107,16 @@ struct CompanionContactsView: View {
             veterinarianPhone = veterinarian.phone ?? ""
         }
 
-        if let person = currentResponsiblePerson {
+        let people = companion.orderedResponsiblePeople
+
+        if let person = people.first {
             responsibleName = person.name
             responsiblePhone = person.phone ?? ""
+        }
+
+        if people.count > 1 {
+            secondResponsibleName = people[1].name
+            secondResponsiblePhone = people[1].phone ?? ""
         }
     }
 
@@ -100,14 +125,9 @@ struct CompanionContactsView: View {
             ?? companion.professionals.first
     }
 
-    private var currentResponsiblePerson: ResponsiblePerson? {
-        companion.responsiblePeople.first(where: \.isPrimary)
-            ?? companion.responsiblePeople.first
-    }
-
     private func save() {
         saveVeterinarian()
-        saveResponsiblePerson()
+        saveResponsiblePeople()
 
         do {
             try modelContext.save()
@@ -139,25 +159,47 @@ struct CompanionContactsView: View {
         veterinarian.isPrimaryVeterinarian = true
     }
 
-    private func saveResponsiblePerson() {
-        let name = trimmed(responsibleName)
-        let existing = currentResponsiblePerson
+    private func saveResponsiblePeople() {
+        let existing = companion.orderedResponsiblePeople
 
-        guard !name.isEmpty else {
+        savePerson(
+            name: responsibleName,
+            phone: responsiblePhone,
+            existing: existing.first,
+            isPrimary: true
+        )
+
+        savePerson(
+            name: secondResponsibleName,
+            phone: secondResponsiblePhone,
+            existing: existing.count > 1 ? existing[1] : nil,
+            isPrimary: false
+        )
+    }
+
+    private func savePerson(
+        name: String,
+        phone: String,
+        existing: ResponsiblePerson?,
+        isPrimary: Bool
+    ) {
+        let trimmedName = trimmed(name)
+
+        guard !trimmedName.isEmpty else {
             if let existing { modelContext.delete(existing) }
             return
         }
 
         let person = existing ?? {
-            let created = ResponsiblePerson(isPrimary: true)
+            let created = ResponsiblePerson(isPrimary: isPrimary)
             modelContext.insert(created)
             companion.responsiblePeople.append(created)
             return created
         }()
 
-        person.name = name
-        person.phone = optional(responsiblePhone)
-        person.isPrimary = true
+        person.name = trimmedName
+        person.phone = optional(phone)
+        person.isPrimary = isPrimary
     }
 
     private func trimmed(_ value: String) -> String {
