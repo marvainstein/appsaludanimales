@@ -45,6 +45,7 @@ struct OnboardingView: View {
             Text("Este es el lugar donde va a vivir la historia de salud de tu compañero o compañera.")
                 .font(AppFont.body)
                 .foregroundStyle(Palette.inkMuted)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -80,10 +81,12 @@ struct OnboardingView: View {
                 Text(title)
                     .font(AppFont.cardTitle)
                     .foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Text(detail)
                     .font(AppFont.secondary)
                     .foregroundStyle(Palette.inkMuted)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

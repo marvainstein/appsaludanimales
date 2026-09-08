@@ -13,8 +13,19 @@ struct AppSaludAnimalesApp: App {
 
     @Environment(\.scenePhase) private var scenePhase
 
+    /// Las pruebas de interfaz arrancan siempre desde cero: si arrastraran lo
+    /// registrado en la corrida anterior, el recorrido cambiaría de una vez a
+    /// otra y las fallas dejarían de significar algo.
+    private static var isRunningUITests: Bool {
+        ProcessInfo.processInfo.arguments.contains("-uiTesting")
+    }
+
     init() {
-        if let container = try? ModelContainerFactory.makeContainer() {
+        if Self.isRunningUITests,
+           let container = try? ModelContainerFactory.makeContainer(inMemory: true) {
+            self.container = container
+            self.storageIsTemporary = false
+        } else if let container = try? ModelContainerFactory.makeContainer() {
             self.container = container
             self.storageIsTemporary = false
         } else {

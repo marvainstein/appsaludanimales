@@ -101,10 +101,12 @@ struct DashboardView: View {
                     Text(companion.displayName)
                         .font(AppFont.screenTitle)
                         .foregroundStyle(Palette.ink)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     Text(subtitle)
                         .font(AppFont.secondary)
                         .foregroundStyle(Palette.inkMuted)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Spacer(minLength: 0)
@@ -147,6 +149,7 @@ struct DashboardView: View {
                 Text("Ver todo el historial")
                     .font(AppFont.cardTitle)
                     .foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Spacer(minLength: 0)
 

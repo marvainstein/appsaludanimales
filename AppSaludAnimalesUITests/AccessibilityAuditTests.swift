@@ -15,16 +15,14 @@ final class AccessibilityAuditTests: XCTestCase {
 
     @MainActor
     func testLaPrimeraPantallaPasaLaAuditoria() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = launchApp()
 
         try app.performAccessibilityAudit()
     }
 
     @MainActor
     func testElDashboardPasaLaAuditoria() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = launchApp()
 
         try startUsingTheApp(app)
 
@@ -38,8 +36,7 @@ final class AccessibilityAuditTests: XCTestCase {
 
     @MainActor
     func testElRegistroRapidoPasaLaAuditoria() throws {
-        let app = XCUIApplication()
-        app.launch()
+        let app = launchApp()
 
         try startUsingTheApp(app)
 
@@ -52,14 +49,21 @@ final class AccessibilityAuditTests: XCTestCase {
         try app.performAccessibilityAudit()
     }
 
-    /// Deja la app en el dashboard: si aparece la bienvenida, crea un compañero;
-    /// si ya había uno de una corrida anterior, sigue de largo.
+    /// Arranca la app con datos limpios, para que el recorrido sea siempre el
+    /// mismo y una falla signifique siempre lo mismo.
+    @MainActor
+    private func launchApp() -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments.append("-uiTesting")
+        app.launch()
+        return app
+    }
+
+    /// Deja la app en el dashboard creando un compañero desde la bienvenida.
     @MainActor
     private func startUsingTheApp(_ app: XCUIApplication) throws {
         let start = app.buttons["Empezar"]
-
-        guard start.waitForExistence(timeout: 5) else { return }
-
+        XCTAssertTrue(start.waitForExistence(timeout: 10), "Se esperaba la bienvenida")
         start.tap()
 
         let nameField = app.textFields.firstMatch

@@ -12,11 +12,13 @@ struct SectionHeader: View {
             Text(title)
                 .font(AppFont.sectionTitle)
                 .foregroundStyle(Palette.ink)
+                .fixedSize(horizontal: false, vertical: true)
 
             if let subtitle {
                 Text(subtitle)
                     .font(AppFont.caption)
                     .foregroundStyle(Palette.inkMuted)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -46,11 +48,13 @@ struct DashboardItemCard: View {
                 Text(item.title)
                     .font(AppFont.cardTitle)
                     .foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 if let detail = item.detail, !detail.isEmpty {
                     Text(detail)
                         .font(AppFont.secondary)
                         .foregroundStyle(Palette.inkMuted)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 if let date = item.date {
@@ -87,6 +91,7 @@ struct SectionEmptyState: View {
         Text(message)
             .font(AppFont.secondary)
             .foregroundStyle(Palette.inkMuted)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(Spacing.lg)
             .background(
