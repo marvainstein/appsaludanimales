@@ -13,6 +13,16 @@ enum AppFont {
     static let secondary = Font.subheadline
     static let caption = Font.footnote
     static let chip = Font.footnote.weight(.semibold)
+
+    /// El modo emergencia se lee de un vistazo, con el pulso acelerado y a veces
+    /// con el teléfono en la mano de otra persona: un escalón más grande que el
+    /// resto de la app, sin dejar de responder a Dynamic Type.
+    enum Emergency {
+        static let name = Font.largeTitle.weight(.bold)
+        static let sectionTitle = Font.title3.weight(.semibold)
+        static let value = Font.title3
+        static let label = Font.subheadline.weight(.semibold)
+    }
 }
 
 enum Spacing {

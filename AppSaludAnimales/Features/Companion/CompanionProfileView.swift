@@ -63,7 +63,33 @@ struct CompanionProfileView: View {
             } header: {
                 Text("Salud")
             } footer: {
-                Text("Esta información aparece en el modo emergencia cuando esté disponible.")
+                Text("Esta información aparece en el modo emergencia.")
+            }
+
+            Section {
+                row(
+                    label: String(localized: "Veterinario de cabecera"),
+                    value: veterinarianValue
+                )
+                row(
+                    label: String(localized: "Persona responsable"),
+                    value: responsiblePersonValue
+                )
+
+                NavigationLink {
+                    CompanionContactsView(companion: companion)
+                } label: {
+                    Label {
+                        Text("Editar contactos")
+                    } icon: {
+                        Image(systemName: "person.crop.circle")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+            } header: {
+                Text("Contactos")
+            } footer: {
+                Text("Son los teléfonos a los que se puede llamar desde el modo emergencia.")
             }
         }
         .navigationTitle(Text("Perfil"))
@@ -83,6 +109,24 @@ struct CompanionProfileView: View {
                 CompanionFormView(mode: .edit(companion))
             }
         }
+    }
+
+    private var veterinarianValue: String? {
+        let profile = EmergencyProfileBuilder.profile(for: companion)
+        guard let veterinarian = profile.veterinarian else { return nil }
+
+        return [veterinarian.name, veterinarian.phone]
+            .compactMap { $0 }
+            .joined(separator: " · ")
+    }
+
+    private var responsiblePersonValue: String? {
+        let profile = EmergencyProfileBuilder.profile(for: companion)
+        guard let person = profile.responsiblePerson else { return nil }
+
+        return [person.name, person.phone]
+            .compactMap { $0 }
+            .joined(separator: " · ")
     }
 
     private var birthDateValue: String? {

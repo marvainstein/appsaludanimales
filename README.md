@@ -6,8 +6,9 @@ sigan la salud de sus compañeros y compañeras.
 Estado actual: los **cimientos** (modelo de datos, dominio, sistema de diseño
 accesible, infraestructura de lenguaje), la **primera porción usable**
 —bienvenida, alta y edición de compañeros, dashboard de "Hoy"—, el **registro
-rápido** de medicaciones, episodios, peso, vacunas y notas, y el **historial**
-con filtros, detalle de cada registro y eliminación.
+rápido** de medicaciones, episodios, peso, vacunas y notas, el **historial**
+con filtros, detalle de cada registro y eliminación, y el **modo emergencia**
+con los contactos a los que llamar.
 
 ## Abrir y compilar
 
@@ -145,6 +146,20 @@ caro.
 todas las categorías seleccionadas por defecto y sincronizarlas cada vez que
 aparece una nueva.
 
+**El modo emergencia ocupa el lugar más previsible de la pantalla** —arriba a la
+izquierda, con su nombre escrito y no solo un ícono—, porque nadie debería tener
+que recordar dónde estaba esa función justo cuando la necesita. El historial, en
+cambio, se alcanza desde la tarjeta del final del dashboard.
+
+**El orden del modo emergencia es el orden de urgencia:** quién es, después lo
+que puede cambiar una decisión clínica (alergias y condiciones), después lo que
+recibe ahora, y al final a quién llamar. Su tipografía es un escalón más grande
+que la del resto de la app, sin dejar de responder a Dynamic Type.
+
+**Los teléfonos se aceptan como los escribe la gente.** "(011) 4567-8900",
+"011 4567 8900" y "+54 9 11 4567-8900" tienen que poder tocarse para llamar; la
+app se encarga de convertirlos, no la persona.
+
 ## Pendiente
 
 - Decisión definitiva sobre compartir datos entre varias personas responsables
@@ -152,7 +167,7 @@ aparece una nueva.
   `CKShare`), a validar con una prueba de concepto en dispositivo antes de V1.
 - Editar un registro ya guardado campo por campo: hoy se puede consultar,
   cambiar su estado y eliminarlo.
-- Documentos y modo emergencia.
+- Documentos adjuntos.
 - Recordatorios locales y exportación a PDF.
 - Barra de pestañas: se incorpora cuando existan las pantallas que va a
   contener, no antes.

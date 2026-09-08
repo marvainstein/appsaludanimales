@@ -14,6 +14,7 @@ struct DashboardView: View {
 
     @State private var isAddingCompanion = false
     @State private var isRecording = false
+    @State private var isShowingEmergency = false
 
     /// Momento desde el que se mira el dashboard. Se refresca al volver de un
     /// registro y al volver a la app: si se queda vieja, lo recién registrado
@@ -62,6 +63,9 @@ struct DashboardView: View {
         .navigationTitle(Text("Hoy"))
         .safeAreaInset(edge: .bottom) { recordBar }
         .toolbar { toolbarContent }
+        .fullScreenCover(isPresented: $isShowingEmergency) {
+            EmergencyView(companion: companion)
+        }
         .sheet(isPresented: $isRecording, onDismiss: refreshReferenceDate) {
             QuickRecordSheet(companion: companion)
         }
@@ -208,18 +212,25 @@ struct DashboardView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
+        // El acceso a emergencia ocupa el lugar más fijo y previsible de la
+        // pantalla, con texto y no solo un ícono: en una emergencia nadie
+        // debería tener que recordar dónde estaba esa función. El historial se
+        // alcanza desde la tarjeta del final, que ya lleva su nombre completo.
         ToolbarItem(placement: .topBarLeading) {
-            NavigationLink {
-                HistoryView(companion: companion)
+            Button {
+                isShowingEmergency = true
             } label: {
                 Label {
-                    Text("Historial")
+                    Text("Emergencia")
                 } icon: {
-                    Image(systemName: "list.bullet.rectangle")
+                    Image(systemName: "cross.case.fill")
                 }
+                .labelStyle(.titleAndIcon)
+                .font(AppFont.chip)
             }
-            .accessibilityLabel(Text("Historial"))
-            .accessibilityHint(Text("Ver todo lo registrado, ordenado por fecha"))
+            .tint(StatusTone.critical.content)
+            .accessibilityLabel(Text("Modo emergencia"))
+            .accessibilityHint(Text("Muestra los datos urgentes de \(companion.displayName) y los teléfonos para llamar"))
         }
 
         ToolbarItem(placement: .topBarTrailing) {
