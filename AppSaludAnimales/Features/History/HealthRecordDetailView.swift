@@ -126,7 +126,7 @@ struct HealthRecordDetailView: View {
             ))
             fields.append(Field(
                 label: String(localized: "Termina"),
-                value: medication.endDate.map(DateDescription.absolute)
+                value: medication.endDate.map { DateDescription.absolute($0) }
             ))
             fields.append(Field(
                 label: String(localized: "Tomas registradas"),
@@ -140,14 +140,14 @@ struct HealthRecordDetailView: View {
             fields.append(Field(label: String(localized: "Lugar"), value: treatment.place))
             fields.append(Field(
                 label: String(localized: "Termina"),
-                value: treatment.endDate.map(DateDescription.absolute)
+                value: treatment.endDate.map { DateDescription.absolute($0) }
             ))
             fields.append(Field(label: String(localized: "Notas"), value: treatment.notes))
 
         case let .vaccination(vaccination):
             fields.append(Field(
                 label: String(localized: "Próxima aplicación"),
-                value: vaccination.nextDueDate.map(DateDescription.absolute)
+                value: vaccination.nextDueDate.map { DateDescription.absolute($0) }
             ))
             fields.append(Field(label: String(localized: "Observaciones"), value: vaccination.notes))
 
@@ -157,7 +157,7 @@ struct HealthRecordDetailView: View {
             fields.append(Field(label: String(localized: "Duración"), value: episode.durationDescription))
             fields.append(Field(
                 label: String(localized: "Se resolvió"),
-                value: episode.resolvedAt.map(DateDescription.absolute)
+                value: episode.resolvedAt.map { DateDescription.absolute($0) }
             ))
             fields.append(Field(label: String(localized: "Notas"), value: episode.notes))
 
