@@ -59,6 +59,15 @@ struct QuickRecordSheet: View {
                     }
 
                     option(
+                        title: String(localized: "Varios documentos"),
+                        detail: String(localized: "Traer un archivo entero de una"),
+                        symbol: "square.stack.3d.up",
+                        identifier: "quickRecord.batchDocuments"
+                    ) {
+                        DocumentBatchImportView(companion: companion, onFinished: finish)
+                    }
+
+                    option(
                         title: String(localized: "Nota"),
                         detail: String(localized: "Cualquier cosa que quieras recordar"),
                         symbol: HealthCategory.note.symbolName,
