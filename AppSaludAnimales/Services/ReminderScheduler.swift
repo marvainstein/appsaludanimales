@@ -56,7 +56,9 @@ final class ReminderScheduler {
         center.removeAllPendingNotificationRequests()
 
         for request in plan {
-            center.add(notificationRequest(from: request))
+            // Si el sistema rechaza un aviso puntual, los demás se programan
+            // igual: perder un recordatorio es mejor que perderlos todos.
+            try? await center.add(notificationRequest(from: request))
         }
     }
 
