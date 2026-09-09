@@ -23,7 +23,10 @@ final class HealthEpisode {
 
     var companion: Companion?
 
-    @Relationship(deleteRule: .cascade, inverse: \HealthDocument.episode)
+    // Nullify y no cascade: el documento es del compañero, y el episodio es un
+    // vínculo de más. Borrar un episodio no puede llevarse puesta una
+    // radiografía, que cuesta plata y no se puede repetir.
+    @Relationship(deleteRule: .nullify, inverse: \HealthDocument.episode)
     var documents: [HealthDocument] = []
 
     init(

@@ -48,18 +48,20 @@ struct EmptyStateIllustration: View {
         let fill = GraphicsContext.Shading.color(Palette.accentSoft)
         let toes = GraphicsContext.Shading.color(Palette.accent.opacity(0.55))
 
+        // Angosta y con los dedos largos, como la pata de una galga. Con los
+        // dedos cortos y separados parece la huella de un oso.
         let toeRects = [
-            CGRect(x: 0.06, y: 0.28, width: 0.19, height: 0.25),
-            CGRect(x: 0.29, y: 0.14, width: 0.20, height: 0.27),
-            CGRect(x: 0.52, y: 0.14, width: 0.20, height: 0.27),
-            CGRect(x: 0.76, y: 0.28, width: 0.19, height: 0.25)
+            CGRect(x: 0.15, y: 0.26, width: 0.13, height: 0.25),
+            CGRect(x: 0.32, y: 0.12, width: 0.14, height: 0.29),
+            CGRect(x: 0.54, y: 0.12, width: 0.14, height: 0.29),
+            CGRect(x: 0.72, y: 0.26, width: 0.13, height: 0.25)
         ]
 
         for rect in toeRects {
             context.fill(Path(ellipseIn: scaled(rect, by: unit)), with: toes)
         }
 
-        let pad = CGRect(x: 0.18, y: 0.50, width: 0.65, height: 0.42)
+        let pad = CGRect(x: 0.28, y: 0.50, width: 0.44, height: 0.40)
         context.fill(
             Path(roundedRect: scaled(pad, by: unit), cornerRadius: unit * 0.20),
             with: fill

@@ -29,6 +29,11 @@ enum PaletteValues {
     /// Acento para rellenar un botón: oscuro en los dos modos, porque encima
     /// lleva letras blancas.
     ///
+    /// **No es el acento global de la app.** Ese, el que usan los botones de la
+    /// barra de navegación y los enlaces, es `accent`, y tiene que aclararse en
+    /// modo oscuro para leerse sobre el fondo. Ponerlo al revés dejó el botón
+    /// "Editar" del perfil sin contraste de noche.
+    ///
     /// No puede ser el mismo que el de texto, y confundirlos costó caro: el
     /// botón principal quedaba blanco sobre un color claro en modo oscuro, con
     /// un contraste de 2,3 a 1 sobre un mínimo de 4,5. Ilegible, y en la

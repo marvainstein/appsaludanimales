@@ -132,12 +132,24 @@ final class AccessibilityAuditTests: XCTestCase {
         try tap(app, second)
     }
 
+    /// Busca un control, bajando por la pantalla si hace falta.
+    ///
+    /// En una lista, lo que está debajo del borde inferior todavía no existe
+    /// para las pruebas: se crea recién cuando se llega scrolleando. Sin esto,
+    /// una prueba falla por no encontrar algo que sí está, y el mensaje culpa al
+    /// identificador cuando el problema era la altura.
     @MainActor
     private func tap(_ app: XCUIApplication, _ identifier: String) throws {
         let element = Self.element(app, identifier)
 
+        if !element.waitForExistence(timeout: 5) || !element.isHittable {
+            for _ in 0..<6 where !element.exists || !element.isHittable {
+                app.swipeUp()
+            }
+        }
+
         XCTAssertTrue(
-            element.waitForExistence(timeout: 10),
+            element.exists && element.isHittable,
             "Se esperaba encontrar “\(identifier)” para seguir el recorrido"
         )
 
