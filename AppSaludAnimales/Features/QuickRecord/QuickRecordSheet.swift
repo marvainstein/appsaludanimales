@@ -41,6 +41,23 @@ struct QuickRecordSheet: View {
                     }
 
                     option(
+                        title: String(localized: "Nota"),
+                        detail: String(localized: "Cualquier cosa que quieras recordar"),
+                        symbol: HealthCategory.note.symbolName,
+                        identifier: "quickRecord.note"
+                    ) {
+                        NoteRecordView(companion: companion, onFinished: finish)
+                    }
+                } header: {
+                    Text("Qué querés registrar de \(companion.displayName)")
+                }
+
+                // Lo que se sostiene en el tiempo, separado de lo que pasó hoy.
+                // Nueve opciones en una sola lista se leen como un menú de
+                // restaurante: hay que buscar, y buscar es justo lo que no se
+                // puede hacer con el animal enfermo al lado.
+                Section {
+                    option(
                         title: String(localized: "Vacuna"),
                         detail: String(localized: "Una aplicación y la próxima"),
                         symbol: HealthCategory.vaccination.symbolName,
@@ -49,6 +66,28 @@ struct QuickRecordSheet: View {
                         VaccinationRecordView(companion: companion, onFinished: finish)
                     }
 
+                    option(
+                        title: String(localized: "Turno"),
+                        detail: String(localized: "Una visita con fecha y hora"),
+                        symbol: HealthCategory.appointment.symbolName,
+                        identifier: "quickRecord.appointment"
+                    ) {
+                        AppointmentRecordView(companion: companion, onFinished: finish)
+                    }
+
+                    option(
+                        title: String(localized: "Tratamiento"),
+                        detail: String(localized: "Algo que dura: kinesiología, una dieta, el antipulgas"),
+                        symbol: HealthCategory.treatment.symbolName,
+                        identifier: "quickRecord.treatment"
+                    ) {
+                        TreatmentRecordView(companion: companion, onFinished: finish)
+                    }
+                } header: {
+                    Text("Lo que viene y lo que dura")
+                }
+
+                Section {
                     option(
                         title: String(localized: "Documento"),
                         detail: String(localized: "Un estudio, una receta, un informe"),
@@ -66,17 +105,8 @@ struct QuickRecordSheet: View {
                     ) {
                         DocumentBatchImportView(companion: companion, onFinished: finish)
                     }
-
-                    option(
-                        title: String(localized: "Nota"),
-                        detail: String(localized: "Cualquier cosa que quieras recordar"),
-                        symbol: HealthCategory.note.symbolName,
-                        identifier: "quickRecord.note"
-                    ) {
-                        NoteRecordView(companion: companion, onFinished: finish)
-                    }
                 } header: {
-                    Text("Qué querés registrar de \(companion.displayName)")
+                    Text("Archivo")
                 }
             }
             .navigationTitle(Text("Registrar"))

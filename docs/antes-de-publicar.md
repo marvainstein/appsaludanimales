@@ -9,7 +9,7 @@ mejora algo que ya funciona.
 
 ## Agujeros que rompen algo
 
-- [ ] **Crear turnos y tratamientos.** La app los muestra en el historial y los
+- [x] **Crear turnos y tratamientos.** La app los muestra en el historial y los
       nombra en sus textos —"cuando anotes un turno o una próxima vacuna"— pero
       no hay ninguna pantalla para cargarlos. Es una promesa incumplida a la
       vista.

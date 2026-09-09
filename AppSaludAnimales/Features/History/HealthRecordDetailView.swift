@@ -125,14 +125,12 @@ struct HealthRecordDetailView: View {
 
     // MARK: - Editar
 
-    /// Se edita lo que se puede cargar desde la app. Tratamientos y turnos
-    /// todavía no tienen formulario propio, así que ofrecer editarlos sería
-    /// prometer una pantalla que no existe.
+    /// Se edita lo que se puede cargar desde la app, que ahora es todo salvo
+    /// las mediciones que no son de peso, porque todavía no existen.
     private var isEditable: Bool {
         switch entry.reference {
-        case .medication, .vaccination, .episode, .document, .note: true
+        case .medication, .vaccination, .episode, .document, .note, .treatment, .appointment: true
         case let .measurement(measurement): measurement.kind == .weight
-        case .treatment, .appointment: false
         }
     }
 
@@ -175,8 +173,11 @@ struct HealthRecordDetailView: View {
         case let .note(note):
             NoteRecordView(companion: companion, editing: note, onFinished: finishEditing)
 
-        case .treatment, .appointment:
-            EmptyView()
+        case let .treatment(treatment):
+            TreatmentRecordView(companion: companion, editing: treatment, onFinished: finishEditing)
+
+        case let .appointment(appointment):
+            AppointmentRecordView(companion: companion, editing: appointment, onFinished: finishEditing)
         }
     }
 
