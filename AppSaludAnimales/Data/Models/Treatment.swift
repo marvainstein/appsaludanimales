@@ -51,6 +51,7 @@ extension Treatment {
 }
 
 extension Treatment: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { startDate }
     var timelineTitle: String { name }
     var timelineCategory: HealthCategory { isPreventive ? .preventive : .treatment }
@@ -78,6 +79,7 @@ final class Vaccination {
 }
 
 extension Vaccination: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { date }
     var timelineTitle: String { name }
     var timelineCategory: HealthCategory { .vaccination }

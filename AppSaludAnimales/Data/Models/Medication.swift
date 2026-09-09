@@ -85,6 +85,7 @@ extension Medication {
 }
 
 extension Medication: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { startDate }
     var timelineTitle: String { name }
     var timelineCategory: HealthCategory { .medication }

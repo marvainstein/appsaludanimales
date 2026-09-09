@@ -21,6 +21,7 @@ struct EpisodeRecordView: View {
     @State private var episodeDescription: String
     @State private var date: Date
     @State private var intensity: EpisodeIntensity?
+    @State private var status: EpisodeStatus
     @State private var saveErrorMessage: String?
 
     init(
@@ -35,6 +36,7 @@ struct EpisodeRecordView: View {
         _episodeDescription = State(initialValue: editing?.episodeDescription ?? "")
         _date = State(initialValue: editing?.date ?? Date())
         _intensity = State(initialValue: editing?.intensity)
+        _status = State(initialValue: editing?.status ?? .active)
     }
 
     private var canSave: Bool {
@@ -75,6 +77,17 @@ struct EpisodeRecordView: View {
                     Text("Intensidad")
                 }
 
+                // Muchas veces se anota algo que ya pasó: una convulsión de
+                // anteayer, una cojera que se fue sola. Dar por sentado que
+                // sigue abierto obligaba a guardarlo mal y corregirlo después.
+                Picker(selection: $status) {
+                    ForEach(EpisodeStatus.allCases, id: \.self) { option in
+                        Text(option.label).tag(option)
+                    }
+                } label: {
+                    Text("Cómo está")
+                }
+
                 LabeledTextField(
                     label: String(localized: "Descripción"),
                     text: $episodeDescription,
@@ -83,7 +96,7 @@ struct EpisodeRecordView: View {
             } header: {
                 Text("Detalles")
             } footer: {
-                Text("Se guarda como episodio activo. Podés marcarlo en seguimiento o resuelto más adelante.")
+                Text("Se puede cambiar más adelante, desde el detalle del episodio.")
             }
 
             PrimaryButtonSection(
@@ -140,12 +153,20 @@ struct EpisodeRecordView: View {
 
     private func save() {
         let trimmedDescription = episodeDescription.trimmingCharacters(in: .whitespacesAndNewlines)
-        let episode = editing ?? HealthEpisode(date: date, status: .active)
+        let episode = editing ?? HealthEpisode(date: date)
 
         episode.symptom = symptom.trimmingCharacters(in: .whitespacesAndNewlines)
         episode.date = date
         episode.episodeDescription = trimmedDescription.isEmpty ? nil : trimmedDescription
         episode.intensity = intensity
+        episode.status = status
+
+        // Un episodio que se anota ya resuelto se resolvió cuando pasó, no hoy.
+        if status == .resolved, episode.resolvedAt == nil {
+            episode.resolvedAt = date
+        } else if status != .resolved {
+            episode.resolvedAt = nil
+        }
 
         if editing == nil {
             companion.episodes.append(episode)

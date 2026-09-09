@@ -8,7 +8,12 @@ import SwiftUI
 struct OnboardingView: View {
     var body: some View {
         NavigationStack {
-            ScrollView {
+            // El contenido va centrado a lo alto, con márgenes parecidos arriba
+            // y abajo. Pegado al techo dejaba un vacío grande debajo del botón.
+            // Con el texto grande crece hacia abajo y la pantalla scrollea, así
+            // que centrar no le quita nada a nadie.
+            GeometryReader { proxy in
+                ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.xl) {
                     header
 
@@ -31,10 +36,12 @@ struct OnboardingView: View {
                     .accessibilityHint(Text("Abre el formulario para agregar a tu perro o tu gato"))
                     .accessibilityIdentifier("onboarding.start")
                 }
-                .padding(Spacing.xl)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(Spacing.xl)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(minHeight: proxy.size.height, alignment: .center)
+                }
+                .background(Palette.background)
             }
-            .background(Palette.background)
         }
     }
 

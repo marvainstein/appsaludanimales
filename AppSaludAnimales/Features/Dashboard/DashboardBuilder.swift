@@ -43,7 +43,7 @@ enum DashboardBuilder {
             today: todayItems(for: companion, on: referenceDate, calendar: calendar),
             upcoming: upcomingItems(for: companion, on: referenceDate, calendar: calendar),
             currentStatus: currentStatusItems(for: companion, on: referenceDate),
-            recentActivity: recentActivityItems(for: companion, on: referenceDate, calendar: calendar)
+            recentActivity: recentActivityItems(for: companion, on: referenceDate)
         )
     }
 
@@ -226,8 +226,7 @@ enum DashboardBuilder {
     /// anotado nunca queda invisible por unos minutos de diferencia.
     private static func recentActivityItems(
         for companion: Companion,
-        on referenceDate: Date,
-        calendar: Calendar
+        on referenceDate: Date
     ) -> [DashboardItem] {
         var timeline: [any HealthTimelineItem] = []
         timeline += companion.medications.map { $0 as any HealthTimelineItem }
@@ -239,15 +238,13 @@ enum DashboardBuilder {
         timeline += companion.documents.map { $0 as any HealthTimelineItem }
         timeline += companion.notes.map { $0 as any HealthTimelineItem }
 
-        let cutoff = calendar.date(
-            byAdding: .day,
-            value: 1,
-            to: calendar.startOfDay(for: referenceDate)
-        ) ?? referenceDate
-
+        // Por cuándo se anotó y no por cuándo pasó. Un estudio de hace dos años
+        // que se carga hoy es actividad de hoy: ordenar por la fecha del estudio
+        // lo dejaba afuera de los últimos cinco y daba a entender que no se
+        // había guardado.
         return timeline
-            .filter { $0.timelineDate < cutoff }
-            .sorted { $0.timelineDate > $1.timelineDate }
+            .filter { $0.timelineRecordedAt <= referenceDate }
+            .sorted { $0.timelineRecordedAt > $1.timelineRecordedAt }
             .prefix(recentActivityLimit)
             .map { item in
                 DashboardItem(

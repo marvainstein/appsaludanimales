@@ -50,11 +50,13 @@ struct EmptyStateIllustration: View {
 
         // Angosta y con los dedos largos, como la pata de una galga. Con los
         // dedos cortos y separados parece la huella de un oso.
+        // Las mismas proporciones que el ícono de la app: los dos dedos del
+        // medio bien juntos y adelante, los de las puntas más abajo y afuera.
         let toeRects = [
-            CGRect(x: 0.15, y: 0.26, width: 0.13, height: 0.25),
-            CGRect(x: 0.32, y: 0.12, width: 0.14, height: 0.29),
-            CGRect(x: 0.54, y: 0.12, width: 0.14, height: 0.29),
-            CGRect(x: 0.72, y: 0.26, width: 0.13, height: 0.25)
+            CGRect(x: 0.16, y: 0.28, width: 0.13, height: 0.24),
+            CGRect(x: 0.35, y: 0.13, width: 0.14, height: 0.28),
+            CGRect(x: 0.51, y: 0.13, width: 0.14, height: 0.28),
+            CGRect(x: 0.71, y: 0.28, width: 0.13, height: 0.24)
         ]
 
         for rect in toeRects {

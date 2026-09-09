@@ -33,6 +33,7 @@ final class Appointment {
 }
 
 extension Appointment: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { date }
     var timelineTitle: String { title }
     var timelineCategory: HealthCategory { .appointment }
@@ -68,6 +69,7 @@ final class HealthDocument {
 }
 
 extension HealthDocument: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { date }
     var timelineTitle: String { title }
     var timelineCategory: HealthCategory { .document }
@@ -91,6 +93,7 @@ final class CompanionNote {
 }
 
 extension CompanionNote: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { date }
     var timelineTitle: String { text }
     var timelineCategory: HealthCategory { .note }

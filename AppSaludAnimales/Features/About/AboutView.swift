@@ -29,7 +29,7 @@ struct AboutView: View {
             }
 
             Section {
-                Text("Tu información se guarda en tu teléfono y no se sube a internet. No hay cuenta, no hay servidores nuestros y no hay nada que vender. Compartir algo —el resumen en PDF, un documento, el respaldo— es siempre una decisión tuya.")
+                Text("Tu información se guarda en tu teléfono y no se sube a internet. No hay cuenta, no hay servidores nuestros y no hay nada que vender. Compartir algo (el resumen en PDF, un documento, el respaldo) es siempre una decisión tuya.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
 

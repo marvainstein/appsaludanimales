@@ -46,6 +46,7 @@ extension HealthMeasurement {
 }
 
 extension HealthMeasurement: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { date }
     var timelineTitle: String { formattedValue }
     var timelineCategory: HealthCategory { .measurement }

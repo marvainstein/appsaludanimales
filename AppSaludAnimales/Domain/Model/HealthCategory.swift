@@ -57,7 +57,14 @@ enum HealthCategory: String, Codable, CaseIterable, Sendable {
 /// el veterinario. Permite recorrer entidades distintas sin repetir código en el
 /// historial, el dashboard y el PDF.
 protocol HealthTimelineItem {
+    /// Cuándo pasó.
     var timelineDate: Date { get }
+
+    /// Cuándo se anotó, que casi nunca es lo mismo. Un análisis de hace dos años
+    /// que se carga hoy pasó en 2024 y se anotó hoy: en el historial va por la
+    /// fecha del estudio, y en "actividad reciente" por la de hoy, porque esa
+    /// sección responde a "qué vengo haciendo" y no a "qué pasó".
+    var timelineRecordedAt: Date { get }
     var timelineTitle: String { get }
     var timelineCategory: HealthCategory { get }
     var timelineStatus: (any StatusPresentable)? { get }

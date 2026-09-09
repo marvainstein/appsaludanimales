@@ -63,6 +63,7 @@ extension HealthEpisode {
 }
 
 extension HealthEpisode: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { date }
     var timelineTitle: String { symptom }
     var timelineCategory: HealthCategory { .episode }
