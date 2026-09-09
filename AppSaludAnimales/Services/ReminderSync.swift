@@ -17,7 +17,7 @@ enum ReminderSync {
         let companions = (try? context.fetch(FetchDescriptor<Companion>())) ?? []
 
         Task {
-            await ReminderScheduler.shared.sync(companions: companions)
+            await ReminderScheduler.shared.sync(companions: companions, askingIfNeeded: true)
         }
     }
 }

@@ -173,3 +173,25 @@ struct ReminderPlanTests {
         return companion
     }
 }
+
+/// Lo que dice el aviso cuando llega.
+struct ReminderMessageTests {
+    @Test("El aviso de un turno trae la hora del turno")
+    func elTurnoTraeLaHora() {
+        let companion = Companion(name: "Luli", species: .dog)
+        let appointment = Appointment(title: "Fisio", date: .test(2026, 3, 10, hour: 16, minute: 10))
+        appointment.reminderEnabled = true
+        appointment.reminderLeadTimeMinutes = 60
+        companion.appointments.append(appointment)
+
+        let plan = ReminderPlanBuilder.plan(for: [companion], on: .test(2026, 3, 10, hour: 9))
+        let turno = plan.first { $0.title.contains("Turno") }
+
+        #expect(turno != nil)
+        #expect(
+            turno?.body.contains("16") == true,
+            "El aviso llega una hora antes: lo primero que se quiere saber es a qué hora hay que estar"
+        )
+        #expect(turno?.body.contains("Fisio") == true)
+    }
+}

@@ -48,15 +48,19 @@ final class ReminderScheduler {
 
     /// Reemplaza todo lo programado por el plan actual. Rehacer la lista entera
     /// es más simple y más confiable que llevar la cuenta de qué cambió.
-    func sync(companions: [Companion], on referenceDate: Date = .now) async {
-        // Si todavía no se pidió el permiso, se pide acá: quien acaba de activar
-        // un aviso ya dijo que quiere que le avisen, y es el mejor momento para
-        // preguntar.
-        //
-        // Antes, sin permiso, esto se rendía en silencio: el aviso quedaba
-        // guardado, la app no programaba nada y nadie se enteraba hasta que no
-        // sonó. Un recordatorio que falla callado es peor que no tenerlo.
-        if await authorizationStatus() == .notDetermined {
+    /// Rearma todos los avisos.
+    ///
+    /// `askingIfNeeded` solo va en verdadero cuando alguien acaba de guardar
+    /// algo con aviso: ahí ya dijo que quiere que le avisen, y es el mejor
+    /// momento para pedir el permiso. Al volver a la app va en falso, porque
+    /// pedir permiso apenas se abre, sin haber mostrado para qué sirve, es la
+    /// forma más rápida de que lo rechacen.
+    func sync(
+        companions: [Companion],
+        on referenceDate: Date = .now,
+        askingIfNeeded: Bool = false
+    ) async {
+        if askingIfNeeded, await authorizationStatus() == .notDetermined {
             _ = await requestAuthorization()
         }
 

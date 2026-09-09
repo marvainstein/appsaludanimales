@@ -111,7 +111,10 @@ enum ReminderPlanBuilder {
                 ReminderRequest(
                     id: "appointment-\(appointment.id.uuidString)",
                     title: String(localized: "Turno de \(companion.displayName)"),
-                    body: appointment.title,
+                    // Con la hora adentro: el aviso llega una hora antes, o el
+                    // día anterior, y lo primero que se quiere saber es a qué
+                    // hora hay que estar ahí.
+                    body: String(localized: "\(appointment.title), a las \(ReminderPlanBuilder.time(appointment.date))"),
                     trigger: .at(fireDate),
                     category: .general,
                     medicationID: nil
@@ -120,6 +123,11 @@ enum ReminderPlanBuilder {
         }
 
         return requests
+    }
+
+    /// La hora, como se lee de un vistazo en una notificación.
+    static func time(_ date: Date) -> String {
+        date.formatted(date: .omitted, time: .shortened)
     }
 
     // MARK: - Todos los días
