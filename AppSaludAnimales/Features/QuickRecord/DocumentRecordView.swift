@@ -136,7 +136,7 @@ struct DocumentRecordView: View {
         .onChange(of: photoItem) { _, item in loadPhoto(item) }
         .fileImporter(
             isPresented: $isImportingFile,
-            allowedContentTypes: [.pdf, .image, .plainText],
+            allowedContentTypes: DocumentFileStore.importableTypes,
             allowsMultipleSelection: false
         ) { result in
             loadFile(result)
@@ -200,6 +200,11 @@ struct DocumentRecordView: View {
                 return
             }
 
+            guard DocumentFileStore.isWithinSizeLimit(data) else {
+                errorMessage = String(localized: "Esa imagen pesa más de \(DocumentFileStore.sizeLimitDescription) y no la podemos guardar.")
+                return
+            }
+
             fileData = data
             fileName = nil
             contentTypeIdentifier = UTType.jpeg.identifier
@@ -215,6 +220,11 @@ struct DocumentRecordView: View {
 
         guard let data = try? Data(contentsOf: url) else {
             errorMessage = String(localized: "No pudimos leer ese archivo. Podés intentar con otro.")
+            return
+        }
+
+        guard DocumentFileStore.isWithinSizeLimit(data) else {
+            errorMessage = String(localized: "Ese archivo pesa más de \(DocumentFileStore.sizeLimitDescription) y no lo podemos guardar.")
             return
         }
 

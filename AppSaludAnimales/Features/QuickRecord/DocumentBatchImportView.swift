@@ -48,7 +48,7 @@ struct DocumentBatchImportView: View {
         .onChange(of: photoItems) { _, items in loadPhotos(items) }
         .fileImporter(
             isPresented: $isImportingFiles,
-            allowedContentTypes: [.pdf, .image, .plainText],
+            allowedContentTypes: DocumentFileStore.importableTypes,
             allowsMultipleSelection: true
         ) { result in
             loadFiles(result)
@@ -147,6 +147,7 @@ struct DocumentBatchImportView: View {
         guard case let .success(urls) = result else { return }
 
         var unreadable = 0
+        var tooLarge = 0
 
         for url in urls.prefix(remainingCapacity) {
             let needsAccess = url.startAccessingSecurityScopedResource()
@@ -154,6 +155,11 @@ struct DocumentBatchImportView: View {
 
             guard let data = try? Data(contentsOf: url) else {
                 unreadable += 1
+                continue
+            }
+
+            guard DocumentFileStore.isWithinSizeLimit(data) else {
+                tooLarge += 1
                 continue
             }
 
@@ -166,7 +172,7 @@ struct DocumentBatchImportView: View {
             )
         }
 
-        reportIfIncomplete(chosen: urls.count, unreadable: unreadable)
+        reportIfIncomplete(chosen: urls.count, unreadable: unreadable, tooLarge: tooLarge)
     }
 
     private func loadPhotos(_ items: [PhotosPickerItem]) {
@@ -174,11 +180,17 @@ struct DocumentBatchImportView: View {
 
         Task {
             var unreadable = 0
+            var tooLarge = 0
             let capacity = remainingCapacity
 
             for item in items.prefix(capacity) {
                 guard let data = try? await item.loadTransferable(type: Data.self) else {
                     unreadable += 1
+                    continue
+                }
+
+                guard DocumentFileStore.isWithinSizeLimit(data) else {
+                    tooLarge += 1
                     continue
                 }
 
@@ -191,7 +203,7 @@ struct DocumentBatchImportView: View {
                 )
             }
 
-            reportIfIncomplete(chosen: items.count, unreadable: unreadable)
+            reportIfIncomplete(chosen: items.count, unreadable: unreadable, tooLarge: tooLarge)
             photoItems = []
         }
     }
@@ -202,16 +214,26 @@ struct DocumentBatchImportView: View {
 
     /// Cuando algo no entró, se dice cuántos y por qué. Que falten documentos sin
     /// aviso es peor que no poder traerlos.
-    private func reportIfIncomplete(chosen: Int, unreadable: Int) {
-        let overflow = max(0, chosen - remainingCapacity - unreadable)
+    private func reportIfIncomplete(chosen: Int, unreadable: Int, tooLarge: Int) {
+        let overflow = max(0, chosen - remainingCapacity - unreadable - tooLarge)
 
-        if unreadable > 0, overflow > 0 {
-            errorMessage = String(localized: "No pudimos leer \(unreadable) y \(overflow) quedaron afuera: se pueden traer hasta \(DocumentBatchImport.maximumFiles) por vez. Podés guardar estos y volver a entrar.")
-        } else if unreadable > 0 {
-            errorMessage = String(localized: "No pudimos leer \(unreadable) de los archivos elegidos. Los demás sí entraron.")
-        } else if overflow > 0 {
-            errorMessage = String(localized: "Se pueden traer hasta \(DocumentBatchImport.maximumFiles) por vez, así que \(overflow) quedaron afuera. Podés guardar estos y volver a entrar.")
+        var reasons: [String] = []
+
+        if unreadable > 0 {
+            reasons.append(String(localized: "\(unreadable) no se pudieron leer"))
         }
+
+        if tooLarge > 0 {
+            reasons.append(String(localized: "\(tooLarge) pesan más de \(DocumentFileStore.sizeLimitDescription)"))
+        }
+
+        if overflow > 0 {
+            reasons.append(String(localized: "\(overflow) quedaron afuera porque se pueden traer hasta \(DocumentBatchImport.maximumFiles) por vez"))
+        }
+
+        guard !reasons.isEmpty else { return }
+
+        errorMessage = String(localized: "\(reasons.formatted(.list(type: .and))). Los demás sí entraron.")
     }
 
     // MARK: - Guardar
