@@ -44,34 +44,43 @@ struct DashboardView: View {
                     backupCard
                 }
 
-                if companion.isPresent {
-                    section(
-                        title: String(localized: "Hoy"),
-                        items: snapshot.today,
-                        emptyMessage: String(localized: "No hay nada anotado para hoy.")
-                    )
+                // El primer día, las cuatro secciones están vacías a la vez.
+                // Cuatro cajas grises apiladas explicando cada una qué va a
+                // aparecer algún día no es una pantalla: es un formulario sin
+                // llenar. Cuando no hay absolutamente nada se dice una sola vez
+                // y con un dibujo.
+                if snapshot.isEmpty {
+                    firstDayState
+                } else {
+                    if companion.isPresent {
+                        section(
+                            title: String(localized: "Hoy"),
+                            items: snapshot.today,
+                            emptyMessage: String(localized: "No hay nada anotado para hoy.")
+                        )
+
+                        section(
+                            title: String(localized: "Próximamente"),
+                            subtitle: String(localized: "Los próximos 30 días"),
+                            items: snapshot.upcoming,
+                            emptyMessage: String(localized: "Cuando anotes un turno o una próxima vacuna, aparece acá.")
+                        )
+
+                        section(
+                            title: String(localized: "Estado actual"),
+                            items: snapshot.currentStatus,
+                            emptyMessage: String(localized: "Acá vas a ver las medicaciones y los tratamientos en curso.")
+                        )
+                    }
 
                     section(
-                        title: String(localized: "Próximamente"),
-                        subtitle: String(localized: "Los próximos 30 días"),
-                        items: snapshot.upcoming,
-                        emptyMessage: String(localized: "Cuando anotes un turno o una próxima vacuna, aparece acá.")
+                        title: String(localized: "Actividad reciente"),
+                        items: snapshot.recentActivity,
+                        emptyMessage: String(localized: "Todavía no hay nada registrado. Lo que anotes va a quedar guardado acá.")
                     )
 
-                    section(
-                        title: String(localized: "Estado actual"),
-                        items: snapshot.currentStatus,
-                        emptyMessage: String(localized: "Acá vas a ver las medicaciones y los tratamientos en curso.")
-                    )
+                    historyLink
                 }
-
-                section(
-                    title: String(localized: "Actividad reciente"),
-                    items: snapshot.recentActivity,
-                    emptyMessage: String(localized: "Todavía no hay nada registrado. Lo que anotes va a quedar guardado acá.")
-                )
-
-                historyLink
             }
             .padding(Spacing.lg)
         }
@@ -224,6 +233,33 @@ struct DashboardView: View {
         .accessibilityLabel(Text("\(companion.displayName). \(subtitle)"))
         .accessibilityHint(Text("Abre el perfil"))
         .accessibilityAddTraits(.isButton)
+    }
+
+    /// Lo que ve alguien que abrió la app por primera vez y todavía no anotó
+    /// nada. Es la primera impresión completa del producto.
+    private var firstDayState: some View {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
+            EmptyStateIllustration(kind: .firstDay)
+
+            Text("Todavía no hay nada anotado de \(companion.displayName)")
+                .font(AppFont.sectionTitle)
+                .foregroundStyle(Palette.ink)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+
+            Text(companion.isPresent
+                ? "Cuando registres una medicación, un síntoma, un peso o un estudio, va a aparecer acá ordenado por lo que necesitás saber hoy."
+                : "Acá aparecería su historia, y no llegó a cargarse nada.")
+                .font(AppFont.body)
+                .foregroundStyle(Palette.inkMuted)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(Spacing.xl)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
+                .fill(Palette.surface)
+        )
     }
 
     private var subtitle: String {

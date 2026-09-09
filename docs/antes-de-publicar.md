@@ -16,7 +16,7 @@ mejora algo que ya funciona.
 - [x] **Poder borrar un compañero.** Hoy, quien carga uno por error lo tiene
       para siempre. Con la confirmación clara que corresponde, porque borra toda
       su historia.
-- [ ] **El ícono de la app.** El archivo está vacío. Sin ícono no se puede
+- [x] **El ícono de la app.** El archivo está vacío. Sin ícono no se puede
       instalar ni por TestFlight.
 
 ## Para que sirva con datos de verdad
@@ -32,8 +32,9 @@ mejora algo que ya funciona.
 - [ ] **Pantalla "Acerca de".** Qué hace la app y qué no: que no diagnostica, que
       los datos no salen del teléfono, quién la hizo y por qué. Apple lo valora y
       además es lo honesto.
-- [ ] **Ilustraciones propias en los estados vacíos.** Es lo que falta para
-      terminar de darle la gracia que se buscó. Hoy son íconos del sistema.
+- [ ] **Ilustraciones propias en los estados vacíos.** Están los tres lugares
+      hechos y con dibujos provisorios para poder mirarlos en el teléfono. El
+      encargo de las definitivas está en docs/ilustraciones.md.
 
 ## Trámites que llevan tiempo y no dependen de nadie
 

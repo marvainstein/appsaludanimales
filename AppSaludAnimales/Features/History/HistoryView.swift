@@ -23,6 +23,13 @@ struct HistoryView: View {
                 }
 
                 if sections.isEmpty {
+                    // El dibujo solo cuando no hay nada de nada. Si la lista
+                    // está vacía porque hay un filtro puesto, el dibujo sobra:
+                    // lo que hace falta ahí es sacar el filtro.
+                    if selectedCategories.isEmpty {
+                        EmptyStateIllustration(kind: .history)
+                    }
+
                     SectionEmptyState(message: emptyMessage)
                 } else {
                     ForEach(sections) { section in
