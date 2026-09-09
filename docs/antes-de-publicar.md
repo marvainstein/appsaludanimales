@@ -26,7 +26,7 @@ mejora algo que ya funciona.
 - [x] **Buscar en el historial.** Con ocho años de estudios cargados, una lista
       ordenada por fecha no alcanza para encontrar "el análisis de sangre de
       cuando estuvo con la pata".
-- [ ] **Adjuntar un documento a un episodio o a un turno.** El modelo de datos ya
+- [x] **Adjuntar un documento a un episodio o a un turno.** El modelo de datos ya
       lo permite y ninguna pantalla lo ofrece.
 
 ## Para que se entienda qué es esta app

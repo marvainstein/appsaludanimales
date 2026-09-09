@@ -16,6 +16,7 @@ struct HealthRecordDetailView: View {
     @State private var isConfirmingDeletion = false
     @State private var deletionFailed = false
     @State private var isEditing = false
+    @State private var isAttachingDocument = false
 
     var body: some View {
         List {
@@ -43,6 +44,10 @@ struct HealthRecordDetailView: View {
                 } header: {
                     Text("Archivo")
                 }
+            }
+
+            if let attachment {
+                attachedDocumentsSection(for: attachment)
             }
 
             Section {
@@ -103,6 +108,26 @@ struct HealthRecordDetailView: View {
         .sheet(isPresented: $isEditing) {
             editSheet
         }
+        .sheet(isPresented: $isAttachingDocument) {
+            if let attachment {
+                NavigationStack {
+                    DocumentRecordView(
+                        companion: companion,
+                        attachment: attachment,
+                        onFinished: { isAttachingDocument = false }
+                    )
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                isAttachingDocument = false
+                            } label: {
+                                Text("Cancelar")
+                            }
+                        }
+                    }
+                }
+            }
+        }
         .confirmationDialog(
             Text("¿Eliminamos este registro?"),
             isPresented: $isConfirmingDeletion,
@@ -120,6 +145,83 @@ struct HealthRecordDetailView: View {
             Button("Entendido", role: .cancel) { deletionFailed = false }
         } message: {
             Text("El registro sigue guardado. Podés intentar de nuevo en un momento.")
+        }
+    }
+
+    // MARK: - Documentos adjuntos
+
+    /// Solo los episodios y los turnos llevan documentos colgados. Al resto no
+    /// les corresponde: una nota con un estudio adjunto es un documento, y hay
+    /// una pantalla para eso.
+    private var attachment: DocumentAttachment? {
+        switch entry.reference {
+        case let .episode(episode): .episode(episode)
+        case let .appointment(appointment): .appointment(appointment)
+        default: nil
+        }
+    }
+
+    private var attachedDocuments: [HealthDocument] {
+        let documents: [HealthDocument]
+
+        switch entry.reference {
+        case let .episode(episode): documents = episode.documents
+        case let .appointment(appointment): documents = appointment.documents
+        default: documents = []
+        }
+
+        return documents.sorted { $0.date > $1.date }
+    }
+
+    private func attachedDocumentsSection(for attachment: DocumentAttachment) -> some View {
+        Section {
+            ForEach(attachedDocuments) { document in
+                NavigationLink {
+                    HealthRecordDetailView(
+                        companion: companion,
+                        entry: HistoryEntry(
+                            id: document.id,
+                            title: document.title,
+                            detail: document.category,
+                            date: document.date,
+                            category: .document,
+                            badge: nil,
+                            reference: .document(document)
+                        )
+                    )
+                } label: {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text(document.title)
+                            .font(AppFont.body)
+                            .foregroundStyle(Palette.ink)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Text(DateDescription.absolute(document.date))
+                            .font(AppFont.caption)
+                            .foregroundStyle(Palette.inkMuted)
+                    }
+                    .padding(.vertical, Spacing.xs)
+                }
+                .accessibilityElement(children: .combine)
+            }
+
+            Button {
+                isAttachingDocument = true
+            } label: {
+                Label {
+                    Text("Adjuntar un documento")
+                } icon: {
+                    Image(systemName: "paperclip")
+                }
+                .frame(minHeight: Spacing.minimumTapTarget)
+            }
+            .accessibilityIdentifier("record.attachDocument")
+        } header: {
+            Text("Documentos")
+        } footer: {
+            Text(attachedDocuments.isEmpty
+                ? "Un estudio, una receta o una foto de lo que pasó. Queda enganchado acá y también en el historial."
+                : "Aparecen acá y también en el historial, con el resto de los documentos.")
         }
     }
 
