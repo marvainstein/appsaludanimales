@@ -47,10 +47,13 @@
     "A quién llamar" : {
 
     },
-    "Abre el formulario para agregar a tu compañero o compañera" : {
+    "Abre el formulario para agregar a tu perro o tu gato" : {
 
     },
     "Abre el perfil" : {
+
+    },
+    "Abre el registro para corregir lo que cargaste" : {
 
     },
     "Abre la aplicación de teléfono" : {
@@ -59,16 +62,22 @@
     "Abre las opciones del sistema para enviar o guardar el documento" : {
 
     },
+    "Abre las opciones del sistema para guardar el archivo" : {
+
+    },
     "Accesibilidad" : {
 
     },
     "Acciones" : {
 
     },
-    "Agregar compañero" : {
+    "Agregar un perro o un gato" : {
 
     },
     "Agregar una medicación nueva" : {
+
+    },
+    "Anotar una medicación, un síntoma, el peso, una vacuna o una nota" : {
 
     },
     "Archivo" : {
@@ -77,10 +86,10 @@
     "Avisarme cuando toca" : {
 
     },
-    "Cambiar de compañero" : {
+    "Cambiar" : {
 
     },
-    "Cambiar de compañero o agregar uno nuevo" : {
+    "Cambiar de perro o gato, o agregar uno nuevo" : {
 
     },
     "Cancelar" : {
@@ -89,16 +98,22 @@
     "Cerrar" : {
 
     },
-    "Compañeros" : {
+    "Cierra el teclado y vuelve al formulario" : {
 
     },
     "Compartir" : {
+
+    },
+    "Compartir o guardar el respaldo" : {
 
     },
     "Con lo que elegiste no hay nada para incluir todavía. Probá con otro período o marcá más secciones." : {
 
     },
     "Contactos" : {
+
+    },
+    "Crear" : {
 
     },
     "Cuándo" : {
@@ -114,6 +129,9 @@
 
     },
     "Datos básicos" : {
+
+    },
+    "Del más nuevo al más viejo. Para corregir uno, entrá desde el historial." : {
 
     },
     "Detalles" : {
@@ -140,6 +158,15 @@
     "El registro sigue guardado. Podés intentar de nuevo en un momento." : {
 
     },
+    "El respaldo es un archivo con toda la historia de salud de todos tus perros y gatos: los datos, los documentos adjuntos y las fotos. Guardalo donde quieras y volvé a cargarlo en cualquier teléfono." : {
+
+    },
+    "Elegir archivos" : {
+
+    },
+    "Elegir fotos" : {
+
+    },
     "Eliminar este registro" : {
 
     },
@@ -152,7 +179,7 @@
     "Empieza" : {
 
     },
-    "Episodio" : {
+    "Ese archivo tiene información de salud. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel." : {
 
     },
     "Especie" : {
@@ -161,7 +188,13 @@
     "Esta información aparece en el modo emergencia." : {
 
     },
-    "Este es el lugar donde va a vivir la historia de salud de tu compañero o compañera." : {
+    "Este documento no se guarda. El archivo original no se toca." : {
+
+    },
+    "Este es el lugar donde va a vivir la historia de salud de tu perro o de tu gato." : {
+
+    },
+    "Evolución del peso" : {
 
     },
     "Fecha" : {
@@ -182,6 +215,9 @@
     "Foto" : {
 
     },
+    "Gráfico de la evolución del peso" : {
+
+    },
     "Historial" : {
 
     },
@@ -194,7 +230,13 @@
     "Intensidad" : {
 
     },
+    "La app muestra cómo cambió, no si está bien o mal. Eso lo dice el veterinario." : {
+
+    },
     "Las secciones sin información no aparecen en el PDF, aunque estén marcadas." : {
+
+    },
+    "Listo" : {
 
     },
     "Llamar a %@" : {
@@ -218,16 +260,13 @@
     "Medicación" : {
 
     },
-    "Medicación nueva" : {
-
-    },
     "Medicaciones" : {
 
     },
     "Modo emergencia" : {
 
     },
-    "Muchos compañeros llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada." : {
+    "Muchos perros y gatos llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada." : {
 
     },
     "Muestra los datos urgentes de %@ y los teléfonos para llamar" : {
@@ -240,6 +279,9 @@
 
     },
     "No pudimos guardar" : {
+
+    },
+    "No pudimos hacerlo" : {
 
     },
     "Nota" : {
@@ -297,6 +339,9 @@
     "Próxima aplicación" : {
 
     },
+    "Qué es" : {
+
+    },
     "Qué incluir" : {
 
     },
@@ -306,7 +351,13 @@
     "Qué sabés de la fecha" : {
 
     },
-    "Qué te avisa la app, y cómo llevar la información al veterinario." : {
+    "Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla." : {
+
+    },
+    "Qué traer" : {
+
+    },
+    "Quitar de la lista" : {
 
     },
     "Quitar la foto" : {
@@ -322,6 +373,18 @@
 
     },
     "Registrar una toma" : {
+
+    },
+    "Respaldo" : {
+
+    },
+    "Restaurar" : {
+
+    },
+    "Restaurar agrega lo que falta y no borra ni reemplaza nada de lo que ya tenés. Podés restaurar el mismo archivo dos veces sin que se dupliquen los registros." : {
+
+    },
+    "Restaurar desde un archivo" : {
 
     },
     "Resumen en PDF" : {
@@ -375,7 +438,16 @@
     "Todo esto es opcional y podés completarlo cuando quieras." : {
 
     },
+    "Todos los pesos" : {
+
+    },
     "Turnos" : {
+
+    },
+    "Tus perros y gatos" : {
+
+    },
+    "Último peso" : {
 
     },
     "Usa esta sugerencia como síntoma" : {
@@ -388,6 +460,9 @@
 
     },
     "Vacunas" : {
+
+    },
+    "Varios documentos" : {
 
     },
     "Ver todo el historial" : {
