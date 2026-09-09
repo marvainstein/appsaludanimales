@@ -133,6 +133,7 @@ struct CompanionProfileView: View {
                     }
                     .frame(minHeight: Spacing.minimumTapTarget)
                 }
+                .accessibilityIdentifier("profile.weight")
 
                 NavigationLink {
                     ReminderSettingsView(companion: companion)
@@ -166,6 +167,7 @@ struct CompanionProfileView: View {
                     }
                     .frame(minHeight: Spacing.minimumTapTarget)
                 }
+                .accessibilityIdentifier("profile.backup")
 
                 NavigationLink {
                     AboutView()
@@ -177,6 +179,7 @@ struct CompanionProfileView: View {
                     }
                     .frame(minHeight: Spacing.minimumTapTarget)
                 }
+                .accessibilityIdentifier("profile.about")
             } footer: {
                 Text("Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla.")
             }
@@ -193,6 +196,7 @@ struct CompanionProfileView: View {
                         }
                         .frame(minHeight: Spacing.minimumTapTarget)
                     }
+                    .accessibilityIdentifier("profile.farewell")
                 } else {
                     Button {
                         undoFarewell()

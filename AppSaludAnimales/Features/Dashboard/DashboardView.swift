@@ -230,6 +230,7 @@ struct DashboardView: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("dashboard.companion")
         .accessibilityLabel(Text("\(companion.displayName). \(subtitle)"))
         .accessibilityHint(Text("Abre el perfil"))
         .accessibilityAddTraits(.isButton)
@@ -385,6 +386,7 @@ struct DashboardView: View {
             .tint(StatusTone.critical.content)
             .accessibilityLabel(Text("Modo emergencia"))
             .accessibilityHint(Text("Muestra los datos urgentes de \(companion.displayName) y los teléfonos para llamar"))
+            .accessibilityIdentifier("dashboard.emergency")
             .opacity(companion.isPresent ? 1 : 0)
             .disabled(!companion.isPresent)
             .accessibilityHidden(!companion.isPresent)

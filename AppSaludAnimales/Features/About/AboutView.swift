@@ -50,11 +50,11 @@ struct AboutView: View {
             }
 
             Section {
-                Text("Huella nació del seguimiento de Luli, una galga adoptada de adulta, con epilepsia y problemas óseos. Llevar su historia en papeles sueltos y en la memoria fue el problema real que esta app resuelve.")
+                Text("Huella nace del seguimiento de la salud de Luli y Pripri, nuestras almas hechas perritas. Llevar su historia en papeles sueltos y en la memoria fue el problema real que esta app resuelve.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
 
-                Text("Luli cruzó el arcoíris. Primavera sigue acá.")
+                Text("Esta app se las dedicamos a ellas y esperamos te sirva.")
                     .font(AppFont.body)
                     .foregroundStyle(Palette.inkMuted)
                     .fixedSize(horizontal: false, vertical: true)

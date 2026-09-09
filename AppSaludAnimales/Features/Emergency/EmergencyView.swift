@@ -150,6 +150,7 @@ struct EmergencyView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text("Buscar veterinarias cerca"))
         .accessibilityHint(Text("Busca en el mapa del teléfono las veterinarias más próximas"))
+        .accessibilityIdentifier("emergency.nearbyVets")
     }
 
     private var contacts: some View {

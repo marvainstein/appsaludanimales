@@ -52,7 +52,7 @@ mejora algo que ya funciona.
 
 ## Verificaciones
 
-- [ ] **Auditoría de accesibilidad de las pantallas nuevas**: peso, respaldo,
-      veterinarias cerca, despedida.
+- [x] **Auditoría de accesibilidad de las pantallas nuevas**: perfil, peso,
+      respaldo, acerca de, despedida, emergencia y veterinarias cerca.
 - [ ] **Pasada manual en el teléfono** de esas mismas pantallas, según el
       protocolo de docs/accesibilidad.md.
