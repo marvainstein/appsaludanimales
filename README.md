@@ -1,7 +1,17 @@
-# App de salud para animales de compañía
+# Huella
+
+*La historia de su salud en un solo lugar.*
 
 Aplicación iOS para que las personas responsables de perros y gatos organicen y
-sigan la salud de sus compañeros y compañeras.
+sigan la salud de los suyos.
+
+El nombre es la huella de la pata y el rastro que algo deja a lo largo del
+tiempo: las dos cosas son lo que hace la app.
+
+En el código el proyecto sigue llamándose `AppSaludAnimales`. Renombrar el
+objetivo de Xcode obligaría a tocar identificadores, esquemas y firma sin ganar
+nada: el nombre que ve una persona usuaria se configura aparte y ya dice
+"Huella".
 
 Estado actual: los **cimientos** (modelo de datos, dominio, sistema de diseño
 accesible, infraestructura de lenguaje), la **primera porción usable**
