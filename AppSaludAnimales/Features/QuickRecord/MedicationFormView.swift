@@ -19,7 +19,7 @@ struct MedicationFormView: View {
 
     @State private var name: String
     @State private var dose: String
-    @State private var timesOfDay: Set<TimeOfDay>
+    @State private var times: [Date]
     @State private var startDate: Date
     @State private var hasEndDate: Bool
     @State private var endDate: Date
@@ -37,7 +37,7 @@ struct MedicationFormView: View {
         self.onFinished = onFinished
         _name = State(initialValue: editing?.name ?? "")
         _dose = State(initialValue: editing?.dose ?? "")
-        _timesOfDay = State(initialValue: Set(editing?.timesOfDay ?? []))
+        _times = State(initialValue: MedicationSchedule.times(for: editing))
         _startDate = State(initialValue: editing?.startDate ?? Date())
         _hasEndDate = State(initialValue: editing?.endDate != nil)
         _endDate = State(initialValue: editing?.endDate ?? Date())
@@ -94,34 +94,33 @@ struct MedicationFormView: View {
             }
 
             Section {
-                ForEach(TimeOfDay.allCases, id: \.self) { moment in
-                    Button {
-                        toggle(moment)
-                    } label: {
-                        HStack(spacing: Spacing.md) {
-                            Image(systemName: timesOfDay.contains(moment)
-                                ? "checkmark.circle.fill"
-                                : "circle")
-                                .foregroundStyle(Palette.accent)
-                                .accessibilityHidden(true)
-
-                            Text(moment.label)
-                                .foregroundStyle(Palette.ink)
-
-                            Spacer(minLength: 0)
-                        }
-                        .frame(minHeight: Spacing.minimumTapTarget)
+                ForEach(times.indices, id: \.self) { index in
+                    DatePicker(
+                        selection: $times[index],
+                        displayedComponents: .hourAndMinute
+                    ) {
+                        Text("Horario \(index + 1)")
                     }
-                    .accessibilityLabel(Text(moment.label))
-                    .accessibilityValue(Text(timesOfDay.contains(moment)
-                        ? String(localized: "Elegido")
-                        : String(localized: "No elegido")))
-                    .accessibilityAddTraits(timesOfDay.contains(moment) ? [.isSelected] : [])
                 }
+                .onDelete { times.remove(atOffsets: $0) }
+
+                Button {
+                    times.append(MedicationSchedule.nextSuggestedTime(after: times))
+                } label: {
+                    Label {
+                        Text("Agregar un horario")
+                    } icon: {
+                        Image(systemName: "plus")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+                .accessibilityIdentifier("medicationForm.addTime")
             } header: {
                 Text("Cuándo se administra")
             } footer: {
-                Text("Podés elegir más de uno, o ninguno si todavía no lo sabés.")
+                Text(times.isEmpty
+                    ? "Si todavía no sabés los horarios, podés dejarlo vacío y agregarlos después."
+                    : "La app avisa a esa hora, todos los días, mientras dure la medicación. Para borrar un horario, deslizalo hacia la izquierda.")
             }
 
             Section {
@@ -153,7 +152,7 @@ struct MedicationFormView: View {
                     Text("Avisarme cuando toca")
                 }
             } footer: {
-                Text("Usa los momentos del día que elegiste. Podés cambiarlo después desde Recordatorios.")
+                Text("Avisa a los horarios que cargaste arriba. Si no cargaste ninguno, no hay nada que avisar.")
             }
 
             PrimaryButtonSection(
@@ -190,14 +189,6 @@ struct MedicationFormView: View {
         }
     }
 
-    private func toggle(_ moment: TimeOfDay) {
-        if timesOfDay.contains(moment) {
-            timesOfDay.remove(moment)
-        } else {
-            timesOfDay.insert(moment)
-        }
-    }
-
     /// Antes de guardar, avisa si ya hay una medicación en curso con el mismo
     /// nombre y propone registrar una toma, que suele ser lo que se quería
     /// hacer. Igual que con las dosis: es un aviso, no un candado.
@@ -213,7 +204,10 @@ struct MedicationFormView: View {
         medication.dose = optional(dose)
         medication.startDate = startDate
         medication.endDate = hasEndDate ? endDate : nil
-        medication.timesOfDay = TimeOfDay.allCases.filter(timesOfDay.contains)
+        medication.exactTimes = times.sorted()
+        // Los momentos del día quedan vacíos: la medicación pasa a tener
+        // horarios de verdad y no una franja.
+        medication.timesOfDay = []
         medication.indications = optional(indications)
         medication.reminderEnabled = reminderEnabled
 

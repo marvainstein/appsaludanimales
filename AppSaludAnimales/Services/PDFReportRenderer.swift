@@ -11,11 +11,65 @@ enum PDFReportRenderer {
     static let pageSize = CGSize(width: 595.2, height: 841.8)
     static let margin: CGFloat = 48
 
+    /// El membrete, arriba a la derecha.
+    ///
+    /// Este papel termina en la mano de un veterinario, muchas veces impreso y
+    /// muchas veces junto a otros. Que diga de dónde salió es lo que lo vuelve
+    /// reconocible la segunda vez, y es la única forma de difusión que la app
+    /// tiene sin molestar a nadie: aparece en un papel que alguien eligió
+    /// compartir.
+    private static func drawLetterhead(in bounds: CGRect) {
+        let symbol = UIImage(systemName: "pawprint.fill")?
+            .withTintColor(brand, renderingMode: .alwaysOriginal)
+
+        let name = String(localized: "Huella")
+        let tagline = String(localized: "La historia de su salud en un solo lugar")
+
+        let nameAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 13, weight: .semibold),
+            .foregroundColor: brand
+        ]
+
+        let taglineAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 9, weight: .regular),
+            .foregroundColor: UIColor.darkGray
+        ]
+
+        let nameSize = (name as NSString).size(withAttributes: nameAttributes)
+        let taglineSize = (tagline as NSString).size(withAttributes: taglineAttributes)
+        let right = bounds.maxX - margin
+
+        (name as NSString).draw(
+            at: CGPoint(x: right - nameSize.width, y: margin - 6),
+            withAttributes: nameAttributes
+        )
+
+        (tagline as NSString).draw(
+            at: CGPoint(x: right - taglineSize.width, y: margin + nameSize.height - 4),
+            withAttributes: taglineAttributes
+        )
+
+        if let symbol {
+            let side: CGFloat = 16
+            symbol.draw(
+                in: CGRect(
+                    x: right - nameSize.width - side - 6,
+                    y: margin - 4,
+                    width: side,
+                    height: side
+                )
+            )
+        }
+    }
+
+    /// El terracota de la app, en el mismo valor que PaletteValues.
+    private static let brand = UIColor(red: 0xA0 / 255, green: 0x47 / 255, blue: 0x2C / 255, alpha: 1)
+
     static func render(_ report: HealthReport) -> Data {
         let format = UIGraphicsPDFRendererFormat()
         format.documentInfo = [
             kCGPDFContextTitle as String: "\(report.companionName) · \(report.periodDescription)",
-            kCGPDFContextCreator as String: String(localized: "Salud Animal")
+            kCGPDFContextCreator as String: String(localized: "Huella")
         ]
 
         let bounds = CGRect(origin: .zero, size: pageSize)
@@ -24,6 +78,8 @@ enum PDFReportRenderer {
         return renderer.pdfData { context in
             let writer = PageWriter(context: context, bounds: bounds)
             writer.beginPage()
+
+            drawLetterhead(in: bounds)
 
             writer.draw(report.companionName, style: .title)
             writer.draw(report.subtitle, style: .subtitle)

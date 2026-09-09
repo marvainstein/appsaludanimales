@@ -156,3 +156,45 @@ struct EpisodeIntensityTests {
         #expect(episode.intensityLabel == "Intensidad moderada")
     }
 }
+
+/// Los horarios de una medicación.
+struct MedicationScheduleTests {
+    @Test("Una medicación cargada con momentos del día se lee con su hora")
+    func lasViejasSeSiguenLeyendo() {
+        let medication = Medication(name: "Fenobarbital")
+        medication.timesOfDay = [.morning, .night]
+
+        let times = MedicationSchedule.times(for: medication, calendar: .test)
+        let hours = times.map { Calendar.test.component(.hour, from: $0) }
+
+        #expect(
+            hours == [8, 21],
+            "Nadie puede perder lo que ya tenía cargado por un cambio de criterio nuestro"
+        )
+    }
+
+    @Test("Los horarios exactos ganan sobre los momentos del día")
+    func losHorariosExactosGanan() {
+        let medication = Medication(name: "Fenobarbital")
+        medication.timesOfDay = [.morning]
+        medication.exactTimes = [.test(2026, 1, 1, hour: 7, minute: 30)]
+
+        #expect(MedicationSchedule.times(for: medication, calendar: .test).count == 1)
+    }
+
+    @Test("Propone los repartos habituales al agregar horarios")
+    func proponeLosRepartosHabituales() {
+        var times: [Date] = []
+
+        for expected in [8, 20, 12] {
+            let suggestion = MedicationSchedule.nextSuggestedTime(after: times, calendar: .test)
+            #expect(Calendar.test.component(.hour, from: suggestion) == expected)
+            times.append(suggestion)
+        }
+    }
+
+    @Test("Sin horarios no inventa una descripción")
+    func sinHorariosNoDiceNada() {
+        #expect(MedicationSchedule.description(for: Medication(name: "Vitamina")) == nil)
+    }
+}

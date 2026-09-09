@@ -12,6 +12,19 @@ import UserNotifications
 final class NotificationActionHandler: NSObject, UNUserNotificationCenterDelegate {
     var modelContainer: ModelContainer?
 
+    /// Que el aviso se vea aunque la app esté abierta.
+    ///
+    /// iOS los suprime por omisión cuando la app está en primer plano, y hay que
+    /// pedirle explícitamente lo contrario. Sin esto, quien estaba usando la app
+    /// justo a la hora de una medicación no veía nada: el aviso llegaba y se
+    /// perdía, que es exactamente lo que esta app no puede permitirse.
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .list, .sound]
+    }
+
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse

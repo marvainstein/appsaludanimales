@@ -349,9 +349,7 @@ struct HealthRecordDetailView: View {
             fields.append(Field(label: String(localized: "Dosis"), value: medication.dose))
             fields.append(Field(
                 label: String(localized: "Cuándo se administra"),
-                value: medication.timesOfDay.isEmpty
-                    ? nil
-                    : medication.timesOfDay.map(\.label).joined(separator: ", ")
+                value: MedicationSchedule.description(for: medication)
             ))
             fields.append(Field(
                 label: String(localized: "Termina"),
