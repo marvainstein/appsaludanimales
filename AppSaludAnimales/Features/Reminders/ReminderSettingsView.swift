@@ -13,6 +13,7 @@ struct ReminderSettingsView: View {
 
     @State private var authorizationStatus: UNAuthorizationStatus = .notDetermined
     @State private var isRequestingPermission = false
+    @State private var scheduled: [ScheduledReminder] = []
 
     private var medications: [Medication] {
         companion.activeMedications().sorted { $0.name < $1.name }
@@ -37,6 +38,7 @@ struct ReminderSettingsView: View {
     var body: some View {
         List {
             permissionSection
+            scheduledSection
 
             if !medications.isEmpty {
                 Section {
@@ -109,6 +111,52 @@ struct ReminderSettingsView: View {
     // MARK: - Permiso
 
     @ViewBuilder
+    /// Lo que el sistema tiene programado de verdad.
+    ///
+    /// Un aviso que no llega no deja rastro: no se puede saber si nunca se
+    /// programó, si se programó mal o si el sistema lo descartó. Con esta lista
+    /// se puede mirar en vez de adivinar, y sirve igual sin ningún problema:
+    /// saber qué te va a avisar la app, y cuándo, es información que
+    /// corresponde tener.
+    private var scheduledSection: some View {
+        Section {
+            if scheduled.isEmpty {
+                SectionEmptyState(
+                    message: String(localized: "No hay ningún aviso programado. Si activaste alguno y no aparece acá, es que no llegó a programarse.")
+                )
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
+            } else {
+                ForEach(scheduled) { reminder in
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text(reminder.title)
+                            .font(AppFont.body)
+                            .foregroundStyle(Palette.ink)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Text(reminder.body)
+                            .font(AppFont.caption)
+                            .foregroundStyle(Palette.inkMuted)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        if let nextDate = reminder.nextDate {
+                            Text(nextDate.formatted(date: .abbreviated, time: .shortened))
+                                .font(AppFont.caption)
+                                .foregroundStyle(Palette.inkMuted)
+                        }
+                    }
+                    .padding(.vertical, Spacing.xs)
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        } header: {
+            Text("Lo que está programado")
+        } footer: {
+            Text("Son los avisos que el teléfono tiene guardados ahora mismo. Se rearman solos cada vez que guardás algo.")
+        }
+        .task { scheduled = await ReminderScheduler.shared.scheduled() }
+    }
+
     private var permissionSection: some View {
         Section {
             switch authorizationStatus {

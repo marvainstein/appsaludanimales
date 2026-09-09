@@ -7,6 +7,14 @@ enum ReminderCategory: String, Sendable {
     case general
 }
 
+/// Un aviso ya programado en el sistema, tal como el sistema lo tiene.
+struct ScheduledReminder: Identifiable, Sendable {
+    let id: String
+    let title: String
+    let body: String
+    let nextDate: Date?
+}
+
 struct ReminderRequest: Equatable, Identifiable, Sendable {
     enum Trigger: Equatable, Sendable {
         case daily(hour: Int, minute: Int)

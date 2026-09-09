@@ -82,6 +82,27 @@ final class ReminderScheduler {
         }
     }
 
+    /// Lo que está efectivamente programado en el sistema, para poder mirarlo.
+    ///
+    /// Existe porque un aviso que no llega no deja rastro: no se puede saber si
+    /// nunca se programó, si se programó mal o si el sistema lo descartó. Con
+    /// esto se puede abrir Recordatorios y ver la lista de verdad, en vez de
+    /// adivinar.
+    func scheduled() async -> [ScheduledReminder] {
+        let pending = await center.pendingNotificationRequests()
+
+        return pending
+            .map { request in
+                ScheduledReminder(
+                    id: request.identifier,
+                    title: request.content.title,
+                    body: request.content.body,
+                    nextDate: (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate()
+                )
+            }
+            .sorted { ($0.nextDate ?? .distantFuture) < ($1.nextDate ?? .distantFuture) }
+    }
+
     func cancelAll() {
         center.removeAllPendingNotificationRequests()
     }
