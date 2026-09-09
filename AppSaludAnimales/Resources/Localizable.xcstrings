@@ -1,7 +1,16 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "¡Buenas!" : {
+
+    },
     "¿Eliminamos este registro?" : {
+
+    },
+    "¿Hacemos un respaldo?" : {
+
+    },
+    "¿Qué vas a encontrar?" : {
 
     },
     "“%@” deja de aparecer en la historia de %@." : {
@@ -13,6 +22,12 @@
           }
         }
       }
+    },
+    "%@ cruzó el arcoíris" : {
+
+    },
+    "%@ siempre va a estar con vos" : {
+
     },
     "%@: %@" : {
       "localizations" : {
@@ -77,6 +92,9 @@
     "Agregar una medicación nueva" : {
 
     },
+    "Ahora no" : {
+
+    },
     "Anotar una medicación, un síntoma, el peso, una vacuna o una nota" : {
 
     },
@@ -84,6 +102,15 @@
 
     },
     "Avisarme cuando toca" : {
+
+    },
+    "Busca en el mapa del teléfono las veterinarias más próximas" : {
+
+    },
+    "Buscando veterinarias cerca…" : {
+
+    },
+    "Buscar veterinarias cerca" : {
 
     },
     "Cambiar" : {
@@ -101,6 +128,12 @@
     "Cierra el teclado y vuelve al formulario" : {
 
     },
+    "Cómo llegar" : {
+
+    },
+    "Cómo llegar a %@" : {
+
+    },
     "Compartir" : {
 
     },
@@ -114,6 +147,9 @@
 
     },
     "Crear" : {
+
+    },
+    "Cruzó el arcoíris" : {
 
     },
     "Cuándo" : {
@@ -132,6 +168,9 @@
 
     },
     "Del más nuevo al más viejo. Para corregir uno, entrá desde el historial." : {
+
+    },
+    "Deshacer esta marca" : {
 
     },
     "Detalles" : {
@@ -179,6 +218,9 @@
     "Empieza" : {
 
     },
+    "Es una búsqueda en el mapa, no una lista revisada. Puede estar incompleta y no dice cuál atiende urgencias." : {
+
+    },
     "Ese archivo tiene información de salud. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel." : {
 
     },
@@ -191,7 +233,7 @@
     "Este documento no se guarda. El archivo original no se toca." : {
 
     },
-    "Este es el lugar donde va a vivir la historia de salud de tu perro o de tu gato." : {
+    "Este es el lugar donde vas a poder anotar y encontrar de manera sencilla el historial de salud de tu perro o de tu gato." : {
 
     },
     "Evolución del peso" : {
@@ -215,13 +257,16 @@
     "Foto" : {
 
     },
+    "Gracias por hacernos parte de su vida." : {
+
+    },
     "Gráfico de la evolución del peso" : {
 
     },
-    "Historial" : {
+    "Hacerlo ahora" : {
 
     },
-    "Hola" : {
+    "Historial" : {
 
     },
     "Hoy" : {
@@ -233,13 +278,25 @@
     "La app muestra cómo cambió, no si está bien o mal. Eso lo dice el veterinario." : {
 
     },
+    "La app no vuelve a preguntarlo por un mes" : {
+
+    },
     "Las secciones sin información no aparecen en el PDF, aunque estén marcadas." : {
 
     },
     "Listo" : {
 
     },
+    "Llamar" : {
+
+    },
     "Llamar a %@" : {
+
+    },
+    "Lo que aparece es una búsqueda en el mapa, no una lista revisada. Puede estar incompleta, puede haber lugares cerrados, y no dice cuál atiende urgencias. La app las ordena por distancia y no recomienda ninguna." : {
+
+    },
+    "Lo que cambia es que la app deja de pedirte cosas: se apagan los avisos de medicaciones y de vacunas, y %@ sale de la pantalla de todos los días." : {
 
     },
     "Los avisos están activados" : {
@@ -252,6 +309,9 @@
 
     },
     "Los datos de esta sesión no se están guardando. Podés seguir usando la app y volver a intentarlo más tarde." : {
+
+    },
+    "Marcar que cruzó el arcoíris" : {
 
     },
     "Más información" : {
@@ -287,10 +347,16 @@
     "Nota" : {
 
     },
+    "Ordenadas por distancia" : {
+
+    },
     "Otra persona a cargo" : {
 
     },
     "Para avisarte, la app necesita tu permiso." : {
+
+    },
+    "Para buscar veterinarias cerca, la app le pregunta al mapa del teléfono qué hay alrededor tuyo. Es lo único de la app que sale a internet, pasa solo cuando tocás el botón, y no se guarda ni tu ubicación ni el resultado." : {
 
     },
     "Para cuando el cuidado se comparte entre dos personas. Las dos aparecen en el modo emergencia. Si dejás un nombre vacío, ese contacto se quita." : {
@@ -333,6 +399,9 @@
     "Podés elegir más de uno, o ninguno si todavía no lo sabés." : {
 
     },
+    "Podés intentar de nuevo en un momento." : {
+
+    },
     "Próxima" : {
 
     },
@@ -343,6 +412,9 @@
 
     },
     "Qué incluir" : {
+
+    },
+    "Qué pasa" : {
 
     },
     "Qué querés registrar de %@" : {
@@ -411,6 +483,9 @@
     "Si cargás la próxima fecha, aparece en Próximamente cuando se acerque." : {
 
     },
+    "Si no la recordás con exactitud, una aproximada está bien. Se puede cambiar después." : {
+
+    },
     "Sin especificar" : {
 
     },
@@ -418,6 +493,15 @@
 
     },
     "Son los teléfonos a los que se puede llamar desde el modo emergencia." : {
+
+    },
+    "Su historia queda guardada entera. La app no te pide nada más por %@." : {
+
+    },
+    "Su historia se guarda entera. Vas a poder entrar a su perfil y a todo lo que anotaste, cuando quieras." : {
+
+    },
+    "Su historial de salud entero lo guardamos acá: lo que anotaste, sus estudios y sus fotos. Podés volver cuando quieras." : {
 
     },
     "Sugerencias" : {
@@ -466,6 +550,9 @@
 
     },
     "Ver todo el historial" : {
+
+    },
+    "Veterinarias cerca" : {
 
     },
     "Veterinario de cabecera" : {
