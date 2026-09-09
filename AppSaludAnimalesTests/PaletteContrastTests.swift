@@ -52,6 +52,23 @@ struct PaletteContrastTests {
         )
     }
 
+    /// La tarjeta de la despedida se sale de la paleta de la app, así que sus
+    /// colores necesitan su propia verificación.
+    @Test("La tarjeta de la despedida se lee")
+    func laTarjetaDeLaDespedidaSeLee() {
+        expectReadable(
+            PaletteValues.onFarewellCard,
+            on: PaletteValues.farewellCard,
+            description: "texto de la despedida"
+        )
+
+        expectReadable(
+            PaletteValues.onFarewellCardMuted,
+            on: PaletteValues.farewellCard,
+            description: "texto secundario de la despedida"
+        )
+    }
+
     @Test("El acento suave se lee con su propio texto encima")
     func elAcentoSuaveSeLee() {
         expectReadable(

@@ -38,6 +38,22 @@ enum PaletteValues {
 
     static let accentSoft = ColorPair(light: 0xF2E1D8, dark: 0x46281C)
     static let onAccentSoft = ColorPair(light: 0x7A3520, dark: 0xF0C4B0)
+
+    /// La tarjeta de la despedida. Es el único lugar de la app que se sale de la
+    /// paleta cálida, a propósito: ese momento no se parece a ningún otro.
+    static let farewellCard = ColorPair(light: 0xD4E7F2, dark: 0x1E3340)
+    static let onFarewellCard = ColorPair(light: 0x243642, dark: 0xDCEAF3)
+    static let onFarewellCardMuted = ColorPair(light: 0x3E5666, dark: 0xA9C4D4)
+
+    /// Los colores del arco. Apagados a propósito: es un recuerdo, no una
+    /// celebración.
+    static let rainbow: [ColorPair] = [
+        ColorPair(light: 0xE79E8C, dark: 0xC4735F),
+        ColorPair(light: 0xEDC988, dark: 0xC79B57),
+        ColorPair(light: 0xB8D3A9, dark: 0x7FA36F),
+        ColorPair(light: 0x99C2D6, dark: 0x5F8FA8),
+        ColorPair(light: 0xC2AED9, dark: 0x8B77A8)
+    ]
 }
 
 /// Paleta del producto: neutros cálidos de base y un acento terracota.
@@ -55,6 +71,11 @@ enum Palette {
     static let accent = Color(PaletteValues.accent)
     static let accentFill = Color(PaletteValues.accentFill)
     static let onAccentFill = Color(PaletteValues.onAccentFill)
+    static let farewellCard = Color(PaletteValues.farewellCard)
+    static let onFarewellCard = Color(PaletteValues.onFarewellCard)
+    static let onFarewellCardMuted = Color(PaletteValues.onFarewellCardMuted)
+    static let rainbow: [Color] = PaletteValues.rainbow.map(Color.init)
+
     static let accentSoft = Color(PaletteValues.accentSoft)
     static let onAccentSoft = Color(PaletteValues.onAccentSoft)
 }

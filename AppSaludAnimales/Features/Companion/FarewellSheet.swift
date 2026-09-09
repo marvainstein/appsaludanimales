@@ -28,59 +28,95 @@ struct FarewellSheet: View {
     /// Lo que aparece después de guardar.
     ///
     /// La pantalla no se cierra sola. Cerrarse de golpe, como si acabara de
-    /// guardarse un peso, convierte este momento en un trámite. Se queda unos
-    /// segundos, dice lo único que la app puede decir con honestidad —que nada
-    /// se pierde— y espera.
+    /// guardarse un peso, convierte este momento en un trámite. Se queda, dice
+    /// lo único que la app puede decir con honestidad —que nada se pierde— y
+    /// espera.
     private var farewellMessage: some View {
-        VStack(spacing: Spacing.xl) {
-            Spacer(minLength: 0)
+        ZStack {
+            Palette.background
+                .ignoresSafeArea()
 
-            CompanionAvatar(companion: companion, size: 120)
-
-            VStack(spacing: Spacing.md) {
-                Text("\(companion.displayName) siempre va a estar con vos")
-                    .font(AppFont.screenTitle)
-                    .foregroundStyle(Palette.ink)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
-
-                Text("Su historial de salud entero lo guardamos acá: lo que anotaste, sus estudios y sus fotos. Podés volver cuando quieras.")
-                    .font(AppFont.body)
-                    .foregroundStyle(Palette.inkMuted)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                // Va aparte y más chico: cambia quién habla. Las dos frases de
-                // arriba son sobre el animal; esta es la app diciendo gracias, y
-                // mezclarlas le sacaría peso a las dos.
-                Text("Gracias por hacernos parte de su historia.")
-                    .font(AppFont.secondary)
-                    .foregroundStyle(Palette.inkMuted)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, Spacing.sm)
-            }
-
-            Spacer(minLength: 0)
-
-            PrimaryButton(
-                title: String(localized: "Cerrar"),
-                identifier: "farewell.close"
-            ) {
-                dismiss()
-            }
+            card
+                .padding(Spacing.xl)
         }
-        .padding(Spacing.xl)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Palette.background)
         // Sin barra de navegación: no hay nada para cancelar ni hacia dónde
         // volver, y un "Cancelar" acá arriba se leería como si algo estuviera a
         // medio hacer.
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    private var card: some View {
+        VStack(spacing: Spacing.lg) {
+            CompanionAvatar(companion: companion, size: 96)
+
+            Text("\(companion.displayName) siempre va a estar con vos")
+                .font(AppFont.sectionTitle)
+                .foregroundStyle(Palette.onFarewellCard)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+
+            Text("Su historial de salud entero lo guardamos acá: lo que anotaste, sus estudios y sus fotos. Podés volver cuando quieras.")
+                .font(AppFont.body)
+                .foregroundStyle(Palette.onFarewellCard)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+
+            // Va aparte y más chico: cambia quién habla. Lo de arriba es sobre
+            // el animal; esto es la app diciendo gracias, y mezclarlos le
+            // sacaría peso a los dos.
+            Text("Gracias por hacernos parte de su vida.")
+                .font(AppFont.secondary)
+                .foregroundStyle(Palette.onFarewellCardMuted)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Button {
+                dismiss()
+            } label: {
+                Text("Cerrar")
+                    .font(AppFont.cardTitle)
+                    .foregroundStyle(Palette.onFarewellCard)
+                    .frame(maxWidth: .infinity, minHeight: Spacing.minimumTapTarget)
+            }
+            .buttonStyle(.plain)
+            .padding(.top, Spacing.sm)
+            .accessibilityIdentifier("farewell.close")
+        }
+        .padding(Spacing.xl)
+        .frame(maxWidth: .infinity)
+        .background(cardBackground)
         // El mensaje se anuncia como una sola cosa: quien navega con VoiceOver
         // lo escucha entero de una vez, sin ir juntando pedazos.
         .accessibilityElement(children: .combine)
+    }
+
+    /// Celeste pastel con un arco de colores detrás.
+    ///
+    /// El arco va difuminado y por debajo de todo: tiene que sentirse como una
+    /// luz en el fondo y no como un adorno. Los colores están apagados a
+    /// propósito —es un recuerdo, no una celebración— y el texto no depende de
+    /// ellos para leerse, que es lo que verifica la prueba de contraste.
+    private var cardBackground: some View {
+        let shape = RoundedRectangle(cornerRadius: 32, style: .continuous)
+
+        return ZStack {
+            shape.fill(Palette.farewellCard)
+
+            Ellipse()
+                .fill(
+                    LinearGradient(
+                        colors: Palette.rainbow,
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(height: 160)
+                .blur(radius: 40)
+                .opacity(0.55)
+                .offset(y: -70)
+        }
+        .clipShape(shape)
     }
 
     private var form: some View {
