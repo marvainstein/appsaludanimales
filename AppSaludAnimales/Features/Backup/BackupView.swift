@@ -136,6 +136,8 @@ struct BackupView: View {
                 await MainActor.run {
                     backupURL = url
                     isPreparing = false
+                    BackupPreferences.lastBackup = Date()
+                    BackupPreferences.snoozedAt = nil
                 }
             } catch {
                 await MainActor.run {

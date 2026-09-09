@@ -27,6 +27,10 @@ struct DashboardView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Se calcula una vez al aparecer, y no en cada dibujo: una tarjeta que
+    /// aparece y desaparece sola mientras alguien lee es peor que no tenerla.
+    @State private var isOfferingBackup = false
+
     private var snapshot: DashboardSnapshot {
         DashboardBuilder.snapshot(for: companion, on: referenceDate)
     }
@@ -35,6 +39,10 @@ struct DashboardView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.xl) {
                 companionHeader
+
+                if isOfferingBackup {
+                    backupCard
+                }
 
                 if companion.isPresent {
                     section(
@@ -101,7 +109,10 @@ struct DashboardView: View {
                 }
             }
         }
-        .onAppear(perform: refreshReferenceDate)
+        .onAppear {
+            refreshReferenceDate()
+            refreshBackupOffer()
+        }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 refreshReferenceDate()
@@ -111,6 +122,56 @@ struct DashboardView: View {
 
     private func refreshReferenceDate() {
         referenceDate = Date()
+    }
+
+    private func refreshBackupOffer() {
+        isOfferingBackup = BackupReminder.shouldOffer(
+            lastBackup: BackupPreferences.lastBackup,
+            snoozedAt: BackupPreferences.snoozedAt,
+            oldestRecord: companion.createdAt
+        )
+    }
+
+    /// Una pregunta, no un reto. Sin signos de admiración, sin contador de días
+    /// sin respaldar, y con una salida que dura un mes.
+    private var backupCard: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            Text("¿Hacemos un respaldo?")
+                .font(AppFont.cardTitle)
+                .foregroundStyle(Palette.ink)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text(BackupReminder.message(lastBackup: BackupPreferences.lastBackup))
+                .font(AppFont.secondary)
+                .foregroundStyle(Palette.inkMuted)
+                .fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: Spacing.xl) {
+                NavigationLink {
+                    BackupView()
+                } label: {
+                    Text("Hacerlo ahora")
+                        .frame(minHeight: Spacing.minimumTapTarget)
+                }
+
+                Button {
+                    BackupPreferences.snoozedAt = Date()
+                    isOfferingBackup = false
+                } label: {
+                    Text("Ahora no")
+                        .frame(minHeight: Spacing.minimumTapTarget)
+                }
+                .accessibilityHint(Text("La app no vuelve a preguntarlo por un mes"))
+            }
+            .font(AppFont.cardTitle)
+            .foregroundStyle(Palette.accent)
+        }
+        .padding(Spacing.lg)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
+                .fill(Palette.accentSoft)
+        )
     }
 
     // MARK: - Encabezado
