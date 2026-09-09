@@ -166,6 +166,17 @@ struct CompanionProfileView: View {
                     }
                     .frame(minHeight: Spacing.minimumTapTarget)
                 }
+
+                NavigationLink {
+                    AboutView()
+                } label: {
+                    Label {
+                        Text("Acerca de Huella")
+                    } icon: {
+                        Image(systemName: "info.circle")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
             } footer: {
                 Text("Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla.")
             }

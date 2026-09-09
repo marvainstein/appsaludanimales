@@ -31,7 +31,7 @@ mejora algo que ya funciona.
 
 ## Para que se entienda qué es esta app
 
-- [ ] **Pantalla "Acerca de".** Qué hace la app y qué no: que no diagnostica, que
+- [x] **Pantalla "Acerca de".** Qué hace la app y qué no: que no diagnostica, que
       los datos no salen del teléfono, quién la hizo y por qué. Apple lo valora y
       además es lo honesto.
 - [ ] **Ilustraciones propias en los estados vacíos.** Están los tres lugares
