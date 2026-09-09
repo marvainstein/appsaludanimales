@@ -6,13 +6,22 @@ struct HistoryView: View {
     let companion: Companion
 
     @State private var selectedCategories: Set<HealthCategory> = []
+    @State private var searchText = ""
 
     private var availableCategories: [HealthCategory] {
         HistoryBuilder.availableCategories(for: companion)
     }
 
     private var sections: [HistorySection] {
-        HistoryBuilder.sections(for: companion, categories: selectedCategories)
+        HistoryBuilder.sections(
+            for: companion,
+            categories: selectedCategories,
+            search: searchText
+        )
+    }
+
+    private var isFiltering: Bool {
+        !selectedCategories.isEmpty || !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     var body: some View {
@@ -23,6 +32,13 @@ struct HistoryView: View {
                 }
 
                 if sections.isEmpty {
+                    // El dibujo solo cuando no hay nada de nada. Si la lista
+                    // está vacía porque hay un filtro puesto, el dibujo sobra:
+                    // lo que hace falta ahí es sacar el filtro.
+                    if !isFiltering {
+                        EmptyStateIllustration(kind: .history)
+                    }
+
                     SectionEmptyState(message: emptyMessage)
                 } else {
                     ForEach(sections) { section in
@@ -45,10 +61,26 @@ struct HistoryView: View {
         }
         .background(Palette.background)
         .navigationTitle(Text("Historial"))
+        .searchable(
+            text: $searchText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: Text("Buscar en el historial")
+        )
     }
 
+    /// Tres mensajes distintos, porque son tres situaciones distintas y la
+    /// salida de cada una es otra: cargar algo, sacar el filtro, o buscar otra
+    /// cosa.
     private var emptyMessage: String {
-        selectedCategories.isEmpty
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if !query.isEmpty {
+            return selectedCategories.isEmpty
+                ? String(localized: "No encontramos nada que diga “\(query)”.")
+                : String(localized: "No encontramos nada que diga “\(query)” en lo que estás filtrando.")
+        }
+
+        return selectedCategories.isEmpty
             ? String(localized: "Todavía no hay nada registrado. Lo que anotes va a aparecer acá, ordenado por fecha.")
             : String(localized: "No hay nada registrado en lo que estás filtrando.")
     }

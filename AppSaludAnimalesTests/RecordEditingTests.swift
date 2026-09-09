@@ -73,3 +73,29 @@ struct RecordEditingTests {
         return ModelContext(container)
     }
 }
+
+/// Eliminar a un compañero borra años de historia clínica. El aviso previo es
+/// lo único que se interpone.
+struct CompanionDeletionTests {
+    @Test("El aviso dice cuántos registros se van, no una advertencia genérica")
+    func elAvisoDiceElNumero() {
+        let message = CompanionDeletion.warningMessage(name: "Luli", recordCount: 214)
+
+        #expect(message.contains("214"), "Un número concreto frena mejor que “es irreversible”")
+        #expect(message.contains("Luli"))
+        #expect(message.contains("No se puede deshacer"))
+    }
+
+    @Test("Con un solo registro no dice “1 registros”")
+    func hablaBienEnSingular() {
+        #expect(CompanionDeletion.warningMessage(name: "Luli", recordCount: 1).contains("el registro"))
+    }
+
+    @Test("Sin nada cargado no habla de registros que no existen")
+    func noMencionaRegistrosQueNoHay() {
+        let message = CompanionDeletion.warningMessage(name: "Luli", recordCount: 0)
+
+        #expect(!message.contains("registro"))
+        #expect(message.contains("Luli"))
+    }
+}

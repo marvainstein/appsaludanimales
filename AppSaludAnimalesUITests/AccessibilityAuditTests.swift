@@ -46,6 +46,104 @@ final class AccessibilityAuditTests: XCTestCase {
         try audit(app, pantalla: "el registro rápido", tipos: Self.sinTamanoDeTexto)
     }
 
+    @MainActor
+    func testElPerfilPasaLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try waitForDashboard(app)
+
+        Self.element(app, "dashboard.companion").tap()
+
+        try audit(app, pantalla: "el perfil", tipos: Self.sinTamanoDeTexto)
+    }
+
+    @MainActor
+    func testLaEvolucionDelPesoPasaLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try open(app, "dashboard.companion", then: "profile.weight")
+
+        try audit(app, pantalla: "la evolución del peso", tipos: Self.sinTamanoDeTexto)
+    }
+
+    @MainActor
+    func testElRespaldoPasaLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try open(app, "dashboard.companion", then: "profile.backup")
+
+        try audit(app, pantalla: "el respaldo", tipos: Self.sinTamanoDeTexto)
+    }
+
+    @MainActor
+    func testAcercaDePasaLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try open(app, "dashboard.companion", then: "profile.about")
+
+        try audit(app, pantalla: "acerca de", tipos: Self.sinTamanoDeTexto)
+    }
+
+    @MainActor
+    func testLaDespedidaPasaLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try open(app, "dashboard.companion", then: "profile.farewell")
+
+        try audit(app, pantalla: "la despedida", tipos: Self.sinTamanoDeTexto)
+    }
+
+    @MainActor
+    func testElModoEmergenciaPasaLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try waitForDashboard(app)
+
+        Self.element(app, "dashboard.emergency").tap()
+
+        XCTAssertTrue(
+            Self.element(app, "emergency.nearbyVets").waitForExistence(timeout: 5),
+            "Se esperaba el modo emergencia"
+        )
+
+        try audit(app, pantalla: "el modo emergencia", tipos: Self.sinTamanoDeTexto)
+    }
+
+    /// La pantalla de veterinarias cerca, antes de pedir el permiso de
+    /// ubicación. Lo que viene después depende de una respuesta del sistema y de
+    /// la red, así que no entra en una prueba.
+    @MainActor
+    func testVeterinariasCercaPasaLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try waitForDashboard(app)
+
+        Self.element(app, "dashboard.emergency").tap()
+        try tap(app, "emergency.nearbyVets")
+
+        XCTAssertTrue(
+            Self.element(app, "nearbyVets.search").waitForExistence(timeout: 5),
+            "Se esperaba la pantalla de veterinarias cerca"
+        )
+
+        try audit(app, pantalla: "veterinarias cerca", tipos: Self.sinTamanoDeTexto)
+    }
+
+    // MARK: - Navegación
+
+    /// Toca un control y espera a que aparezca el siguiente.
+    @MainActor
+    private func open(_ app: XCUIApplication, _ first: String, then second: String) throws {
+        try waitForDashboard(app)
+        try tap(app, first)
+        try tap(app, second)
+    }
+
+    @MainActor
+    private func tap(_ app: XCUIApplication, _ identifier: String) throws {
+        let element = Self.element(app, identifier)
+
+        XCTAssertTrue(
+            element.waitForExistence(timeout: 10),
+            "Se esperaba encontrar “\(identifier)” para seguir el recorrido"
+        )
+
+        element.tap()
+    }
+
     // MARK: - Auditoría
 
     /// Todo menos el tamaño de texto.

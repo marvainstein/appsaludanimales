@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 import Testing
 
 @testable import AppSaludAnimales
@@ -70,5 +71,56 @@ struct DocumentFileNameTests {
     func lasCategoriasSugeridasTienenTexto() {
         #expect(!DocumentCategorySuggestions.all.isEmpty)
         #expect(DocumentCategorySuggestions.all.allSatisfy { !$0.isEmpty })
+    }
+}
+
+/// Un documento enganchado a un episodio o a un turno.
+@MainActor
+struct DocumentAttachmentTests {
+    @Test("El documento adjunto sigue siendo del compañero, no solo del episodio")
+    func elAdjuntoSigueSiendoDelCompaniero() throws {
+        let context = ModelContext(try ModelContainerFactory.makeContainer(inMemory: true))
+
+        let companion = Companion(name: "Luli", species: .dog)
+        let episode = HealthEpisode(symptom: "Cojera", date: .test(2025, 4, 1))
+        companion.episodes.append(episode)
+
+        let document = HealthDocument(title: "Radiografía de cadera", date: .test(2025, 4, 2))
+        companion.documents.append(document)
+        document.episode = episode
+
+        context.insert(companion)
+        try context.save()
+
+        #expect(episode.documents.count == 1, "Aparece adentro del episodio")
+        #expect(
+            companion.documents.count == 1,
+            "Y sigue en la lista del compañero: si no, desaparecería del historial y del PDF"
+        )
+        #expect(HistoryBuilder.entries(for: companion, categories: [.document]).count == 1)
+    }
+
+    @Test("Borrar el episodio no se lleva el estudio puesto")
+    func borrarElEpisodioNoSeLlevaElEstudio() throws {
+        let context = ModelContext(try ModelContainerFactory.makeContainer(inMemory: true))
+
+        let companion = Companion(name: "Luli", species: .dog)
+        let episode = HealthEpisode(symptom: "Cojera", date: .test(2025, 4, 1))
+        companion.episodes.append(episode)
+
+        let document = HealthDocument(title: "Radiografía de cadera", date: .test(2025, 4, 2))
+        companion.documents.append(document)
+        document.episode = episode
+
+        context.insert(companion)
+        try context.save()
+
+        context.delete(episode)
+        try context.save()
+
+        #expect(
+            try context.fetch(FetchDescriptor<HealthDocument>()).count == 1,
+            "Una radiografía cuesta plata y no se puede repetir: no se va con el episodio"
+        )
     }
 }

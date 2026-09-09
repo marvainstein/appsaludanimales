@@ -18,6 +18,9 @@ struct WeightChartView: View {
         List {
             if trend.points.isEmpty {
                 Section {
+                    EmptyStateIllustration(kind: .weight)
+                        .listRowBackground(Color.clear)
+
                     SectionEmptyState(
                         message: String(localized: "Todavía no hay pesos registrados. Cuando cargues el primero, aparece acá.")
                     )

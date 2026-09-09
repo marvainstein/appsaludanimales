@@ -3,6 +3,12 @@ import SwiftData
 import SwiftUI
 import UniformTypeIdentifiers
 
+/// A qué se engancha un documento además de al compañero.
+enum DocumentAttachment {
+    case episode(HealthEpisode)
+    case appointment(Appointment)
+}
+
 /// Adjuntar un estudio, una receta o cualquier documento.
 ///
 /// Se puede traer desde las fotos o desde archivos: un análisis llega por correo
@@ -15,6 +21,13 @@ struct DocumentRecordView: View {
     /// Con un documento ya guardado, la misma pantalla lo edita: el archivo
     /// adjunto se mantiene, y se puede cambiar por otro si hacía falta.
     private let editing: HealthDocument?
+
+    /// A qué queda enganchado el documento, además de al compañero.
+    ///
+    /// Un análisis suelto en la lista de documentos obliga a recordar de qué
+    /// episodio era. Enganchado al episodio, aparece donde se lo va a buscar:
+    /// adentro de lo que pasó.
+    private let attachment: DocumentAttachment?
 
     @Environment(\.modelContext) private var modelContext
 
@@ -32,10 +45,12 @@ struct DocumentRecordView: View {
     init(
         companion: Companion,
         editing: HealthDocument? = nil,
+        attachment: DocumentAttachment? = nil,
         onFinished: @escaping () -> Void = {}
     ) {
         self.companion = companion
         self.editing = editing
+        self.attachment = attachment
         self.onFinished = onFinished
         _title = State(initialValue: editing?.title ?? "")
         _category = State(initialValue: editing?.category ?? "")
@@ -257,6 +272,15 @@ struct DocumentRecordView: View {
 
         if editing == nil {
             companion.documents.append(document)
+        }
+
+        // El documento siempre pertenece al compañero. El episodio o el turno
+        // es un vínculo de más, no un lugar distinto donde guardarlo: así sigue
+        // apareciendo en el historial y en el resumen en PDF.
+        switch attachment {
+        case let .episode(episode): document.episode = episode
+        case let .appointment(appointment): document.appointment = appointment
+        case nil: break
         }
 
         do {

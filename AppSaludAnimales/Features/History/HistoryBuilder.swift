@@ -39,7 +39,8 @@ enum HistoryBuilder {
     /// cada vez que aparece una nueva.
     static func entries(
         for companion: Companion,
-        categories: Set<HealthCategory> = []
+        categories: Set<HealthCategory> = [],
+        search: String = ""
     ) -> [HistoryEntry] {
         var entries: [HistoryEntry] = []
 
@@ -141,15 +142,27 @@ enum HistoryBuilder {
 
         return entries
             .filter { categories.isEmpty || categories.contains($0.category) }
+            .filter { entry in
+                // Se busca en el título, en el detalle y en el nombre de la
+                // categoría: quien escribe "vacuna" está buscando las vacunas,
+                // aunque ninguna se llame así.
+                TextSearch.matchesAny(
+                    [entry.title, entry.detail, entry.category.label],
+                    query: search
+                )
+            }
             .sorted { $0.date > $1.date }
     }
 
     static func sections(
         for companion: Companion,
         categories: Set<HealthCategory> = [],
+        search: String = "",
         calendar: Calendar = .current
     ) -> [HistorySection] {
-        let grouped = Dictionary(grouping: entries(for: companion, categories: categories)) { entry in
+        let grouped = Dictionary(
+            grouping: entries(for: companion, categories: categories, search: search)
+        ) { entry in
             calendar.dateComponents([.year, .month], from: entry.date)
         }
 
