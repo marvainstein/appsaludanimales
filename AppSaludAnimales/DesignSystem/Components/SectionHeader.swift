@@ -87,6 +87,10 @@ struct DashboardItemCard: View {
 struct SectionEmptyState: View {
     let message: String
 
+    /// El fondo se puede cambiar porque la pantalla de quien cruzó el arcoíris
+    /// tiene su propia paleta.
+    var background: Color = Palette.surfaceMuted
+
     var body: some View {
         Text(message)
             .font(AppFont.secondary)
@@ -96,7 +100,7 @@ struct SectionEmptyState: View {
             .padding(Spacing.lg)
             .background(
                 RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
-                    .fill(Palette.surfaceMuted)
+                    .fill(background)
             )
     }
 }

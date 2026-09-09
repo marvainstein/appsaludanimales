@@ -88,7 +88,18 @@ struct DashboardView: View {
                 isRecordButtonCompact = isScrolled
             }
         }
-        .background(Palette.background)
+        .background {
+            if companion.isPresent {
+                Palette.background
+            } else {
+                // La pantalla entera de quien cruzó el arcoíris toma sus
+                // colores. Los textos de siempre se siguen leyendo encima
+                // porque el celeste y el fondo cálido tienen la misma relación
+                // clara-oscura, y hay una prueba que lo verifica.
+                FarewellBackground(glowHeight: 320, glowOffset: -140)
+                    .ignoresSafeArea()
+            }
+        }
         .navigationTitle(Text("Hoy"))
         .safeAreaInset(edge: .bottom) {
             if companion.isPresent {
@@ -225,7 +236,7 @@ struct DashboardView: View {
         // Sin foto, el aro de colores no existe: acá es donde alguien que navega
         // con VoiceOver se entera.
         if let farewell = companion.farewellDate {
-            parts.append(String(localized: "Ya no está · \(DateDescription.absolute(farewell))"))
+            parts.append(String(localized: "Cruzó el arcoíris · \(DateDescription.absolute(farewell))"))
         }
 
         return parts.joined(separator: " · ")
@@ -300,7 +311,12 @@ struct DashboardView: View {
             SectionHeader(title: title, subtitle: subtitle)
 
             if items.isEmpty {
-                SectionEmptyState(message: emptyMessage)
+                SectionEmptyState(
+                    message: emptyMessage,
+                    background: companion.isPresent
+                        ? Palette.surfaceMuted
+                        : Palette.farewellSurfaceMuted
+                )
             } else {
                 ForEach(items) { item in
                     DashboardItemCard(item: item, referenceDate: referenceDate)

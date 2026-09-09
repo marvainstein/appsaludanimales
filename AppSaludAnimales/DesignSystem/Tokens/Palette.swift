@@ -45,6 +45,10 @@ enum PaletteValues {
     static let onFarewellCard = ColorPair(light: 0x243642, dark: 0xDCEAF3)
     static let onFarewellCardMuted = ColorPair(light: 0x3E5666, dark: 0xA9C4D4)
 
+    /// Superficie apagada sobre el celeste, para los bloques que sobre el fondo
+    /// cálido usan `surfaceMuted`.
+    static let farewellSurfaceMuted = ColorPair(light: 0xC7E0EE, dark: 0x27404F)
+
     /// Los colores del arco. Apagados a propósito: es un recuerdo, no una
     /// celebración.
     static let rainbow: [ColorPair] = [
@@ -72,6 +76,7 @@ enum Palette {
     static let accentFill = Color(PaletteValues.accentFill)
     static let onAccentFill = Color(PaletteValues.onAccentFill)
     static let farewellCard = Color(PaletteValues.farewellCard)
+    static let farewellSurfaceMuted = Color(PaletteValues.farewellSurfaceMuted)
     static let onFarewellCard = Color(PaletteValues.onFarewellCard)
     static let onFarewellCardMuted = Color(PaletteValues.onFarewellCardMuted)
     static let rainbow: [Color] = PaletteValues.rainbow.map(Color.init)

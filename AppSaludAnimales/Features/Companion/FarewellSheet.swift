@@ -91,32 +91,11 @@ struct FarewellSheet: View {
         .accessibilityElement(children: .combine)
     }
 
-    /// Celeste pastel con un arco de colores detrás.
-    ///
-    /// El arco va difuminado y por debajo de todo: tiene que sentirse como una
-    /// luz en el fondo y no como un adorno. Los colores están apagados a
-    /// propósito —es un recuerdo, no una celebración— y el texto no depende de
-    /// ellos para leerse, que es lo que verifica la prueba de contraste.
     private var cardBackground: some View {
         let shape = RoundedRectangle(cornerRadius: 32, style: .continuous)
 
-        return ZStack {
-            shape.fill(Palette.farewellCard)
-
-            Ellipse()
-                .fill(
-                    LinearGradient(
-                        colors: Palette.rainbow,
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .frame(height: 160)
-                .blur(radius: 40)
-                .opacity(0.55)
-                .offset(y: -70)
-        }
-        .clipShape(shape)
+        return FarewellBackground()
+            .clipShape(shape)
     }
 
     private var form: some View {
@@ -149,7 +128,7 @@ struct FarewellSheet: View {
                     action: save
                 )
             }
-            .navigationTitle(Text("\(companion.displayName) ya no está"))
+            .navigationTitle(Text("\(companion.displayName) cruzó el arcoíris"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

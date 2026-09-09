@@ -74,6 +74,6 @@ struct CompanionAvatar: View {
         guard !companion.isPresent else { return base }
 
         // Lo que dice el aro de colores, dicho también en palabras.
-        return String(localized: "\(base). Ya no está.")
+        return String(localized: "\(base). Cruzó el arcoíris.")
     }
 }

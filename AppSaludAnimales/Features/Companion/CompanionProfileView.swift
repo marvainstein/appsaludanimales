@@ -33,7 +33,7 @@ struct CompanionProfileView: View {
             if let farewell = companion.farewellDate {
                 Section {
                     VStack(alignment: .leading, spacing: Spacing.sm) {
-                        Text("Ya no está con nosotros")
+                        Text("Cruzó el arcoíris")
                             .font(AppFont.cardTitle)
                             .foregroundStyle(Palette.ink)
                             .fixedSize(horizontal: false, vertical: true)
@@ -172,7 +172,7 @@ struct CompanionProfileView: View {
                         isMarkingFarewell = true
                     } label: {
                         Label {
-                            Text("Marcar que ya no está")
+                            Text("Marcar que cruzó el arcoíris")
                         } icon: {
                             Image(systemName: "leaf")
                         }
@@ -183,7 +183,7 @@ struct CompanionProfileView: View {
                         undoFarewell()
                     } label: {
                         Label {
-                            Text("Marcar que sí está")
+                            Text("Deshacer esta marca")
                         } icon: {
                             Image(systemName: "arrow.uturn.backward")
                         }

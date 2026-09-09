@@ -69,6 +69,31 @@ struct PaletteContrastTests {
         )
     }
 
+    /// La pantalla de quien cruzó el arcoíris usa los colores de texto de la app
+    /// sobre un fondo celeste. Si alguno de los dos se mueve, esto lo agarra.
+    @Test("Los textos de siempre se leen sobre el celeste del arcoíris")
+    func losTextosSeLeenSobreElCeleste() {
+        let backgrounds: [(String, ColorPair)] = [
+            ("celeste", PaletteValues.farewellCard),
+            ("celeste apagado", PaletteValues.farewellSurfaceMuted)
+        ]
+
+        for (name, background) in backgrounds {
+            expectReadable(PaletteValues.ink, on: background, description: "texto sobre \(name)")
+            expectReadable(PaletteValues.inkMuted, on: background, description: "texto secundario sobre \(name)")
+        }
+
+        // El acento solo se verifica sobre el celeste de fondo. Sobre el celeste
+        // apagado queda en 4,46 y no llega al mínimo, así que ahí no se usa: ese
+        // bloque lleva únicamente texto secundario. Si algún día alguien pone un
+        // enlace adentro, hay que aclarar el fondo primero.
+        expectReadable(
+            PaletteValues.accent,
+            on: PaletteValues.farewellCard,
+            description: "acento sobre celeste"
+        )
+    }
+
     @Test("El acento suave se lee con su propio texto encima")
     func elAcentoSuaveSeLee() {
         expectReadable(
