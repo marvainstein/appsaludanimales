@@ -236,6 +236,9 @@ struct CompanionProfileView: View {
         }
         .navigationTitle(Text("Perfil"))
         .navigationBarTitleDisplayMode(.inline)
+        // Barra opaca: translúcida, el texto de sus botones se lee sobre lo que
+        // pase por detrás, que puede ser cualquier cosa.
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {

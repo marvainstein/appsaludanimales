@@ -73,6 +73,9 @@ struct AboutView: View {
         }
         .navigationTitle(Text("Acerca de Huella"))
         .navigationBarTitleDisplayMode(.inline)
+        // Barra opaca: translúcida, el texto de sus botones se lee sobre lo que
+        // pase por detrás, que puede ser cualquier cosa.
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 
     private var version: String {

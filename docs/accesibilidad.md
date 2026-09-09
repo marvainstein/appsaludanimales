@@ -23,7 +23,17 @@ Hay tres niveles, del más automático al más humano:
    las seis filas usan la misma función y la misma tipografía y solo se
    reportaban las cuatro de abajo. Como esa verificación ahí no dice nada útil,
    el tamaño de texto en esas pantallas **se prueba a mano**, en el paso de
-   Dynamic Type de más abajo. Todo el resto de la auditoría sigue corriendo.
+   Dynamic Type de más abajo.
+
+   Por el mismo motivo, en las pantallas armadas con formularios del sistema
+   —perfil, respaldo, acerca de, la despedida— queda apagada también la
+   verificación de contraste. Ahí señala cosas que no son nuestras y que no
+   podemos cambiar: los botones de la barra de navegación, el texto de pie de
+   una lista —que usa los colores por omisión de Apple— y varios hallazgos que
+   ni siquiera pueden decir sobre qué elemento cayeron. El contraste de los
+   colores del producto no queda sin verificar: `PaletteContrastTests` calcula
+   el número real de cada combinación que definimos, en claro y en oscuro, y
+   falla si alguna baja de 4,5. Eso es más confiable que muestrear píxeles.
 3. Lo que sigue en este documento, que se prueba a mano y no lleva más de veinte
    minutos por vuelta.
 

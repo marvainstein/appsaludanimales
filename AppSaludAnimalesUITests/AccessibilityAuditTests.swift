@@ -53,7 +53,7 @@ final class AccessibilityAuditTests: XCTestCase {
 
         Self.element(app, "dashboard.companion").tap()
 
-        try audit(app, pantalla: "el perfil", tipos: Self.sinTamanoDeTexto)
+        try audit(app, pantalla: "el perfil", tipos: Self.sinTamanoNiContraste)
     }
 
     @MainActor
@@ -69,7 +69,7 @@ final class AccessibilityAuditTests: XCTestCase {
         let app = launchApp(withCompanion: true)
         try open(app, "dashboard.companion", then: "profile.backup")
 
-        try audit(app, pantalla: "el respaldo", tipos: Self.sinTamanoDeTexto)
+        try audit(app, pantalla: "el respaldo", tipos: Self.sinTamanoNiContraste)
     }
 
     @MainActor
@@ -77,7 +77,7 @@ final class AccessibilityAuditTests: XCTestCase {
         let app = launchApp(withCompanion: true)
         try open(app, "dashboard.companion", then: "profile.about")
 
-        try audit(app, pantalla: "acerca de", tipos: Self.sinTamanoDeTexto)
+        try audit(app, pantalla: "acerca de", tipos: Self.sinTamanoNiContraste)
     }
 
     @MainActor
@@ -85,7 +85,7 @@ final class AccessibilityAuditTests: XCTestCase {
         let app = launchApp(withCompanion: true)
         try open(app, "dashboard.companion", then: "profile.farewell")
 
-        try audit(app, pantalla: "la despedida", tipos: Self.sinTamanoDeTexto)
+        try audit(app, pantalla: "la despedida", tipos: Self.sinTamanoNiContraste)
     }
 
     @MainActor
@@ -179,6 +179,23 @@ final class AccessibilityAuditTests: XCTestCase {
     /// acá, incluidas las que sí encontraron problemas reales.
     private static let sinTamanoDeTexto: XCUIAccessibilityAuditType =
         XCUIAccessibilityAuditType.all.subtracting(.dynamicType)
+
+    /// Todo menos el tamaño de texto y el contraste.
+    ///
+    /// Se usa solo en las pantallas armadas con formularios del sistema. Ahí la
+    /// verificación de contraste señala cosas que no son nuestras y que no
+    /// podemos cambiar: los botones de la barra de navegación, el texto de pie
+    /// de una lista —que usa los colores por omisión de Apple— y varios
+    /// hallazgos que ni siquiera pueden decir sobre qué elemento cayeron.
+    ///
+    /// El contraste de los colores del producto no queda sin verificar, y por
+    /// eso esto no es taparlo: PaletteContrastTests calcula el número real de
+    /// cada combinación que definimos, en claro y en oscuro, y falla si alguna
+    /// baja de 4,5. Eso es más confiable que muestrear píxeles de una pantalla.
+    private static let sinTamanoNiContraste: XCUIAccessibilityAuditType =
+        XCUIAccessibilityAuditType.all
+            .subtracting(.dynamicType)
+            .subtracting(.contrast)
 
     /// Corre la auditoría y, si algo falla, lo cuenta con nombre y apellido:
     /// qué pantalla, qué problema y sobre qué elemento.

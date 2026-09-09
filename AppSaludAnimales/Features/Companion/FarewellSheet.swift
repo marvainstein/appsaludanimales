@@ -130,6 +130,7 @@ struct FarewellSheet: View {
             }
             .navigationTitle(Text("\(companion.displayName) cruzó el arcoíris"))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
