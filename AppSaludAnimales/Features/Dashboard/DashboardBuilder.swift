@@ -43,7 +43,7 @@ enum DashboardBuilder {
             today: todayItems(for: companion, on: referenceDate, calendar: calendar),
             upcoming: upcomingItems(for: companion, on: referenceDate, calendar: calendar),
             currentStatus: currentStatusItems(for: companion, on: referenceDate),
-            recentActivity: recentActivityItems(for: companion, on: referenceDate)
+            recentActivity: recentActivityItems(for: companion)
         )
     }
 
@@ -224,10 +224,7 @@ enum DashboardBuilder {
     /// Incluye todo lo del día, no solo lo anterior a este instante: algo
     /// registrado hoy más tarde sigue siendo actividad reciente, y así lo recién
     /// anotado nunca queda invisible por unos minutos de diferencia.
-    private static func recentActivityItems(
-        for companion: Companion,
-        on referenceDate: Date
-    ) -> [DashboardItem] {
+    private static func recentActivityItems(for companion: Companion) -> [DashboardItem] {
         var timeline: [any HealthTimelineItem] = []
         timeline += companion.medications.map { $0 as any HealthTimelineItem }
         timeline += companion.treatments.map { $0 as any HealthTimelineItem }
@@ -243,7 +240,6 @@ enum DashboardBuilder {
         // lo dejaba afuera de los últimos cinco y daba a entender que no se
         // había guardado.
         return timeline
-            .filter { $0.timelineRecordedAt <= referenceDate }
             .sorted { $0.timelineRecordedAt > $1.timelineRecordedAt }
             .prefix(recentActivityLimit)
             .map { item in

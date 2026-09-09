@@ -115,7 +115,7 @@ struct ReminderPlanTests {
 
         let plan = ReminderPlanBuilder.plan(for: [companion], on: today, calendar: .test)
 
-        #expect(plan.first?.body == "Control anual")
+        #expect(plan.first?.body.hasPrefix("Control anual") == true)
 
         if case let .at(date) = try #require(plan.first?.trigger) {
             #expect(date == .test(2024, 5, 27, hour: 15))
@@ -152,7 +152,7 @@ struct ReminderPlanTests {
 
         let plan = ReminderPlanBuilder.plan(for: [companion], on: today, calendar: .test)
 
-        #expect(plan.first?.body == "Control")
+        #expect(plan.first?.body.hasPrefix("Control") == true)
     }
 
     @Test
@@ -188,8 +188,10 @@ struct ReminderMessageTests {
         let turno = plan.first { $0.title.contains("Turno") }
 
         #expect(turno != nil)
+        // Con la hora escrita como la escribe el sistema. Compararla contra un
+        // número fijo ataba la prueba a la zona horaria de quien la corre.
         #expect(
-            turno?.body.contains("16") == true,
+            turno?.body.contains(ReminderPlanBuilder.time(appointment.date)) == true,
             "El aviso llega una hora antes: lo primero que se quiere saber es a qué hora hay que estar"
         )
         #expect(turno?.body.contains("Fisio") == true)

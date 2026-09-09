@@ -129,7 +129,30 @@ struct DashboardBuilderTests {
         let snapshot = DashboardBuilder.snapshot(for: companion, on: today, calendar: .test)
 
         #expect(snapshot.recentActivity.count == DashboardBuilder.recentActivityLimit)
-        #expect(snapshot.recentActivity.first?.title == "Nota 7")
+        #expect(
+            snapshot.recentActivity.first?.title == "Nota 7",
+            "La última anotada va primero"
+        )
+    }
+
+    /// El caso que apareció usando la app: se adjunta un estudio de hace dos
+    /// años y no aparecía en actividad reciente, porque la sección ordenaba por
+    /// la fecha del estudio. Daba a entender que no se había guardado.
+    @Test
+    func loRecienAnotadoApareceAunqueSeaDeHaceAnios() throws {
+        let companion = try makeCompanion()
+
+        companion.notes.append(CompanionNote(text: "Anotado antes", date: .test(2024, 5, 20)))
+
+        let viejo = HealthDocument(title: "Análisis de 2018", date: .test(2018, 3, 1))
+        companion.documents.append(viejo)
+
+        let snapshot = DashboardBuilder.snapshot(for: companion, on: today, calendar: .test)
+
+        #expect(
+            snapshot.recentActivity.first?.title == "Análisis de 2018",
+            "Actividad reciente responde a qué vengo haciendo, no a qué pasó"
+        )
     }
 
     /// El dashboard tiene que responder "qué pasa en esta fecha", no "qué pasa
@@ -159,21 +182,21 @@ struct DashboardBuilderTests {
         #expect(despues.upcoming.isEmpty)
     }
 
-    /// Lo registrado hoy tiene que verse hoy, aunque la hora anotada sea
-    /// posterior al momento en que se abrió la pantalla.
+    /// Lo recién anotado tiene que verse, sin importar qué fecha lleve el
+    /// evento: puede ser de anoche, de mañana o de hace dos años.
     @Test
-    func laActividadRecienteIncluyeTodoLoDelDia() throws {
+    func laActividadRecienteNoDependeDeLaFechaDelEvento() throws {
         let companion = try makeCompanion()
         companion.notes.append(
-            CompanionNote(text: "Anotado más tarde", date: .test(2024, 5, 20, hour: 23))
+            CompanionNote(text: "Anotado primero", date: .test(2024, 5, 20, hour: 23))
         )
         companion.notes.append(
-            CompanionNote(text: "Anotado mañana", date: .test(2024, 5, 21, hour: 8))
+            CompanionNote(text: "Anotado después", date: .test(2024, 5, 21, hour: 8))
         )
 
         let snapshot = DashboardBuilder.snapshot(for: companion, on: today, calendar: .test)
 
-        #expect(snapshot.recentActivity.map(\.title) == ["Anotado más tarde"])
+        #expect(snapshot.recentActivity.map(\.title) == ["Anotado después", "Anotado primero"])
     }
 
     @Test
