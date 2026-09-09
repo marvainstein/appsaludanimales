@@ -38,18 +38,28 @@ struct FarewellSheet: View {
             CompanionAvatar(companion: companion, size: 120)
 
             VStack(spacing: Spacing.md) {
-                Text("\(companion.displayName) queda con vos")
+                Text("\(companion.displayName) siempre va a estar con vos")
                     .font(AppFont.screenTitle)
                     .foregroundStyle(Palette.ink)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityAddTraits(.isHeader)
 
-                Text("Su historia entera se guarda acá: lo que anotaste, sus estudios, sus fotos. Podés volver cuando quieras.")
+                Text("Su historial de salud entero lo guardamos acá: lo que anotaste, sus estudios y sus fotos. Podés volver cuando quieras.")
                     .font(AppFont.body)
                     .foregroundStyle(Palette.inkMuted)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+
+                // Va aparte y más chico: cambia quién habla. Las dos frases de
+                // arriba son sobre el animal; esta es la app diciendo gracias, y
+                // mezclarlas le sacaría peso a las dos.
+                Text("Gracias por hacernos parte de su historia.")
+                    .font(AppFont.secondary)
+                    .foregroundStyle(Palette.inkMuted)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, Spacing.sm)
             }
 
             Spacer(minLength: 0)
