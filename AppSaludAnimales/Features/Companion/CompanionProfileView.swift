@@ -8,8 +8,12 @@ struct CompanionProfileView: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    @Environment(\.dismiss) private var dismiss
+
     @State private var isEditing = false
     @State private var isMarkingFarewell = false
+    @State private var isConfirmingDeletion = false
+    @State private var deletionFailed = false
 
     var body: some View {
         List {
@@ -195,6 +199,25 @@ struct CompanionProfileView: View {
                     ? "Se apagan los avisos y sale de la pantalla de todos los días. No se borra nada, y se puede deshacer."
                     : "Vuelve a aparecer en la pantalla de todos los días y se rearman los avisos que tenga cargados.")
             }
+
+            Section {
+                Button(role: .destructive) {
+                    isConfirmingDeletion = true
+                } label: {
+                    Label {
+                        Text("Eliminar de la app")
+                    } icon: {
+                        Image(systemName: "trash")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+                .accessibilityIdentifier("companion.delete")
+            } footer: {
+                // Eliminar y "cruzó el arcoíris" son dos cosas distintas y es
+                // fácil confundirlas en el peor momento. Acá se aclara cuál es
+                // cuál, en el lugar donde alguien podría equivocarse.
+                Text("Es para el que se cargó por error o el que ya no cuidás. Borra todo lo que anotaste y no se puede deshacer. Si lo que pasó es que se fue, marcá que cruzó el arcoíris: así queda todo guardado.")
+            }
         }
         .navigationTitle(Text("Perfil"))
         .navigationBarTitleDisplayMode(.inline)
@@ -208,6 +231,27 @@ struct CompanionProfileView: View {
                 .accessibilityHint(Text("Editar los datos de \(companion.displayName)"))
             }
         }
+        .confirmationDialog(
+            Text("¿Eliminamos a \(companion.displayName)?"),
+            isPresented: $isConfirmingDeletion,
+            titleVisibility: .visible
+        ) {
+            Button("Eliminar", role: .destructive, action: delete)
+            Button("Mejor no", role: .cancel) {}
+        } message: {
+            Text(CompanionDeletion.warningMessage(
+                name: companion.displayName,
+                recordCount: HistoryBuilder.entries(for: companion).count
+            ))
+        }
+        .alert(
+            Text("No pudimos eliminar"),
+            isPresented: $deletionFailed
+        ) {
+            Button("Entendido", role: .cancel) { deletionFailed = false }
+        } message: {
+            Text("Sigue todo guardado. Podés intentar de nuevo en un momento.")
+        }
         .sheet(isPresented: $isMarkingFarewell) {
             FarewellSheet(companion: companion)
         }
@@ -215,6 +259,19 @@ struct CompanionProfileView: View {
             NavigationStack {
                 CompanionFormView(mode: .edit(companion))
             }
+        }
+    }
+
+    private func delete() {
+        modelContext.delete(companion)
+
+        do {
+            try modelContext.save()
+            // Sus avisos se van con él.
+            ReminderSync.refresh(using: modelContext)
+            dismiss()
+        } catch {
+            deletionFailed = true
         }
     }
 

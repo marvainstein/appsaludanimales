@@ -13,7 +13,7 @@ mejora algo que ya funciona.
       nombra en sus textos —"cuando anotes un turno o una próxima vacuna"— pero
       no hay ninguna pantalla para cargarlos. Es una promesa incumplida a la
       vista.
-- [ ] **Poder borrar un compañero.** Hoy, quien carga uno por error lo tiene
+- [x] **Poder borrar un compañero.** Hoy, quien carga uno por error lo tiene
       para siempre. Con la confirmación clara que corresponde, porque borra toda
       su historia.
 - [ ] **El ícono de la app.** El archivo está vacío. Sin ícono no se puede
