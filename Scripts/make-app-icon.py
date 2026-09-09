@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Genera el ícono de Huella.
 
-El ícono es una huella: terracota sobre crema, los mismos colores de la app.
+El ícono es una huella de galgo: terracota sobre crema, los mismos colores de la
+app. Las proporciones están sacadas de una foto de la pata de Luli, la galga por
+la que existe esta app.
+
 Se dibuja por código y no a mano para que sea reproducible —cambiar una
 proporción es cambiar un número y volver a correr esto— y para que quede
 registrado exactamente de dónde salió cada forma.
@@ -55,30 +58,37 @@ def smooth_union(distances, softness):
 
 
 def toes():
-    """Los cuatro dedos.
+    """Los cuatro dedos, con la forma de una galga.
 
-    Los de adentro van más arriba y más grandes que los de afuera, y los de las
-    puntas giran hacia afuera. Una huella con los cuatro dedos iguales y
-    alineados se lee como cuatro pastillas, no como una pata.
+    Un galgo tiene pie de liebre: los dos dedos del medio salen bastante más
+    adelante que los de afuera, los cuatro son largos y angostos, y van
+    apretados. Es lo contrario de la huella redonda y abierta que uno dibuja de
+    memoria, y es lo que hace que esta huella sea de un galgo y no de cualquiera.
     """
     return [
-        ellipse(248, 415, 82, 106, -22),
-        ellipse(422, 296, 88, 116, -8),
-        ellipse(604, 296, 88, 116, 8),
-        ellipse(778, 415, 82, 106, 22),
+        ellipse(316, 424, 62, 112, -20),
+        ellipse(442, 292, 66, 128, -7),
+        ellipse(586, 292, 66, 128, 7),
+        ellipse(712, 424, 62, 112, 20),
     ]
 
 
 def pad():
-    """La almohadilla: tres óvalos fundidos en uno."""
+    """La almohadilla: angosta y algo triangular, como la de un galgo.
+
+    Cuatro óvalos fundidos en uno: el cuerpo, los dos hombros de arriba y la
+    base más ancha. Una almohadilla redonda debajo de estos dedos se vería
+    prestada de otro perro.
+    """
     parts = [
-        ellipse(513, 668, 214, 158),
-        ellipse(394, 592, 104, 92),
-        ellipse(632, 592, 104, 92),
+        ellipse(514, 672, 168, 132),
+        ellipse(428, 610, 84, 76),
+        ellipse(600, 610, 84, 76),
+        ellipse(514, 728, 148, 96),
     ]
 
     def distance(x, y):
-        return smooth_union([part(x, y) for part in parts], softness=26.0)
+        return smooth_union([part(x, y) for part in parts], softness=24.0)
 
     return distance
 
