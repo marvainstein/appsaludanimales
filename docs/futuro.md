@@ -4,6 +4,33 @@ Cosas que surgieron mientras construíamos y que no entran ahora. No es una list
 de compromisos: es dónde anotarlas para no perderlas y poder decidirlas con
 calma.
 
+## El objetivo cambió: la app se va a distribuir
+
+Septiembre 2026. La app dejó de ser una herramienta para las compañeras de quien
+la construyó: la idea es que la use mucha gente. Eso reordena las prioridades y
+conviene tenerlo escrito, porque cambia qué es "estar terminado".
+
+**Lo que habilita el Apple Developer Program pagado**, y que no se puede hacer
+sin él: TestFlight (poner la app en manos de otras personas antes de publicarla),
+iCloud —y por lo tanto la sincronización entre las personas a cargo—, y la
+publicación en la App Store. De paso, se termina el vencimiento a los siete días
+de la firma gratuita.
+
+**Lo más valioso de los tres no es la sincronización, es TestFlight.** Diez
+personas usando la app una semana enseñan más que cualquier cosa que se pueda
+deducir desde adentro. Y es la única forma realista de conseguir lo que quedó
+abierto en docs/accesibilidad.md: que la pruebe alguien que usa VoiceOver todos
+los días.
+
+**Lo que hay que construir sin depender de esa cuenta**, porque hace falta igual:
+el respaldo exportable, y una segunda mirada a la app pensando en alguien que la
+abre sin haber participado de ninguna de las conversaciones que la formaron.
+
+**Antes de la App Store** van a hacer falta política de privacidad, las etiquetas
+de privacidad de Apple, capturas y descripción. Juega a favor que la app no
+diagnostica: esa regla, además de ser lo correcto, es lo que la mantiene fuera de
+la categoría de aplicaciones médicas.
+
 ## Importar documentos en lote (caso Google Drive)
 
 **El caso real.** Alguien que ya tiene años de estudios de sus compañeras
