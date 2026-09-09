@@ -139,3 +139,37 @@ una verificación rápida: nada debería cambiar de significado.
 Anotarlo con la pantalla, el ajuste activo y qué se esperaba. Un hallazgo de
 accesibilidad no es una mejora opcional: entra a la lista de errores como
 cualquier otro.
+
+## Qué se probó, y cuándo
+
+### Septiembre 2026 — primera pasada completa en teléfono
+
+Hecha en un iPhone, con la app instalada, no en el simulador.
+
+**Lo que se verificó:**
+
+- Texto al tamaño de accesibilidad más grande: todo el contenido sigue siendo
+  alcanzable, nada queda cortado ni tapado.
+- VoiceOver: todo el contenido es alcanzable en orden, cada elemento se anuncia
+  con nombre, y los botones dicen qué hacen antes de tocarlos.
+- Escala de grises: los estados se siguen distinguiendo. Activo y suspendido
+  tienen íconos distintos, y activo de una medicación se distingue de activo de
+  un episodio también por el ícono. La regla de no comunicar nunca un estado
+  solo con color está verificada en el dispositivo, no solo en el código.
+- Modo oscuro: sin problemas de lectura.
+
+**Lo que encontró:** después de escribir en un campo no había forma de cerrar el
+teclado sin tocar afuera, y "afuera" no existe navegando con VoiceOver. El botón
+de guardar quedaba tapado. Arreglado con una salida explícita del teclado, que
+además quedó como criterio de terminado más arriba.
+
+**El límite de esta pasada, dicho de frente.** La hizo una persona que ve y que
+usó VoiceOver por primera vez. Eso alcanza para verificar lo estructural —que
+todo esté alcanzable, en orden y con nombre— y no alcanza para saber si la app es
+cómoda para alguien que usa VoiceOver todos los días. Esa persona navega con una
+fluidez que quien prueba de prestado no tiene, y nota fricciones que a nosotros
+se nos pasan de largo.
+
+**Lo que falta, entonces:** que una persona ciega use la app diez minutos, antes
+de que la app llegue a alguien más que a quien la construyó. No hay forma de
+deducir eso desde acá.
