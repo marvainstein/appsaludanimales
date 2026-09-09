@@ -150,6 +150,19 @@ Anotarlo con la pantalla, el ajuste activo y qué se esperaba. Un hallazgo de
 accesibilidad no es una mejora opcional: entra a la lista de errores como
 cualquier otro.
 
+## Deuda pendiente
+
+**La pantalla de la despedida.** La auditoría automática avisa que ahí hay
+"texto que debería estar expuesto a las tecnologías asistivas", pero no puede
+decir cuál: es el tercer hallazgo seguido en esa pantalla sin elemento asociado.
+No se puede arreglar lo que no se puede ubicar, así que esa verificación quedó
+apagada solo ahí.
+
+**Cómo se salda:** recorrer esa pantalla con VoiceOver en el teléfono. Si de
+verdad hubiera texto no expuesto, se escucharía como un pedazo mudo: se ve algo
+escrito y VoiceOver no lo lee. Si eso no pasa, era un falso positivo y se puede
+cerrar. Si pasa, se arregla y se vuelve a encender la verificación.
+
 ## Qué se probó, y cuándo
 
 ### Septiembre 2026 — primera pasada completa en teléfono
