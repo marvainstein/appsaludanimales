@@ -129,8 +129,19 @@ struct CompanionProfileView: View {
                     }
                     .frame(minHeight: Spacing.minimumTapTarget)
                 }
+
+                NavigationLink {
+                    BackupView()
+                } label: {
+                    Label {
+                        Text("Respaldo")
+                    } icon: {
+                        Image(systemName: "externaldrive")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
             } footer: {
-                Text("Qué te avisa la app, y cómo llevar la información al veterinario.")
+                Text("Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla.")
             }
         }
         .navigationTitle(Text("Perfil"))
