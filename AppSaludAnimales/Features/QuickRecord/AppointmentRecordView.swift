@@ -58,6 +58,14 @@ struct AppointmentRecordView: View {
         )
     }
 
+    /// Si el aviso caería antes de ahora, no hay nada que programar.
+    private var reminderIsInThePast: Bool {
+        guard reminderEnabled else { return false }
+
+        let fireDate = date.addingTimeInterval(-Double(leadTime.rawValue) * 60)
+        return fireDate <= Date()
+    }
+
     private var canSave: Bool {
         !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
@@ -108,7 +116,12 @@ struct AppointmentRecordView: View {
             } header: {
                 Text("Aviso")
             } footer: {
-                Text("El turno aparece en Próximamente cuando se acerque, avises o no.")
+                // La app descartaba en silencio un aviso cuya hora ya había
+                // pasado, y quedaba la sensación de que los recordatorios no
+                // funcionan. Decirlo cuesta una línea.
+                Text(reminderIsInThePast
+                    ? "Con esa anticipación el aviso caería antes de ahora, así que no va a llegar. Elegí una anticipación menor si querés que suene."
+                    : "El turno aparece en Próximamente cuando se acerque, avises o no.")
             }
 
             PrimaryButtonSection(
