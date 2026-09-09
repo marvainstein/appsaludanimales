@@ -13,9 +13,68 @@ struct FarewellSheet: View {
 
     @State private var date = Date()
     @State private var saveFailed = false
+    @State private var isSaved = false
 
     var body: some View {
         NavigationStack {
+            if isSaved {
+                farewellMessage
+            } else {
+                form
+            }
+        }
+    }
+
+    /// Lo que aparece después de guardar.
+    ///
+    /// La pantalla no se cierra sola. Cerrarse de golpe, como si acabara de
+    /// guardarse un peso, convierte este momento en un trámite. Se queda unos
+    /// segundos, dice lo único que la app puede decir con honestidad —que nada
+    /// se pierde— y espera.
+    private var farewellMessage: some View {
+        VStack(spacing: Spacing.xl) {
+            Spacer(minLength: 0)
+
+            CompanionAvatar(companion: companion, size: 120)
+
+            VStack(spacing: Spacing.md) {
+                Text("\(companion.displayName) queda con vos")
+                    .font(AppFont.screenTitle)
+                    .foregroundStyle(Palette.ink)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
+
+                Text("Su historia entera se guarda acá: lo que anotaste, sus estudios, sus fotos. Podés volver cuando quieras.")
+                    .font(AppFont.body)
+                    .foregroundStyle(Palette.inkMuted)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+
+            PrimaryButton(
+                title: String(localized: "Cerrar"),
+                identifier: "farewell.close"
+            ) {
+                dismiss()
+            }
+        }
+        .padding(Spacing.xl)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Palette.background)
+        // Sin barra de navegación: no hay nada para cancelar ni hacia dónde
+        // volver, y un "Cancelar" acá arriba se leería como si algo estuviera a
+        // medio hacer.
+        .toolbar(.hidden, for: .navigationBar)
+        // El mensaje se anuncia como una sola cosa: quien navega con VoiceOver
+        // lo escucha entero de una vez, sin ir juntando pedazos.
+        .accessibilityElement(children: .combine)
+    }
+
+    private var form: some View {
+        Group {
             Form {
                 Section {
                     Text("Su historia se guarda entera. Vas a poder entrar a su perfil y a todo lo que anotaste, cuando quieras.")
@@ -72,7 +131,7 @@ struct FarewellSheet: View {
         do {
             try modelContext.save()
             ReminderSync.refresh(using: modelContext)
-            dismiss()
+            isSaved = true
         } catch {
             companion.farewellDate = nil
             saveFailed = true
