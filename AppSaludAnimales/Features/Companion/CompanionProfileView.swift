@@ -98,6 +98,17 @@ struct CompanionProfileView: View {
 
             Section {
                 NavigationLink {
+                    WeightChartView(companion: companion)
+                } label: {
+                    Label {
+                        Text("Evolución del peso")
+                    } icon: {
+                        Image(systemName: "chart.xyaxis.line")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+
+                NavigationLink {
                     ReminderSettingsView(companion: companion)
                 } label: {
                     Label {
