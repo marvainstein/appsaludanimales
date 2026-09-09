@@ -22,7 +22,20 @@ enum PaletteValues {
     static let ink = ColorPair(light: 0x2A2721, dark: 0xEDE8DA)
     static let inkMuted = ColorPair(light: 0x5E594C, dark: 0xB4AC97)
 
+    /// Acento para texto e íconos: claro en modo oscuro, para leerse sobre el
+    /// fondo.
     static let accent = ColorPair(light: 0xA0472C, dark: 0xE0A188)
+
+    /// Acento para rellenar un botón: oscuro en los dos modos, porque encima
+    /// lleva letras blancas.
+    ///
+    /// No puede ser el mismo que el de texto, y confundirlos costó caro: el
+    /// botón principal quedaba blanco sobre un color claro en modo oscuro, con
+    /// un contraste de 2,3 a 1 sobre un mínimo de 4,5. Ilegible, y en la
+    /// pantalla más usada de la app.
+    static let accentFill = ColorPair(light: 0xA0472C, dark: 0xAA4E2E)
+    static let onAccentFill = ColorPair(light: 0xFFFFFF, dark: 0xFFFFFF)
+
     static let accentSoft = ColorPair(light: 0xF2E1D8, dark: 0x46281C)
     static let onAccentSoft = ColorPair(light: 0x7A3520, dark: 0xF0C4B0)
 }
@@ -40,6 +53,8 @@ enum Palette {
     static let inkMuted = Color(PaletteValues.inkMuted)
 
     static let accent = Color(PaletteValues.accent)
+    static let accentFill = Color(PaletteValues.accentFill)
+    static let onAccentFill = Color(PaletteValues.onAccentFill)
     static let accentSoft = Color(PaletteValues.accentSoft)
     static let onAccentSoft = Color(PaletteValues.onAccentSoft)
 }

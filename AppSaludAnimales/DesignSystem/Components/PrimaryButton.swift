@@ -27,9 +27,14 @@ struct PrimaryButton: View {
                 Text(title)
             }
             .font(AppFont.cardTitle)
+            .foregroundStyle(Palette.onAccentFill)
             .frame(maxWidth: .infinity, minHeight: Spacing.minimumTapTarget)
         }
         .buttonStyle(.borderedProminent)
+        // El color se dice acá y no se hereda del ajuste global de la app: así
+        // el contraste del botón se puede verificar con una prueba, en vez de
+        // depender de un archivo de colores que alguien puede cambiar aparte.
+        .tint(Palette.accentFill)
         .disabled(!isEnabled)
         .accessibilityHint(Text(hint ?? ""))
         .accessibilityIdentifier(identifier ?? "")

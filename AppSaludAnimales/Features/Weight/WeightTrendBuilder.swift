@@ -101,9 +101,13 @@ enum WeightTrendBuilder {
     static func valueRange(for trend: WeightTrend) -> ClosedRange<Double> {
         guard !trend.points.isEmpty else { return 0...1 }
 
+        // El aire se agrega alrededor del centro y no de cada extremo: sumarlo a
+        // los bordes no ensancha un rango que ya era angosto, que era justo lo
+        // que había que evitar.
         let span = max(trend.maximum - trend.minimum, 1)
-        let padding = span * 0.2
+        let center = (trend.minimum + trend.maximum) / 2
+        let half = span / 2 * 1.2
 
-        return max(0, trend.minimum - padding)...(trend.maximum + padding)
+        return max(0, center - half)...(center + half)
     }
 }

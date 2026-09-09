@@ -40,6 +40,18 @@ struct PaletteContrastTests {
         }
     }
 
+    /// El caso que se escapó una vez: el color de relleno del botón principal
+    /// no es el mismo que el de texto, y llevarlos juntos por error dejó el
+    /// botón en 2,3 a 1 en modo oscuro.
+    @Test("El botón principal se lee con sus letras encima")
+    func elBotonPrincipalSeLee() {
+        expectReadable(
+            PaletteValues.onAccentFill,
+            on: PaletteValues.accentFill,
+            description: "letras del botón principal"
+        )
+    }
+
     @Test("El acento suave se lee con su propio texto encima")
     func elAcentoSuaveSeLee() {
         expectReadable(
