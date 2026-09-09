@@ -61,7 +61,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             promise(
                 symbol: "clock",
-                title: String(localized: "Registrar toma segundos"),
+                title: String(localized: "Anotar toma segundos"),
                 detail: String(localized: "Una medicación, un síntoma, un peso o un estudio, sin recorrer un laberinto de archivos.")
             )
             promise(
@@ -73,6 +73,14 @@ struct OnboardingView: View {
                 symbol: "heart.text.square",
                 title: String(localized: "Todo junto para el veterinario"),
                 detail: String(localized: "La información ordenada cuando hace falta contarla y directa para compartirla con el profesional.")
+            )
+            // La única pantalla donde alguien lee esta promesa es esta. Después
+            // no vuelve a pasar por acá, y es de las cosas que más pesan al
+            // decidir si se confía o no una historia clínica a una app.
+            promise(
+                symbol: "lock",
+                title: String(localized: "Todo se guarda en tu teléfono"),
+                detail: String(localized: "La información no se sube a internet. Si querés compartir algo, lo elegís vos.")
             )
         }
     }
