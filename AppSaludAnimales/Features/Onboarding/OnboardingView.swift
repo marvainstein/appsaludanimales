@@ -11,6 +11,13 @@ struct OnboardingView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.xl) {
                     header
+
+                    Text("¿Qué vas a encontrar?")
+                        .font(AppFont.sectionTitle)
+                        .foregroundStyle(Palette.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityAddTraits(.isHeader)
+
                     promises
 
                     NavigationLink {
@@ -38,12 +45,12 @@ struct OnboardingView: View {
                 .foregroundStyle(Palette.accent)
                 .accessibilityHidden(true)
 
-            Text("Hola")
+            Text("¡Buenas!")
                 .font(AppFont.screenTitle)
                 .foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
 
-            Text("Este es el lugar donde va a vivir la historia de salud de tu perro o de tu gato.")
+            Text("Este es el lugar donde vas a poder anotar y encontrar de manera sencilla el historial de salud de tu perro o de tu gato.")
                 .font(AppFont.body)
                 .foregroundStyle(Palette.inkMuted)
                 .fixedSize(horizontal: false, vertical: true)
@@ -55,7 +62,7 @@ struct OnboardingView: View {
             promise(
                 symbol: "clock",
                 title: String(localized: "Registrar toma segundos"),
-                detail: String(localized: "Una medicación, un síntoma o un peso, sin recorrer pantallas.")
+                detail: String(localized: "Una medicación, un síntoma, un peso o un estudio, sin recorrer un laberinto de archivos.")
             )
             promise(
                 symbol: "calendar",
@@ -65,7 +72,7 @@ struct OnboardingView: View {
             promise(
                 symbol: "heart.text.square",
                 title: String(localized: "Todo junto para el veterinario"),
-                detail: String(localized: "La información ordenada cuando hace falta contarla.")
+                detail: String(localized: "La información ordenada cuando hace falta contarla y directa para compartirla con el profesional.")
             )
         }
     }
