@@ -93,9 +93,9 @@ espacio patrocinado, con texto e ícono, no solo con un color. Y arrancaría por
 refugios: es lo que se puede probar sin poner en juego la confianza, y si eso no
 funciona, la publicidad paga tampoco va a funcionar.
 
-**Cómo decidirlo.** Primero mirar cuánta gente usa la app de forma sostenida.
-Monetizar antes de eso resuelve un problema que todavía no existe y crea uno
-nuevo. Si hace falta ingreso, comparar contra las alternativas que no tocan la
-confianza: una función paga opcional (sincronización entre personas a cargo,
-resúmenes ilimitados) suele rendir más que la publicidad y no cambia lo que la
-app es.
+**Decidido (septiembre 2026): la publicidad paga queda descartada, y la app es
+gratis para siempre.** Sin versión paga, sin prueba gratuita, sin funciones
+reservadas: llevar la salud de un animal al que se quiere no puede depender de
+poder pagarla. Lo único que queda en pie de esta sección es la difusión de
+refugios y protectoras, sin cobrar y sin rastrear a nadie. El resto queda escrito
+como el razonamiento que llevó ahí.
