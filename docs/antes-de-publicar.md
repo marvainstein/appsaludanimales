@@ -40,15 +40,18 @@ mejora algo que ya funciona.
 
 ## Trámites que llevan tiempo y no dependen de nadie
 
-- [ ] **Política de privacidad publicada**, con su dirección web. Se puede alojar
+- [~] **Política de privacidad publicada**, con su dirección web. Se puede alojar
       gratis en GitHub Pages.
-- [ ] **Textos de la App Store**: nombre, subtítulo, descripción, palabras clave,
+- [x] **Textos de la App Store**: nombre, subtítulo, descripción, palabras clave,
       categoría.
-- [ ] **Capturas de pantalla**, que se sacan del simulador.
-- [ ] **Respuestas de privacidad de Apple** preparadas: qué datos recoge la app
+- [~] **Capturas de pantalla**, que se sacan del simulador. El plan de cuáles y en qué orden está en docs/app-store.md; sacarlas es manual.
+- [x] **Respuestas de privacidad de Apple** preparadas: qué datos recoge la app
       (ninguno), si hay rastreo (no), si usa cifrado (no propio).
 - [ ] **Buscar el nombre en el INPI**, antes de que "Huella" quede impreso en
       todos lados.
+
+> Las marcadas con `~` están escritas pero necesitan una acción manual: publicar
+> la página, o sacar las capturas.
 
 ## Verificaciones
 
