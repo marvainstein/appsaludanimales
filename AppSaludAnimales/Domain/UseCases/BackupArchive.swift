@@ -203,8 +203,8 @@ struct BackupRestoreSummary: Equatable {
 
         if addedCompanions > 0 {
             parts.append(addedCompanions == 1
-                ? String(localized: "1 compañero")
-                : String(localized: "\(addedCompanions) compañeros"))
+                ? String(localized: "1 perro o gato")
+                : String(localized: "\(addedCompanions) perros o gatos"))
         }
 
         if addedRecords > 0 {

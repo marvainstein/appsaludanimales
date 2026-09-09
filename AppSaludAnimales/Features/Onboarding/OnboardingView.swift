@@ -21,7 +21,7 @@ struct OnboardingView: View {
                             .frame(maxWidth: .infinity, minHeight: Spacing.minimumTapTarget)
                     }
                     .buttonStyle(.borderedProminent)
-                    .accessibilityHint(Text("Abre el formulario para agregar a tu compañero o compañera"))
+                    .accessibilityHint(Text("Abre el formulario para agregar a tu perro o tu gato"))
                     .accessibilityIdentifier("onboarding.start")
                 }
                 .padding(Spacing.xl)
@@ -43,7 +43,7 @@ struct OnboardingView: View {
                 .foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
 
-            Text("Este es el lugar donde va a vivir la historia de salud de tu compañero o compañera.")
+            Text("Este es el lugar donde va a vivir la historia de salud de tu perro o de tu gato.")
                 .font(AppFont.body)
                 .foregroundStyle(Palette.inkMuted)
                 .fixedSize(horizontal: false, vertical: true)

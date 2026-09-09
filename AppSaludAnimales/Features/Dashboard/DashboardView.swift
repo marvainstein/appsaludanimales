@@ -21,6 +21,12 @@ struct DashboardView: View {
     /// queda "en el futuro" y desaparece de la actividad reciente.
     @State private var referenceDate = Date()
 
+    /// El botón de registrar se achica apenas se empieza a bajar. Se guarda acá
+    /// y no adentro del botón porque quien sabe cuánto se bajó es la lista.
+    @State private var isRecordButtonCompact = false
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     private var snapshot: DashboardSnapshot {
         DashboardBuilder.snapshot(for: companion, on: referenceDate)
     }
@@ -58,6 +64,19 @@ struct DashboardView: View {
                 historyLink
             }
             .padding(Spacing.lg)
+        }
+        // Umbral corto: apenas se empieza a bajar ya se leyó el botón entero, y
+        // esperar más deja la animación a mitad de camino cuando se frena.
+        .onScrollGeometryChange(for: Bool.self) { geometry in
+            geometry.contentOffset.y > Spacing.xl
+        } action: { _, isScrolled in
+            guard isScrolled != isRecordButtonCompact else { return }
+
+            // Quien pidió menos movimiento en los ajustes del sistema lo pidió
+            // en serio: el botón cambia igual, pero sin animarse.
+            withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) {
+                isRecordButtonCompact = isScrolled
+            }
         }
         .background(Palette.background)
         .navigationTitle(Text("Hoy"))
@@ -178,17 +197,20 @@ struct DashboardView: View {
     /// La acción central vive siempre a la vista, no escondida en un menú: es lo
     /// que la persona más va a hacer, muchas veces con una sola mano.
     private var recordBar: some View {
-        PrimaryButton(
-            title: String(localized: "Registrar"),
-            symbolName: "plus",
-            hint: String(localized: "Anotar una medicación, un síntoma, el peso, una vacuna o una nota"),
-            identifier: "dashboard.record"
-        ) {
+        RecordButton(isCompact: isRecordButtonCompact) {
             isRecording = true
         }
         .padding(.horizontal, Spacing.lg)
         .padding(.vertical, Spacing.md)
-        .background(.bar)
+        // La franja de fondo solo tiene sentido con el botón ancho. Con el
+        // círculo, una barra vacía ocuparía lugar sin decir nada.
+        .background {
+            if !isRecordButtonCompact {
+                Rectangle()
+                    .fill(.bar)
+                    .ignoresSafeArea()
+            }
+        }
     }
 
     // MARK: - Secciones
@@ -255,7 +277,7 @@ struct DashboardView: View {
                             }
                         }
                     } header: {
-                        Text("Cambiar de compañero")
+                        Text("Cambiar")
                     }
                 }
 
@@ -263,20 +285,20 @@ struct DashboardView: View {
                     isAddingCompanion = true
                 } label: {
                     Label {
-                        Text("Agregar compañero")
+                        Text("Agregar un perro o un gato")
                     } icon: {
                         Image(systemName: "plus")
                     }
                 }
             } label: {
                 Label {
-                    Text("Compañeros")
+                    Text("Tus perros y gatos")
                 } icon: {
                     Image(systemName: "pawprint.circle")
                 }
             }
-            .accessibilityLabel(Text("Compañeros"))
-            .accessibilityHint(Text("Cambiar de compañero o agregar uno nuevo"))
+            .accessibilityLabel(Text("Tus perros y gatos"))
+            .accessibilityHint(Text("Cambiar de perro o gato, o agregar uno nuevo"))
         }
     }
 }

@@ -19,7 +19,7 @@ struct BackupView: View {
     var body: some View {
         List {
             Section {
-                Text("El respaldo es un archivo con toda la historia de salud de todos tus compañeros: los datos, los documentos adjuntos y las fotos. Guardalo donde quieras y volvé a cargarlo en cualquier teléfono.")
+                Text("El respaldo es un archivo con toda la historia de salud de todos tus perros y gatos: los datos, los documentos adjuntos y las fotos. Guardalo donde quieras y volvé a cargarlo en cualquier teléfono.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
             } header: {

@@ -34,8 +34,8 @@ struct CompanionFormView: View {
 
         var title: String {
             switch self {
-            case .onboarding: String(localized: "Tu compañero")
-            case .create: String(localized: "Nuevo compañero")
+            case .onboarding: String(localized: "Tu perro o tu gato")
+            case .create: String(localized: "Agregar un perro o un gato")
             case .edit: String(localized: "Editar")
             }
         }
@@ -43,7 +43,7 @@ struct CompanionFormView: View {
         var saveTitle: String {
             switch self {
             case .onboarding: String(localized: "Empezar")
-            case .create: String(localized: "Agregar compañero")
+            case .create: String(localized: "Agregar")
             case .edit: String(localized: "Guardar cambios")
             }
         }
@@ -231,7 +231,7 @@ struct CompanionFormView: View {
         } header: {
             Text("Cumpleaños")
         } footer: {
-            Text("Muchos compañeros llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada.")
+            Text("Muchos perros y gatos llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada.")
         }
     }
 
