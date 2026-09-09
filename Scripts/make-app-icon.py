@@ -190,7 +190,10 @@ if __name__ == "__main__":
     destination = Path(
         sys.argv[sys.argv.index("--salida") + 1]
         if "--salida" in sys.argv
-        else "AppSaludAnimales/Resources/Assets.xcassets/AppIcon.appiconset/icono.png"
+        # A propósito no escribe dentro del proyecto: el ícono que usa la app es
+        # el dibujado a mano, y este script quedó como referencia de cómo se
+        # llegó hasta él. Para verlo hay que pedir la salida explícitamente.
+        else "icono-generado.png"
     )
 
     destination.parent.mkdir(parents=True, exist_ok=True)

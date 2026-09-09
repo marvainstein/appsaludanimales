@@ -79,4 +79,4 @@ y el cambio se avisa dentro de la app.
 
 ## Contacto
 
-Para cualquier consulta sobre privacidad: **[COMPLETAR: correo de contacto]**
+Para cualquier consulta sobre privacidad: **marvainstein@gmail.com**

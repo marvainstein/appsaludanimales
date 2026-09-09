@@ -16,10 +16,9 @@ mejora algo que ya funciona.
 - [x] **Poder borrar un compañero.** Hoy, quien carga uno por error lo tiene
       para siempre. Con la confirmación clara que corresponde, porque borra toda
       su historia.
-- [x] **El ícono de la app.** Hay uno provisorio hecho con código, que sirve
-      para instalar y para TestFlight. No es el definitivo: se ve a clipart, que
-      es el techo de dibujar con geometría. El encargo para el de verdad está en
-      docs/encargo-icono.md.
+- [x] **El ícono de la app.** Una huella en acuarela, dibujada aparte. El
+      encargo con los criterios está en docs/encargo-icono.md por si se quiere
+      volver sobre él.
 
 ## Para que sirva con datos de verdad
 
