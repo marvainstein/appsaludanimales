@@ -18,7 +18,11 @@ struct DocumentBatchImportTests {
             ("radiografia.2024.03.12", (2024, 3, 12)),
             ("12_03_2024 control", (2024, 3, 12)),
             // Un número de más atrás no arruina la fecha que sí está.
-            ("receta 2024-03-12-04", (2024, 3, 12))
+            ("receta 2024-03-12-04", (2024, 3, 12)),
+            // Sin cero adelante: quien nombró el archivo no tenía por qué ser
+            // prolijo.
+            ("analisis 2024-3-5", (2024, 3, 5)),
+            ("control 5-3-2024", (2024, 3, 5))
         ]
 
         for (fileName, expected) in cases {
@@ -40,7 +44,9 @@ struct DocumentBatchImportTests {
             "analisis 2024-13-45",   // mes y día imposibles
             "estudio 99-99-9999",
             "hemograma 123456",      // no tiene forma de fecha
-            "control sin numeros"
+            "control sin numeros",
+            // Año de dos cifras: no hay forma de saber si 24 es el año o el día.
+            "ecografia 12-03-24"
         ]
 
         for fileName in notDates {

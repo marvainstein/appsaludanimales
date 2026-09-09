@@ -123,10 +123,17 @@ enum DocumentBatchImport {
     /// en el nombre, y es el dato más tedioso de cargar a mano treinta veces.
     ///
     /// Reconoce `2024-03-12`, `12-03-2024` y `20240312`, con guiones, guiones
-    /// bajos, puntos o nada en el medio. Cuando el año va primero se lee como
-    /// año-mes-día; cuando va último, como día-mes-año, que es como se escribe
-    /// acá. Una fecha imposible o futura se descarta: un estudio no puede ser de
-    /// mañana, y equivocarse en silencio es peor que no adivinar.
+    /// bajos, puntos o nada en el medio, y con o sin cero adelante en el mes y
+    /// el día. Cuando el año va primero se lee como año-mes-día; cuando va
+    /// último, como día-mes-año, que es como se escribe acá. Una fecha imposible
+    /// o futura se descarta: un estudio no puede ser de mañana, y equivocarse en
+    /// silencio es peor que no adivinar.
+    ///
+    /// Los años de dos cifras quedan afuera a propósito. En "12-03-24" no hay
+    /// forma de saber si el 24 es el año o el día, y elegir mal fecharía un
+    /// estudio doce años antes sin que nadie se entere. Cuando la app no puede
+    /// saberlo, no adivina: deja la fecha de hoy y se corrige en el repaso, que
+    /// está a la vista.
     static func detectedDate(
         in fileName: String,
         calendar: Calendar = .current,
@@ -162,10 +169,16 @@ enum DocumentBatchImport {
                 continue
             }
 
-            let lengths = (group.digits.count, second.digits.count, third.digits.count)
+            // El mes y el día pueden venir con o sin cero adelante: "2024-3-5"
+            // es tan común como "2024-03-05", y quien escribió el nombre no
+            // tenía por qué ser prolijo.
+            let yearFirst = group.digits.count
+            let middle = second.digits.count
+            let yearLast = third.digits.count
             let range = group.range.lowerBound..<third.range.upperBound
 
-            if lengths == (4, 2, 2), let date = makeDate(
+            if yearFirst == 4, (1...2).contains(middle), (1...2).contains(yearLast),
+               let date = makeDate(
                 year: Int(group.digits),
                 month: Int(second.digits),
                 day: Int(third.digits),
@@ -175,7 +188,8 @@ enum DocumentBatchImport {
                 return DetectedDate(date: date, range: range)
             }
 
-            if lengths == (2, 2, 4), let date = makeDate(
+            if (1...2).contains(yearFirst), (1...2).contains(middle), yearLast == 4,
+               let date = makeDate(
                 year: Int(third.digits),
                 month: Int(second.digits),
                 day: Int(group.digits),
