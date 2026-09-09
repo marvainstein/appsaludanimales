@@ -51,7 +51,12 @@ final class ReminderScheduler {
     func sync(companions: [Companion], on referenceDate: Date = .now) async {
         guard await authorizationStatus() == .authorized else { return }
 
-        let plan = ReminderPlanBuilder.plan(for: companions, on: referenceDate)
+        // A quien ya no está no se le piden medicaciones. Un aviso así, meses
+        // después, es lo peor que podría hacer esta app.
+        let plan = ReminderPlanBuilder.plan(
+            for: companions.filter(\.isPresent),
+            on: referenceDate
+        )
 
         center.removeAllPendingNotificationRequests()
 

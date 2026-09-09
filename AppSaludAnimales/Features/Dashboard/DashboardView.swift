@@ -36,24 +36,26 @@ struct DashboardView: View {
             VStack(alignment: .leading, spacing: Spacing.xl) {
                 companionHeader
 
-                section(
-                    title: String(localized: "Hoy"),
-                    items: snapshot.today,
-                    emptyMessage: String(localized: "No hay nada anotado para hoy.")
-                )
+                if companion.isPresent {
+                    section(
+                        title: String(localized: "Hoy"),
+                        items: snapshot.today,
+                        emptyMessage: String(localized: "No hay nada anotado para hoy.")
+                    )
 
-                section(
-                    title: String(localized: "Próximamente"),
-                    subtitle: String(localized: "Los próximos 30 días"),
-                    items: snapshot.upcoming,
-                    emptyMessage: String(localized: "Cuando anotes un turno o una próxima vacuna, aparece acá.")
-                )
+                    section(
+                        title: String(localized: "Próximamente"),
+                        subtitle: String(localized: "Los próximos 30 días"),
+                        items: snapshot.upcoming,
+                        emptyMessage: String(localized: "Cuando anotes un turno o una próxima vacuna, aparece acá.")
+                    )
 
-                section(
-                    title: String(localized: "Estado actual"),
-                    items: snapshot.currentStatus,
-                    emptyMessage: String(localized: "Acá vas a ver las medicaciones y los tratamientos en curso.")
-                )
+                    section(
+                        title: String(localized: "Estado actual"),
+                        items: snapshot.currentStatus,
+                        emptyMessage: String(localized: "Acá vas a ver las medicaciones y los tratamientos en curso.")
+                    )
+                }
 
                 section(
                     title: String(localized: "Actividad reciente"),
@@ -80,7 +82,11 @@ struct DashboardView: View {
         }
         .background(Palette.background)
         .navigationTitle(Text("Hoy"))
-        .safeAreaInset(edge: .bottom) { recordBar }
+        .safeAreaInset(edge: .bottom) {
+            if companion.isPresent {
+                recordBar
+            }
+        }
         .toolbar { toolbarContent }
         .fullScreenCover(isPresented: $isShowingEmergency) {
             EmergencyView(companion: companion)
@@ -149,11 +155,19 @@ struct DashboardView: View {
     }
 
     private var subtitle: String {
-        guard let age = companion.age else {
-            return companion.species.label
+        var parts = [companion.species.label]
+
+        if let age = companion.age {
+            parts.append(age.formatted)
         }
 
-        return "\(companion.species.label) · \(age.formatted)"
+        // Sin foto, el aro de colores no existe: acá es donde alguien que navega
+        // con VoiceOver se entera.
+        if let farewell = companion.farewellDate {
+            parts.append(String(localized: "Ya no está · \(DateDescription.absolute(farewell))"))
+        }
+
+        return parts.joined(separator: " · ")
     }
 
     private var historyLink: some View {
@@ -243,6 +257,7 @@ struct DashboardView: View {
         // debería tener que recordar dónde estaba esa función. El historial se
         // alcanza desde la tarjeta del final, que ya lleva su nombre completo.
         ToolbarItem(placement: .topBarLeading) {
+            // El modo emergencia no tiene a quién atender.
             Button {
                 isShowingEmergency = true
             } label: {
@@ -257,6 +272,9 @@ struct DashboardView: View {
             .tint(StatusTone.critical.content)
             .accessibilityLabel(Text("Modo emergencia"))
             .accessibilityHint(Text("Muestra los datos urgentes de \(companion.displayName) y los teléfonos para llamar"))
+            .opacity(companion.isPresent ? 1 : 0)
+            .disabled(!companion.isPresent)
+            .accessibilityHidden(!companion.isPresent)
         }
 
         ToolbarItem(placement: .topBarTrailing) {

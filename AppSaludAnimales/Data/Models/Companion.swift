@@ -21,6 +21,18 @@ final class Companion {
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
 
+    /// El día que dejó de estar.
+    ///
+    /// Una app que sigue la salud de un animal, tarde o temprano, tiene que
+    /// saber sostener esto. La única salida que ofrecía antes era eliminarlo, y
+    /// eso borra toda su historia: es brutal, y da a entender que lo que se
+    /// registró durante años dejó de importar.
+    ///
+    /// Con esta fecha cargada, la app deja de pedir cosas —se apagan los avisos,
+    /// no aparece en lo de todos los días— y no deja de guardar nada. Se puede
+    /// entrar a su perfil y a su historia cuando se quiera.
+    var farewellDate: Date?
+
     @Attribute(.externalStorage)
     var photoData: Data?
 
@@ -93,12 +105,24 @@ extension Companion {
         set { birthDatePrecisionRawValue = newValue.rawValue }
     }
 
+    var isPresent: Bool { farewellDate == nil }
+
+    /// La edad deja de correr el día que dejó de estar.
+    ///
+    /// Que la app siguiera sumándole años a un animal que ya no está sería una
+    /// crueldad involuntaria, de las que solo se notan cuando pasan.
     var age: CompanionAge? {
-        CompanionAgeCalculator.age(birthDate: birthDate, precision: birthDatePrecision)
+        CompanionAgeCalculator.age(
+            birthDate: birthDate,
+            precision: birthDatePrecision,
+            on: farewellDate ?? .now
+        )
     }
 
+    /// Un cumpleaños que ya no va a llegar no se anuncia.
     var nextBirthday: Date? {
-        CompanionAgeCalculator.nextBirthday(birthDate: birthDate)
+        guard isPresent else { return nil }
+        return CompanionAgeCalculator.nextBirthday(birthDate: birthDate)
     }
 
     /// Nombre para mostrar: el apodo gana cuando existe, porque es como la

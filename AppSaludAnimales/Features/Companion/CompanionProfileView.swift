@@ -6,7 +6,10 @@ import SwiftUI
 struct CompanionProfileView: View {
     let companion: Companion
 
+    @Environment(\.modelContext) private var modelContext
+
     @State private var isEditing = false
+    @State private var isMarkingFarewell = false
 
     var body: some View {
         List {
@@ -25,6 +28,25 @@ struct CompanionProfileView: View {
                 }
                 .padding(.vertical, Spacing.sm)
                 .accessibilityElement(children: .combine)
+            }
+
+            if let farewell = companion.farewellDate {
+                Section {
+                    VStack(alignment: .leading, spacing: Spacing.sm) {
+                        Text("Ya no está con nosotros")
+                            .font(AppFont.cardTitle)
+                            .foregroundStyle(Palette.ink)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Text(DateDescription.absolute(farewell))
+                            .font(AppFont.body)
+                            .foregroundStyle(Palette.inkMuted)
+                    }
+                    .padding(.vertical, Spacing.xs)
+                    .accessibilityElement(children: .combine)
+                } footer: {
+                    Text("Su historia queda guardada entera. La app no te pide nada más por \(companion.displayName).")
+                }
             }
 
             Section {
@@ -143,6 +165,36 @@ struct CompanionProfileView: View {
             } footer: {
                 Text("Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla.")
             }
+
+            Section {
+                if companion.isPresent {
+                    Button {
+                        isMarkingFarewell = true
+                    } label: {
+                        Label {
+                            Text("Marcar que ya no está")
+                        } icon: {
+                            Image(systemName: "leaf")
+                        }
+                        .frame(minHeight: Spacing.minimumTapTarget)
+                    }
+                } else {
+                    Button {
+                        undoFarewell()
+                    } label: {
+                        Label {
+                            Text("Marcar que sí está")
+                        } icon: {
+                            Image(systemName: "arrow.uturn.backward")
+                        }
+                        .frame(minHeight: Spacing.minimumTapTarget)
+                    }
+                }
+            } footer: {
+                Text(companion.isPresent
+                    ? "Se apagan los avisos y sale de la pantalla de todos los días. No se borra nada, y se puede deshacer."
+                    : "Vuelve a aparecer en la pantalla de todos los días y se rearman los avisos que tenga cargados.")
+            }
         }
         .navigationTitle(Text("Perfil"))
         .navigationBarTitleDisplayMode(.inline)
@@ -156,11 +208,20 @@ struct CompanionProfileView: View {
                 .accessibilityHint(Text("Editar los datos de \(companion.displayName)"))
             }
         }
+        .sheet(isPresented: $isMarkingFarewell) {
+            FarewellSheet(companion: companion)
+        }
         .sheet(isPresented: $isEditing) {
             NavigationStack {
                 CompanionFormView(mode: .edit(companion))
             }
         }
+    }
+
+    private func undoFarewell() {
+        companion.farewellDate = nil
+        try? modelContext.save()
+        ReminderSync.refresh(using: modelContext)
     }
 
     private var veterinarianValue: String? {

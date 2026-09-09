@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 import Testing
 
 @testable import AppSaludAnimales
@@ -103,5 +104,91 @@ extension Date {
         Calendar.test.date(
             from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute)
         ) ?? .distantPast
+    }
+}
+
+/// Lo que pasa cuando un compañero ya no está.
+///
+/// Es la parte de la app que menos se va a usar y la que peor se sentiría si
+/// estuviera mal hecha.
+struct FarewellTests {
+    @Test("La edad deja de correr el día que dejó de estar")
+    func laEdadSeDetiene() {
+        let companion = Companion(
+            name: "Luli",
+            species: .dog,
+            birthDate: .test(2015, 3, 15),
+            birthDatePrecision: .exact
+        )
+        companion.farewellDate = .test(2025, 11, 12)
+
+        let age = companion.age
+
+        #expect(age?.years == 10, "Tenía diez años cuando dejó de estar, y ahí se queda")
+        #expect(companion.isPresent == false)
+    }
+
+    @Test("No se anuncia un cumpleaños que ya no va a llegar")
+    func noHayProximoCumpleanios() {
+        let companion = Companion(
+            name: "Luli",
+            species: .dog,
+            birthDate: .test(2015, 3, 15),
+            birthDatePrecision: .exact
+        )
+
+        #expect(companion.nextBirthday != nil)
+
+        companion.farewellDate = .test(2025, 11, 12)
+
+        #expect(companion.nextBirthday == nil)
+    }
+
+    @Test("Los avisos dejan de pedir cosas por quien ya no está")
+    func losAvisosSeApagan() {
+        let present = Companion(name: "Primavera", species: .dog)
+        let medication = Medication(name: "Meloxicam", startDate: .test(2025, 1, 1))
+        medication.timesOfDay = [.morning]
+        medication.reminderEnabled = true
+        present.medications.append(medication)
+
+        let gone = Companion(name: "Luli", species: .dog)
+        let otherMedication = Medication(name: "Fenobarbital", startDate: .test(2025, 1, 1))
+        otherMedication.timesOfDay = [.morning]
+        otherMedication.reminderEnabled = true
+        gone.medications.append(otherMedication)
+        gone.farewellDate = .test(2025, 11, 12)
+
+        let plan = ReminderPlanBuilder.plan(
+            for: [present, gone].filter(\.isPresent),
+            on: .test(2026, 1, 1)
+        )
+
+        #expect(plan.isEmpty == false)
+        #expect(
+            plan.allSatisfy { !$0.title.contains("Fenobarbital") && !$0.body.contains("Fenobarbital") },
+            "Un aviso de medicación para quien ya no está es lo peor que podría hacer esta app"
+        )
+    }
+
+    @Test("Nada se borra: la historia queda entera")
+    func laHistoriaQuedaEntera() throws {
+        let container = try ModelContainerFactory.makeContainer(inMemory: true)
+        let context = ModelContext(container)
+
+        let companion = Companion(name: "Luli", species: .dog)
+        companion.episodes.append(HealthEpisode(symptom: "Convulsión", date: .test(2025, 6, 1)))
+        companion.measurements.append(HealthMeasurement(value: 24.3, unit: "kg", date: .test(2025, 6, 1)))
+        context.insert(companion)
+        try context.save()
+
+        companion.farewellDate = .test(2025, 11, 12)
+        try context.save()
+
+        let stored = try #require(try context.fetch(FetchDescriptor<Companion>()).first)
+
+        #expect(stored.episodes.count == 1)
+        #expect(stored.measurements.count == 1)
+        #expect(stored.farewellDate != nil)
     }
 }

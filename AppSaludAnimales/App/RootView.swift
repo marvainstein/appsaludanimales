@@ -12,8 +12,15 @@ struct RootView: View {
     @Query(sort: \Companion.createdAt) private var companions: [Companion]
     @State private var selectedCompanionID: UUID?
 
+    /// Al abrir se muestra a alguien que esté. Abrir la app y encontrarse de
+    /// frente con quien ya no está no es una decisión que le corresponda tomar
+    /// al teléfono: se entra a su perfil cuando se quiere entrar.
     private var selectedCompanion: Companion? {
-        companions.first { $0.id == selectedCompanionID } ?? companions.first
+        if let chosen = companions.first(where: { $0.id == selectedCompanionID }) {
+            return chosen
+        }
+
+        return companions.first(where: \.isPresent) ?? companions.first
     }
 
     var body: some View {
