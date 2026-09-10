@@ -211,10 +211,15 @@ enum HealthReportBuilder {
         let profile = EmergencyProfileBuilder.profile(for: companion)
         var lines: [HealthReport.Line] = []
 
-        if let veterinarian = profile.veterinarian {
+        // Todas las veterinarias guardadas, no solo la de cabecera: este papel
+        // termina en la mano de alguien que quizá necesite llamar a la que
+        // atendió la urgencia y no a la que lleva la historia.
+        for veterinarian in profile.veterinarians {
             lines.append(
                 HealthReport.Line(
-                    text: String(localized: "Veterinario"),
+                    text: veterinarian.isPrimary
+                        ? String(localized: "Veterinaria de cabecera")
+                        : String(localized: "Veterinaria"),
                     detail: [veterinarian.name, veterinarian.phone]
                         .compactMap { $0 }
                         .joined(separator: " · ")
