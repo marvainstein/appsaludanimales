@@ -123,6 +123,7 @@ enum BackupService {
                         DoseBackup(
                             id: $0.id,
                             administeredAt: $0.administeredAt,
+                            dose: $0.dose,
                             notes: $0.notes,
                             recordedByName: $0.recordedByName,
                             createdAt: $0.createdAt
@@ -288,7 +289,7 @@ enum BackupService {
             medication.exactTimes = item.exactTimes
 
             for dose in item.doses {
-                let recorded = MedicationDose(administeredAt: dose.administeredAt)
+                let recorded = MedicationDose(administeredAt: dose.administeredAt, dose: dose.dose)
                 recorded.id = dose.id
                 recorded.notes = dose.notes
                 recorded.recordedByName = dose.recordedByName

@@ -49,9 +49,11 @@ struct MedicationDosesView: View {
 
     private func row(for dose: MedicationDose) -> some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
-            Text(ReminderPlanBuilder.time(dose.administeredAt))
+            Text(dose.dose.map { "\(ReminderPlanBuilder.time(dose.administeredAt)) · \($0)" }
+                ?? ReminderPlanBuilder.time(dose.administeredAt))
                 .font(AppFont.cardTitle)
                 .foregroundStyle(Palette.ink)
+                .fixedSize(horizontal: false, vertical: true)
 
             if let quien = dose.recordedByName, !quien.isEmpty {
                 Text("La anotó \(quien)")

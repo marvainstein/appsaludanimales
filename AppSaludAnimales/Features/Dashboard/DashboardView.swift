@@ -17,8 +17,10 @@ struct DashboardView: View {
     /// guardar. Es un aviso y no un candado: la persona decide.
     @State private var doseAlert: DoseAlert?
 
-    /// La medicación cuya ficha se está abriendo desde "En curso".
-    @State private var openedMedication: Medication?
+    /// El registro cuya ficha se está abriendo desde "En curso". Vale para todo
+    /// lo que aparece ahí, no solo para las medicaciones: si una fila muestra
+    /// información, tocarla tiene que llevar a la información completa.
+    @State private var openedRecord: DashboardRecord?
 
     @State private var isAddingCompanion = false
     @State private var isRecording = false
@@ -131,19 +133,10 @@ struct DashboardView: View {
             }
         }
         .navigationTitle(Text("Hoy"))
-        .navigationDestination(item: $openedMedication) { medication in
-            HealthRecordDetailView(
-                companion: companion,
-                entry: HistoryEntry(
-                    id: medication.id,
-                    title: medication.name,
-                    detail: medication.dose,
-                    date: medication.startDate,
-                    category: .medication,
-                    badge: medication.status().badge,
-                    reference: .medication(medication)
-                )
-            )
+        .navigationDestination(item: $openedRecord) { record in
+            if let entry = entry(for: record) {
+                HealthRecordDetailView(companion: companion, entry: entry)
+            }
         }
         .alert(item: $doseAlert) { alert in
             switch alert {
@@ -416,8 +409,8 @@ struct DashboardView: View {
                         onRecordDose: item.recordableMedicationID.map { id in
                             { recordDose(medicationID: id, force: false) }
                         },
-                        onOpen: item.recordableMedicationID.map { id in
-                            { openedMedication = medication(with: id) }
+                        onOpen: item.record.map { record in
+                            { openedRecord = record }
                         }
                     )
                 }
@@ -436,6 +429,35 @@ struct DashboardView: View {
         companion.medications.first { $0.id == id }
     }
 
+    /// La ficha del historial que corresponde a una fila de "En curso".
+    private func entry(for record: DashboardRecord) -> HistoryEntry? {
+        switch record {
+        case let .medication(id):
+            guard let medication = medication(with: id) else { return nil }
+            return HistoryEntry(
+                id: medication.id,
+                title: medication.name,
+                detail: medication.dose,
+                date: medication.startDate,
+                category: .medication,
+                badge: medication.status().badge,
+                reference: .medication(medication)
+            )
+
+        case let .treatment(id):
+            guard let treatment = companion.treatments.first(where: { $0.id == id }) else { return nil }
+            return HistoryEntry(
+                id: treatment.id,
+                title: treatment.name,
+                detail: treatment.category,
+                date: treatment.startDate,
+                category: treatment.isPreventive ? .preventive : .treatment,
+                badge: treatment.status().badge,
+                reference: .treatment(treatment)
+            )
+        }
+    }
+
     private func recordDose(medicationID: UUID, force: Bool) {
         guard let medication = medication(with: medicationID) else { return }
 
@@ -449,7 +471,7 @@ struct DashboardView: View {
             return
         }
 
-        medication.doses.append(MedicationDose(administeredAt: now))
+        medication.doses.append(MedicationDose(administeredAt: now, dose: medication.dose))
 
         do {
             try modelContext.save()

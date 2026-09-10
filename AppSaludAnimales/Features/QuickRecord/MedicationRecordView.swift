@@ -154,7 +154,7 @@ struct MedicationRecordView: View {
             return
         }
 
-        medication.doses.append(MedicationDose(administeredAt: date))
+        medication.doses.append(MedicationDose(administeredAt: date, dose: medication.dose))
 
         do {
             try modelContext.save()

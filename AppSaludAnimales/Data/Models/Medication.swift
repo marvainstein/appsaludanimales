@@ -120,6 +120,15 @@ final class MedicationDose {
     var administeredAt: Date = Date()
     var notes: String?
 
+    /// Con qué dosis se dio, copiada de la medicación en ese momento.
+    ///
+    /// Es una copia y no una referencia a propósito. Una medicación cambia de
+    /// dosis con el tiempo —un cuarto de pastilla, después media, después dos— y
+    /// si la toma leyera la dosis actual, toda la historia se reescribiría al
+    /// editarla: parecería que siempre tomó dos. Guardándola acá, la lista de
+    /// tomas muestra cuándo cambió sin que nadie tenga que anotarlo aparte.
+    var dose: String?
+
     /// Quién registró la dosis. Con varias personas responsables, saber quién
     /// anotó qué es más útil que impedir un registro doble.
     var recordedByName: String?
@@ -127,8 +136,14 @@ final class MedicationDose {
 
     var medication: Medication?
 
-    init(administeredAt: Date = Date(), recordedByName: String? = nil, notes: String? = nil) {
+    init(
+        administeredAt: Date = Date(),
+        dose: String? = nil,
+        recordedByName: String? = nil,
+        notes: String? = nil
+    ) {
         self.administeredAt = administeredAt
+        self.dose = dose
         self.recordedByName = recordedByName
         self.notes = notes
     }

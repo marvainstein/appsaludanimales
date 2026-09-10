@@ -10,17 +10,33 @@ struct DashboardItem: Identifiable, Equatable {
     var date: Date?
     var badge: StatusBadge?
 
-    /// La medicación a la que esta fila le puede anotar una toma.
+    /// A qué registro apunta esta fila, si es que se puede abrir.
     ///
-    /// Es un identificador y no la medicación misma para que el armado del
-    /// tablero siga siendo datos puros, comparables y verificables sin abrir la
-    /// base. La pantalla lo resuelve cuando alguien toca.
+    /// Es un identificador y no el registro mismo para que el armado del tablero
+    /// siga siendo datos puros, comparables y verificables sin abrir la base. La
+    /// pantalla lo resuelve cuando alguien toca.
     ///
     /// Existe porque la primera persona ajena al proyecto que probó esto tocó
     /// exactamente acá para dar una medicación, en la fila que le decía que
     /// estaba activa. El camino de "Registrar > Medicación" es el de quien ya
     /// sabe que existe; nadie lo descubre solo.
-    var recordableMedicationID: UUID?
+    var record: DashboardRecord?
+
+    /// Solo una medicación se toma. Un tratamiento se abre pero no se "anota".
+    var recordableMedicationID: UUID? {
+        if case let .medication(id) = record { id } else { nil }
+    }
+}
+
+/// Qué registro hay detrás de una fila del tablero.
+///
+/// Hashable porque es lo que viaja como destino de navegación: se guarda el
+/// identificador y la ficha se arma al llegar. Guardar la ficha entera obligaría
+/// a que `HistoryEntry` fuera Hashable, y esa lleva adentro los modelos de la
+/// base.
+enum DashboardRecord: Equatable, Hashable {
+    case medication(UUID)
+    case treatment(UUID)
 }
 
 struct DashboardSnapshot: Equatable {
@@ -208,7 +224,7 @@ enum DashboardBuilder {
                     symbolName: HealthCategory.medication.symbolName,
                     date: medication.startDate,
                     badge: medication.status(on: referenceDate).badge,
-                    recordableMedicationID: medication.id
+                    record: .medication(medication.id)
                 )
             }
 
@@ -220,7 +236,8 @@ enum DashboardBuilder {
                     detail: treatment.category,
                     symbolName: HealthCategory.treatment.symbolName,
                     date: treatment.startDate,
-                    badge: treatment.status(on: referenceDate).badge
+                    badge: treatment.status(on: referenceDate).badge,
+                    record: .treatment(treatment.id)
                 )
             }
 

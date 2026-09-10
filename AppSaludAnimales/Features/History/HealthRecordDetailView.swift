@@ -260,9 +260,11 @@ struct HealthRecordDetailView: View {
                                 .font(AppFont.body)
                                 .foregroundStyle(Palette.ink)
 
-                            Text(ReminderPlanBuilder.time(dose.administeredAt))
+                            Text(dose.dose.map { "\(ReminderPlanBuilder.time(dose.administeredAt)) · \($0)" }
+                                ?? ReminderPlanBuilder.time(dose.administeredAt))
                                 .font(AppFont.secondary)
                                 .foregroundStyle(Palette.inkMuted)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .padding(.vertical, Spacing.xs)
                         .accessibilityElement(children: .combine)
@@ -403,9 +405,21 @@ struct HealthRecordDetailView: View {
         let perform: () -> Void
     }
 
+    /// Para lo que dura en el tiempo, esa fecha es cuándo empezó, y decir
+    /// solamente "Fecha" al lado de un "Termina" no se entiende. Para lo que
+    /// pasó una vez —una vacuna, un estudio, un peso— es la fecha y nada más.
+    private var dateLabel: String {
+        switch entry.reference {
+        case .medication, .treatment:
+            String(localized: "Fecha de inicio")
+        case .vaccination, .episode, .document, .note, .appointment, .measurement:
+            String(localized: "Fecha")
+        }
+    }
+
     private var fields: [Field] {
         var fields: [Field] = [
-            Field(label: String(localized: "Fecha"), value: DateDescription.absolute(currentDate))
+            Field(label: dateLabel, value: DateDescription.absolute(currentDate))
         ]
 
         switch entry.reference {

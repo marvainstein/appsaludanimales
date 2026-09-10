@@ -105,6 +105,48 @@ struct MedicationDoseTimelineTests {
         #expect(snapshot.recentActivity.count == 2)
     }
 
+    /// El caso de Luli: primero un cuarto de pastilla, después media, después
+    /// dos. Si la toma leyera la dosis actual de la medicación, editarla
+    /// reescribiría toda la historia y parecería que siempre tomó dos.
+    @Test
+    func cadaTomaConservaLaDosisConLaQueSeDio() throws {
+        let companion = try makeCompanion()
+        let medication = Medication(name: "Contal 150", dose: "Un cuarto de pastilla")
+        companion.medications.append(medication)
+
+        medication.doses.append(
+            MedicationDose(administeredAt: .test(2026, 3, 1), dose: medication.dose)
+        )
+
+        medication.dose = "Media pastilla"
+        medication.doses.append(
+            MedicationDose(administeredAt: .test(2026, 6, 1), dose: medication.dose)
+        )
+
+        medication.dose = "Dos pastillas"
+
+        let dosis = medication.doses
+            .sorted { $0.administeredAt < $1.administeredAt }
+            .map(\.dose)
+
+        #expect(dosis == ["Un cuarto de pastilla", "Media pastilla"])
+        #expect(medication.dose == "Dos pastillas")
+    }
+
+    /// Un tratamiento también se abre desde "En curso": si una fila muestra
+    /// información, tocarla tiene que llevar a la información completa.
+    @Test
+    func unTratamientoEnCursoTambienSePuedeAbrir() throws {
+        let companion = try makeCompanion()
+        let treatment = Treatment(name: "Fisioterapia", startDate: .test(2026, 9, 1))
+        companion.treatments.append(treatment)
+
+        let snapshot = DashboardBuilder.snapshot(for: companion, on: .test(2026, 9, 10))
+        let fila = snapshot.currentStatus.first { $0.title == "Fisioterapia" }
+
+        #expect(fila?.record == .treatment(treatment.id))
+    }
+
     private func makeCompanion() throws -> Companion {
         let companion = Companion(name: "Lu", species: .dog)
         context.insert(companion)

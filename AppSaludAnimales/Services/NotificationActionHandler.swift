@@ -35,7 +35,7 @@ final class NotificationActionHandler: NSObject, UNUserNotificationCenterDelegat
         let now = Date()
         guard medication.conflictingDose(for: now) == nil else { return }
 
-        medication.doses.append(MedicationDose(administeredAt: now))
+        medication.doses.append(MedicationDose(administeredAt: now, dose: medication.dose))
         try? context.save()
     }
 

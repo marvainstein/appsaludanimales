@@ -72,6 +72,10 @@ struct MedicationBackup: Codable {
 struct DoseBackup: Codable {
     var id: UUID
     var administeredAt: Date
+
+    /// Con qué dosis se dio. Es opcional, así que un respaldo hecho antes de que
+    /// existiera este campo se sigue leyendo sin subir la versión del formato.
+    var dose: String?
     var notes: String?
     var recordedByName: String?
     var createdAt: Date
