@@ -63,7 +63,11 @@ struct VeterinariansView: View {
                     isAdding = true
                 } label: {
                     Label {
+                        // Sin esto el texto no puede crecer a lo alto y se
+                        // recorta con el cuerpo de letra grande, que es
+                        // justamente quien más lo necesita.
                         Text("Agregar una veterinaria")
+                            .fixedSize(horizontal: false, vertical: true)
                     } icon: {
                         Image(systemName: "plus")
                     }
@@ -109,6 +113,7 @@ struct VeterinariansView: View {
                 Text(detail)
                     .font(AppFont.secondary)
                     .foregroundStyle(Palette.inkMuted)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .padding(.vertical, Spacing.xs)
