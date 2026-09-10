@@ -51,7 +51,13 @@ struct LabeledTextField: View {
                     .accessibilityHidden(true)
             }
         }
-        .padding(.vertical, Spacing.xs)
+        // Más aire arriba que abajo, a propósito. Con el mismo espacio en los
+        // dos lados el texto quedaba flotando a media altura entre su etiqueta y
+        // el renglón de abajo, y ese renglón se lee como la línea sobre la que
+        // uno escribe. Ahora el texto se apoya en ella y el aire separa este
+        // campo del anterior, que es donde hace falta.
+        .padding(.top, Spacing.sm)
+        .padding(.bottom, 2)
         // Una salida del teclado que no dependa de tocar en el lugar correcto de
         // la pantalla.
         //

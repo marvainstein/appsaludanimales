@@ -33,9 +33,10 @@ mejora algo que ya funciona.
 - [x] **Pantalla "Acerca de".** Qué hace la app y qué no: que no diagnostica, que
       los datos no salen del teléfono, quién la hizo y por qué. Apple lo valora y
       además es lo honesto.
-- [ ] **Ilustraciones propias en los estados vacíos.** Están los tres lugares
-      hechos y con dibujos provisorios para poder mirarlos en el teléfono. El
-      encargo de las definitivas está en docs/ilustraciones.md.
+- [x] **Ilustraciones de los estados vacíos.** Cerrado: las que hay son las
+      definitivas. La huella usa la misma geometría que el ícono, y las
+      pantallas miradas en el teléfono no se ven vacías. El encargo queda escrito
+      en docs/ilustraciones.md por si alguna vez hace falta.
 
 ## Trámites que llevan tiempo y no dependen de nadie
 

@@ -6,10 +6,21 @@ import SwiftUI
 /// app. Hoy eran cajas de texto gris apiladas: correctas, informativas y
 /// tristes.
 ///
-/// **Estos dibujos son provisorios.** Están hechos con formas geométricas para
-/// que se vea dónde va la ilustración y de qué tamaño, y para poder revisarlo en
-/// el teléfono en vez de imaginárselo. Cuando existan las ilustraciones de
-/// verdad, se reemplaza este archivo y nada más.
+/// **Estos dibujos son los definitivos**, decidido en septiembre de 2026 después
+/// de mirarlos en el teléfono. Se habían anotado como provisorios cuando eran
+/// formas puestas para ver dónde iba la ilustración y de qué tamaño, pero dos
+/// cosas cambiaron esa etiqueta.
+///
+/// La huella dejó de ser un relleno: usa `PawPath`, la misma geometría que el
+/// ícono de la app y que el membrete del PDF. No es un dibujo esperando a otro
+/// mejor, es la marca dibujada una sola vez y usada en tres lugares.
+///
+/// Y las pantallas, miradas de verdad, no se ven vacías: la de bienvenida se ve
+/// una sola vez, la de carga está completa, y la del primer día tiene su dibujo,
+/// su título y su explicación. Encargar ilustraciones a alguien cuesta plata en
+/// una app que va a ser gratis para siempre, y no había un problema que
+/// resolvieran. Si alguna vez alguien dice que estas pantallas se sienten frías,
+/// el encargo está escrito en docs/ilustraciones.md.
 ///
 /// Son decorativos: todo lo que dicen está en el texto de al lado, así que las
 /// tecnologías asistivas los ignoran.

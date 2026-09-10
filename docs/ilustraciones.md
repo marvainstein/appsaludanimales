@@ -1,3 +1,8 @@
+> **Este encargo está en pausa desde septiembre de 2026.** Se decidió que los
+> dibujos que tiene la app son los definitivos: la huella usa la misma geometría
+> que el ícono, y las pantallas miradas en el teléfono no se ven vacías. Queda
+> escrito por si alguna vez alguien dice que se sienten frías.
+
 # Las ilustraciones
 
 Hoy en la app hay tres dibujos hechos con formas geométricas, escritos en
