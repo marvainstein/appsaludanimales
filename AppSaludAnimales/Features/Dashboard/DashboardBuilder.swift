@@ -44,7 +44,14 @@ enum DashboardBuilder {
     static let upcomingWindowInDays = 30
 
     /// Cantidad de eventos recientes. La actividad completa vive en el historial.
-    static let recentActivityLimit = 5
+    /// Dos, no cinco.
+    ///
+    /// Con las tomas de medicación entrando acá, cinco renglones llenaban la
+    /// pantalla y empujaban todo lo demás abajo del pliegue. Esta sección
+    /// contesta "¿quedó anotado lo último que hice?", y para eso dos alcanzan:
+    /// lo que se busca de verdad está en el historial, que tiene su acceso justo
+    /// debajo.
+    static let recentActivityLimit = 2
 
     static func snapshot(
         for companion: Companion,

@@ -60,6 +60,8 @@ struct HealthRecordDetailView: View {
                     .foregroundStyle(Palette.inkMuted)
             }
 
+            dosesSection
+
             if !stateActions.isEmpty {
                 Section {
                     ForEach(stateActions, id: \.title) { action in
@@ -235,6 +237,62 @@ struct HealthRecordDetailView: View {
 
     /// Se edita lo que se puede cargar desde la app, que ahora es todo salvo
     /// las mediciones que no son de peso, porque todavía no existen.
+    // MARK: - Las tomas
+
+    /// Las dos últimas, y el acceso a todas.
+    ///
+    /// Dos y no una: lo que uno viene a comprobar es si ya se dio la de hoy, y
+    /// para eso hace falta ver la anterior. Y no todas, porque una medicación de
+    /// años son cientos de renglones tapando el resto de la ficha.
+    @ViewBuilder
+    private var dosesSection: some View {
+        if case let .medication(medication) = entry.reference {
+            Section {
+                if medication.doses.isEmpty {
+                    Text("Todavía no anotaste ninguna. Se anotan desde «En curso», en la pantalla de hoy.")
+                        .font(AppFont.secondary)
+                        .foregroundStyle(Palette.inkMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    ForEach(latestDoses(of: medication)) { dose in
+                        VStack(alignment: .leading, spacing: Spacing.xs) {
+                            Text(DateDescription.absolute(dose.administeredAt))
+                                .font(AppFont.body)
+                                .foregroundStyle(Palette.ink)
+
+                            Text(ReminderPlanBuilder.time(dose.administeredAt))
+                                .font(AppFont.secondary)
+                                .foregroundStyle(Palette.inkMuted)
+                        }
+                        .padding(.vertical, Spacing.xs)
+                        .accessibilityElement(children: .combine)
+                    }
+
+                    NavigationLink {
+                        MedicationDosesView(medication: medication)
+                    } label: {
+                        Label {
+                            Text("Ver todas las tomas")
+                        } icon: {
+                            Image(systemName: "list.bullet")
+                        }
+                        .frame(minHeight: Spacing.minimumTapTarget)
+                    }
+                    .accessibilityIdentifier("record.allDoses")
+                }
+            } header: {
+                Text(medication.doses.isEmpty
+                    ? String(localized: "Tomas")
+                    : String(localized: "Tomas · \(medication.doses.count)"))
+                    .foregroundStyle(Palette.inkMuted)
+            }
+        }
+    }
+
+    private func latestDoses(of medication: Medication) -> [MedicationDose] {
+        Array(medication.doses.sorted { $0.administeredAt > $1.administeredAt }.prefix(2))
+    }
+
     private var isEditable: Bool {
         switch entry.reference {
         case .medication, .vaccination, .episode, .document, .note, .treatment, .appointment: true
@@ -360,10 +418,6 @@ struct HealthRecordDetailView: View {
             fields.append(Field(
                 label: String(localized: "Termina"),
                 value: medication.endDate.map { DateDescription.absolute($0) }
-            ))
-            fields.append(Field(
-                label: String(localized: "Tomas registradas"),
-                value: medication.doses.isEmpty ? nil : medication.doses.count.formatted()
             ))
             fields.append(Field(label: String(localized: "Indicaciones"), value: medication.indications))
 

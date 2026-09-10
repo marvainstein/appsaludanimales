@@ -17,6 +17,9 @@ struct DashboardView: View {
     /// guardar. Es un aviso y no un candado: la persona decide.
     @State private var doseAlert: DoseAlert?
 
+    /// La medicación cuya ficha se está abriendo desde "En curso".
+    @State private var openedMedication: Medication?
+
     @State private var isAddingCompanion = false
     @State private var isRecording = false
     @State private var isShowingEmergency = false
@@ -128,6 +131,20 @@ struct DashboardView: View {
             }
         }
         .navigationTitle(Text("Hoy"))
+        .navigationDestination(item: $openedMedication) { medication in
+            HealthRecordDetailView(
+                companion: companion,
+                entry: HistoryEntry(
+                    id: medication.id,
+                    title: medication.name,
+                    detail: medication.dose,
+                    date: medication.startDate,
+                    category: .medication,
+                    badge: medication.status().badge,
+                    reference: .medication(medication)
+                )
+            )
+        }
         .alert(item: $doseAlert) { alert in
             switch alert {
             case let .duplicate(medicationID, message):
@@ -398,6 +415,9 @@ struct DashboardView: View {
                         referenceDate: referenceDate,
                         onRecordDose: item.recordableMedicationID.map { id in
                             { recordDose(medicationID: id, force: false) }
+                        },
+                        onOpen: item.recordableMedicationID.map { id in
+                            { openedMedication = medication(with: id) }
                         }
                     )
                 }
@@ -412,10 +432,12 @@ struct DashboardView: View {
     /// la medicación. Es donde está la información, así que es donde uno espera
     /// actuar. "Registrar > Medicación" es el camino de quien ya sabe que
     /// existe.
+    private func medication(with id: UUID) -> Medication? {
+        companion.medications.first { $0.id == id }
+    }
+
     private func recordDose(medicationID: UUID, force: Bool) {
-        guard let medication = companion.medications.first(where: { $0.id == medicationID }) else {
-            return
-        }
+        guard let medication = medication(with: medicationID) else { return }
 
         let now = Date()
 

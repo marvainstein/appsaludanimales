@@ -36,6 +36,11 @@ struct DashboardItemCard: View {
     /// casilla no aparece.
     var onRecordDose: (() -> Void)?
 
+    /// Qué hacer cuando alguien toca la tarjeta para ver la ficha completa. Sin
+    /// esto la tarjeta no es tocable, que es como se comporta en las secciones
+    /// donde no hay nada más que ver.
+    var onOpen: (() -> Void)?
+
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
@@ -48,7 +53,53 @@ struct DashboardItemCard: View {
                     .accessibilityHidden(true)
             }
 
-            VStack(alignment: .leading, spacing: Spacing.xs) {
+            content
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let onRecordDose {
+                doseButton(onRecordDose)
+            }
+        }
+        .padding(Spacing.lg)
+        .background(
+            RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
+                .fill(Palette.surface)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
+                .strokeBorder(Palette.separator, lineWidth: 1)
+        )
+    }
+
+    /// El texto de la tarjeta. Si hay una ficha que abrir es un botón, y lleva
+    /// la flecha que lo dice; si no, es texto y nada más.
+    @ViewBuilder
+    private var content: some View {
+        if let onOpen {
+            Button(action: onOpen) {
+                HStack(alignment: .top, spacing: Spacing.sm) {
+                    texts
+
+                    Spacer(minLength: 0)
+
+                    Image(systemName: "chevron.right")
+                        .font(AppFont.caption)
+                        .foregroundStyle(Palette.inkMuted)
+                        .accessibilityHidden(true)
+                }
+            }
+            .buttonStyle(.plain)
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityHint(Text("Abre la ficha completa"))
+        } else {
+            texts
+                .accessibilityElement(children: .combine)
+        }
+    }
+
+    private var texts: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
                 Text(item.title)
                     .font(AppFont.cardTitle)
                     .foregroundStyle(Palette.ink)
@@ -70,23 +121,8 @@ struct DashboardItemCard: View {
                 if let badge = item.badge {
                     StatusChip(status: badge)
                 }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilityElement(children: .combine)
-
-            if let onRecordDose {
-                doseButton(onRecordDose)
-            }
         }
-        .padding(Spacing.lg)
-        .background(
-            RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
-                .fill(Palette.surface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
-                .strokeBorder(Palette.separator, lineWidth: 1)
-        )
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     /// Una casilla que dice lo que hace antes de que la toques.

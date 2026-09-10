@@ -87,6 +87,24 @@ struct MedicationDoseTimelineTests {
         #expect(fila?.recordableMedicationID == nil)
     }
 
+    /// Cinco renglones de actividad reciente llenaban la pantalla apenas
+    /// empezaban a entrar las tomas. Dos alcanzan para contestar "¿quedó
+    /// anotado lo último que hice?", que es para lo que sirve esa sección.
+    @Test
+    func laActividadRecienteMuestraDos() throws {
+        let companion = try makeCompanion()
+        let medication = Medication(name: "Contal 150", startDate: .test(2024, 10, 9))
+        companion.medications.append(medication)
+
+        for hour in [8, 12, 16, 20] {
+            medication.doses.append(MedicationDose(administeredAt: .test(2026, 9, 10, hour: hour)))
+        }
+
+        let snapshot = DashboardBuilder.snapshot(for: companion, on: .test(2026, 9, 10))
+
+        #expect(snapshot.recentActivity.count == 2)
+    }
+
     private func makeCompanion() throws -> Companion {
         let companion = Companion(name: "Lu", species: .dog)
         context.insert(companion)
