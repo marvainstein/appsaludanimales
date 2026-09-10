@@ -59,20 +59,35 @@ struct VeterinariansView: View {
             }
 
             Section {
+                // Un HStack con relleno propio en vez de un `Label` con alto
+                // mínimo: adentro del Label el texto queda en una línea que no
+                // puede crecer y la auditoría lo marca como recortado con el
+                // cuerpo de letra grande. Es la misma forma que usan las
+                // opciones del registro rápido, que sí pasan la auditoría.
                 Button {
                     isAdding = true
                 } label: {
-                    Label {
-                        // Sin esto el texto no puede crecer a lo alto y se
-                        // recorta con el cuerpo de letra grande, que es
-                        // justamente quien más lo necesita.
-                        Text("Agregar una veterinaria")
-                            .fixedSize(horizontal: false, vertical: true)
-                    } icon: {
+                    HStack(spacing: Spacing.lg) {
                         Image(systemName: "plus")
+                            .foregroundStyle(Palette.accent)
+                            .frame(width: Spacing.xl)
+                            .accessibilityHidden(true)
+
+                        Text("Agregar una veterinaria")
+                            .font(AppFont.body)
+                            .foregroundStyle(Palette.accent)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
+                    .padding(.vertical, Spacing.sm)
                     .frame(minHeight: Spacing.minimumTapTarget)
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("Agregar una veterinaria"))
+                // Al reemplazar el elemento por uno propio se pierde el rasgo
+                // de botón, y sin él VoiceOver lee el texto sin decir que se
+                // puede tocar.
+                .accessibilityAddTraits(.isButton)
                 .accessibilityIdentifier("veterinarians.add")
             }
         }
@@ -106,10 +121,7 @@ struct VeterinariansView: View {
                 }
             }
 
-            if let detail = [professional.clinic, professional.phone]
-                .compactMap({ $0 })
-                .filter({ !$0.isEmpty })
-                .first {
+            if let detail = detail(for: professional) {
                 Text(detail)
                     .font(AppFont.secondary)
                     .foregroundStyle(Palette.inkMuted)
@@ -118,8 +130,33 @@ struct VeterinariansView: View {
         }
         .padding(.vertical, Spacing.xs)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
+        // `.combine` no llega a unir el nombre con su detalle adentro de una
+        // lista: quedan como dos paradas sueltas de VoiceOver. Con la etiqueta
+        // escrita a mano, cada veterinaria es una sola cosa.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(accessibilityLabel(for: professional)))
         .accessibilityHint(Text("Abre los datos para cambiarlos"))
+        .accessibilityAddTraits(.isButton)
+    }
+
+    private func accessibilityLabel(for professional: Professional) -> String {
+        var parts = [professional.name]
+
+        if professional.isPrimaryVeterinarian {
+            parts.append(String(localized: "de cabecera"))
+        }
+
+        if let detail = detail(for: professional) {
+            parts.append(detail)
+        }
+
+        return parts.joined(separator: ", ")
+    }
+
+    private func detail(for professional: Professional) -> String? {
+        [professional.clinic, professional.phone]
+            .compactMap { $0 }
+            .first { !$0.isEmpty }
     }
 
     private func delete(at offsets: IndexSet) {
