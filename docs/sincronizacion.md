@@ -59,6 +59,32 @@ Los dos comparten la misma trampa: **fallar sin avisar.** En una app cuyo
 propósito es que no se pierda la historia clínica de un animal, eso es lo único
 inaceptable. Cualquiera de los dos casos tiene que decirse con todas las letras.
 
+## Lo construido antes de tener la cuenta
+
+La pantalla está hecha y se puede probar hoy, con una salvedad: `AppCapabilities.cloudSyncIsBuilt`
+está en `false`, así que tocar el botón lleva siempre al aviso de "todavía no
+está disponible".
+
+Eso no es una limitación, es el punto. **El camino que hay que construir bien es
+el que falla**, y hoy la app está justamente en ese estado. El camino de éxito lo
+prueba cualquiera; el que arruina una app es el que falla sin avisar.
+
+Cuando exista la cuenta paga, son tres cambios:
+
+1. Activar la capacidad de iCloud en el proyecto (pestaña *Signing & Capabilities*).
+2. `cloudKitDatabase: .none` → sincronizado, en `ModelContainerFactory`.
+3. `AppCapabilities.cloudSyncIsBuilt` → `true`.
+
+Y recién ahí la prueba de verdad, que necesita dos dispositivos con la misma
+cuenta de iCloud.
+
+## Cómo se llama en la app
+
+En ningún texto aparece la palabra "sincronizar". Nadie quiere sincronizar: la
+gente quiere no perder las cosas. Se llama **"que se guarde solo"**, que además
+es literalmente lo que hace. Hay un test que falla si alguna vez se cuela la
+palabra.
+
 ## Lo que hay que actualizar antes de publicar
 
 La política de privacidad, la pantalla "Acerca de" y los textos de la App Store

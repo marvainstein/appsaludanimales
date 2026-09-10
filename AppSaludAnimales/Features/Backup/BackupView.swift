@@ -15,18 +15,20 @@ struct BackupView: View {
     @State private var isImporting = false
     @State private var restoreSummary: BackupRestoreSummary?
     @State private var errorMessage: String?
+    @State private var syncIsOn = CloudSyncPreferences.isEnabled
+    @State private var syncBlocked: CloudSyncAvailability?
 
     var body: some View {
         List {
             Section {
-                Text("El respaldo es un archivo con toda la historia de salud de todos tus perros y gatos: los datos, los documentos adjuntos y las fotos. Guardalo donde quieras y volvé a cargarlo en cualquier teléfono.")
+                Text("Hay dos maneras de que la historia de salud de tus perros y gatos no se pierda si el teléfono se rompe o se pierde. Una la hacés vos cuando querés; la otra se hace sola.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
-                Text("Qué es")
-            } footer: {
-                Text("Ese archivo tiene información de salud. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel.")
+                Text("Que no se pierda")
             }
+
+            automaticCopySection
 
             Section {
                 if let backupURL {
@@ -53,9 +55,9 @@ struct BackupView: View {
                     action: createBackup
                 )
             } header: {
-                Text("Crear")
+                Text("Un archivo que guardás vos")
             } footer: {
-                Text(lastBackupFooter)
+                Text("\(lastBackupFooter) El archivo tiene toda la información, los documentos y las fotos. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel.")
             }
 
             Section {
@@ -78,6 +80,17 @@ struct BackupView: View {
         }
         .navigationTitle(Text("Respaldo"))
         .navigationBarTitleDisplayMode(.inline)
+        .alert(
+            Text(blockedTitle),
+            isPresented: Binding(
+                get: { syncBlocked != nil },
+                set: { if !$0 { syncBlocked = nil } }
+            )
+        ) {
+            Button("Entendido", role: .cancel) { syncBlocked = nil }
+        } message: {
+            Text(blockedExplanation)
+        }
         .fileImporter(
             isPresented: $isImporting,
             allowedContentTypes: [.json],
@@ -116,6 +129,81 @@ struct BackupView: View {
     }
 
     // MARK: - Crear
+
+
+    // MARK: - Que se guarde solo
+
+    /// La copia automática, contada por lo que resuelve y no por cómo funciona.
+    ///
+    /// En ningún texto aparece la palabra "sincronizar": nadie quiere
+    /// sincronizar, la gente quiere no perder las cosas. Y "un respaldo que se
+    /// hace solo" es, además, literalmente lo que es.
+    ///
+    /// Vive acá y no en el tablero a propósito. La app no pide nada antes de
+    /// que la persona haya visto para qué sirve, y a esta pantalla se llega
+    /// cuando ya hay algo que perder: buscándola, o desde el aviso de respaldo,
+    /// que aparece recién cuando hay información cargada.
+    @ViewBuilder
+    private var automaticCopySection: some View {
+        Section {
+            if syncIsOn {
+                Label {
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text("Está activado")
+                            .font(AppFont.cardTitle)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Text("Tu información se guarda sola en tu iCloud.")
+                            .font(AppFont.secondary)
+                            .foregroundStyle(Palette.inkMuted)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                } icon: {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(Palette.accent)
+                }
+                .padding(.vertical, Spacing.xs)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("Está activado. Tu información se guarda sola en tu iCloud."))
+            } else {
+                Text("Se guarda en tu iCloud sin que tengas que acordarte de nada. Si perdés el teléfono, la información está ahí. No hace falta crear ninguna cuenta: se usa la de iCloud que ya tenés.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                PrimaryButton(
+                    title: String(localized: "Que se guarde solo"),
+                    identifier: "backup.enableAutomatic",
+                    action: enableAutomaticCopy
+                )
+            }
+        } header: {
+            Text("Que se guarde solo")
+        } footer: {
+            Text(syncIsOn
+                ? "La copia es tuya y vive en tu cuenta de iCloud. No tenemos servidores ni forma de ver lo que guardás."
+                : "Podés activarlo ahora o cuando quieras: esta pantalla está siempre acá.")
+        }
+    }
+
+    private var blockedTitle: String {
+        syncBlocked.flatMap(\.titulo) ?? ""
+    }
+
+    private var blockedExplanation: String {
+        syncBlocked.flatMap(\.explicacion) ?? ""
+    }
+
+    private func enableAutomaticCopy() {
+        let disponibilidad = CloudSyncAvailability.current()
+
+        guard disponibilidad == .disponible else {
+            syncBlocked = disponibilidad
+            return
+        }
+
+        CloudSyncPreferences.isEnabled = true
+        syncIsOn = true
+    }
 
     private func createBackup() {
         isPreparing = true
