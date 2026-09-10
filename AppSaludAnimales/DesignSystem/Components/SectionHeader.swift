@@ -32,6 +32,10 @@ struct DashboardItemCard: View {
     let item: DashboardItem
     var referenceDate: Date = .now
 
+    /// Qué hacer cuando alguien toca la casilla de anotar una toma. Sin esto la
+    /// casilla no aparece.
+    var onRecordDose: (() -> Void)?
+
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
@@ -68,6 +72,11 @@ struct DashboardItemCard: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityElement(children: .combine)
+
+            if let onRecordDose {
+                doseButton(onRecordDose)
+            }
         }
         .padding(Spacing.lg)
         .background(
@@ -78,7 +87,30 @@ struct DashboardItemCard: View {
             RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
                 .strokeBorder(Palette.separator, lineWidth: 1)
         )
-        .accessibilityElement(children: .combine)
+    }
+
+    /// Una casilla que dice lo que hace antes de que la toques.
+    ///
+    /// Es un botón propio y no la fila entera: quien toca para mirar no debería
+    /// terminar anotando una toma que no dio. Y con el cuerpo de letra grande
+    /// baja debajo del texto en vez de apretarlo contra el borde.
+    private func doseButton(_ action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: Spacing.xs) {
+                Image(systemName: "checkmark.circle")
+                    .font(.title2)
+
+                Text("Anotar toma")
+                    .font(AppFont.caption)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .foregroundStyle(Palette.accent)
+            .frame(minWidth: Spacing.minimumTapTarget, minHeight: Spacing.minimumTapTarget)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text("Anotar una toma de \(item.title)"))
+        .accessibilityHint(Text("Se guarda con la hora de este momento"))
+        .accessibilityIdentifier("dashboard.recordDose")
     }
 }
 

@@ -84,6 +84,28 @@ extension Medication {
     }
 }
 
+/// Cada toma anotada es un registro con su propia fecha.
+///
+/// Sin esto, la app dejaba anotar una toma y no la mostraba en ningún lado: la
+/// medicación aparecía una sola vez, fechada el día en que se cargó, y las tomas
+/// posteriores se guardaban sin dejar rastro. La primera persona que probó esto
+/// dio la medicación, no vio nada, y concluyó que no había funcionado.
+///
+/// Aparecen en "Actividad reciente" y en la lista de la propia medicación, no en
+/// el historial: dos tomas por día durante un año son setecientos treinta
+/// renglones que dirían lo mismo, y el historial existe para encontrar el
+/// estudio de cuando estuvo mal de la pata.
+extension MedicationDose: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
+    var timelineDate: Date { administeredAt }
+    var timelineTitle: String { medication?.name ?? String(localized: "Medicación") }
+    var timelineCategory: HealthCategory { .medication }
+
+    /// Sin chip de estado: el estado es el de la medicación, no el de la toma.
+    /// Una toma no está "activa" ni "suspendida": pasó.
+    var timelineStatus: (any StatusPresentable)? { nil }
+}
+
 extension Medication: HealthTimelineItem {
     var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { startDate }

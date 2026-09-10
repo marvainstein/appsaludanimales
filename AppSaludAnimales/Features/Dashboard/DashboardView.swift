@@ -11,6 +11,11 @@ struct DashboardView: View {
     var onSelectCompanion: (Companion) -> Void = { _ in }
 
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.modelContext) private var modelContext
+
+    /// El aviso de una toma que se parece a otra ya anotada, o de que no se pudo
+    /// guardar. Es un aviso y no un candado: la persona decide.
+    @State private var doseAlert: DoseAlert?
 
     @State private var isAddingCompanion = false
     @State private var isRecording = false
@@ -30,6 +35,19 @@ struct DashboardView: View {
     /// Se calcula una vez al aparecer, y no en cada dibujo: una tarjeta que
     /// aparece y desaparece sola mientras alguien lee es peor que no tenerla.
     @State private var isOfferingBackup = false
+
+    /// Los dos avisos que puede dar anotar una toma.
+    private enum DoseAlert: Identifiable {
+        case duplicate(medicationID: UUID, message: String)
+        case saveFailed
+
+        var id: String {
+            switch self {
+            case let .duplicate(id, _): "duplicate-\(id)"
+            case .saveFailed: "saveFailed"
+            }
+        }
+    }
 
     private var snapshot: DashboardSnapshot {
         DashboardBuilder.snapshot(for: companion, on: referenceDate)
@@ -67,7 +85,7 @@ struct DashboardView: View {
                         )
 
                         section(
-                            title: String(localized: "Estado actual"),
+                            title: String(localized: "En curso"),
                             items: snapshot.currentStatus,
                             emptyMessage: String(localized: "Acá vas a ver las medicaciones y los tratamientos en curso.")
                         )
@@ -110,6 +128,25 @@ struct DashboardView: View {
             }
         }
         .navigationTitle(Text("Hoy"))
+        .alert(item: $doseAlert) { alert in
+            switch alert {
+            case let .duplicate(medicationID, message):
+                Alert(
+                    title: Text("¿La anotamos igual?"),
+                    message: Text(message),
+                    primaryButton: .default(Text("Anotarla")) {
+                        recordDose(medicationID: medicationID, force: true)
+                    },
+                    secondaryButton: .cancel(Text("No"))
+                )
+            case .saveFailed:
+                Alert(
+                    title: Text("No pudimos anotarla"),
+                    message: Text("Podés intentar de nuevo en un momento."),
+                    dismissButton: .cancel(Text("Entendido"))
+                )
+            }
+        }
         .safeAreaInset(edge: .bottom) {
             if companion.isPresent {
                 recordBar
@@ -356,9 +393,49 @@ struct DashboardView: View {
                 )
             } else {
                 ForEach(items) { item in
-                    DashboardItemCard(item: item, referenceDate: referenceDate)
+                    DashboardItemCard(
+                        item: item,
+                        referenceDate: referenceDate,
+                        onRecordDose: item.recordableMedicationID.map { id in
+                            { recordDose(medicationID: id, force: false) }
+                        }
+                    )
                 }
             }
+        }
+    }
+
+    // MARK: - Anotar una toma desde acá
+
+    /// El caso que trajo esto: la primera persona ajena al proyecto que probó la
+    /// app tocó la fila que decía "Contal 150, media pastilla, activo" para dar
+    /// la medicación. Es donde está la información, así que es donde uno espera
+    /// actuar. "Registrar > Medicación" es el camino de quien ya sabe que
+    /// existe.
+    private func recordDose(medicationID: UUID, force: Bool) {
+        guard let medication = companion.medications.first(where: { $0.id == medicationID }) else {
+            return
+        }
+
+        let now = Date()
+
+        if !force, let conflict = medication.conflictingDose(for: now) {
+            doseAlert = .duplicate(
+                medicationID: medicationID,
+                message: DoseDuplicationCheck.warningMessage(for: conflict)
+            )
+            return
+        }
+
+        medication.doses.append(MedicationDose(administeredAt: now))
+
+        do {
+            try modelContext.save()
+            // Sin esto la toma recién anotada queda "en el futuro" respecto del
+            // momento que el tablero tiene guardado, y no aparece.
+            referenceDate = Date()
+        } catch {
+            doseAlert = .saveFailed
         }
     }
 

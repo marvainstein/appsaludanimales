@@ -9,6 +9,18 @@ struct DashboardItem: Identifiable, Equatable {
     var symbolName: String
     var date: Date?
     var badge: StatusBadge?
+
+    /// La medicación a la que esta fila le puede anotar una toma.
+    ///
+    /// Es un identificador y no la medicación misma para que el armado del
+    /// tablero siga siendo datos puros, comparables y verificables sin abrir la
+    /// base. La pantalla lo resuelve cuando alguien toca.
+    ///
+    /// Existe porque la primera persona ajena al proyecto que probó esto tocó
+    /// exactamente acá para dar una medicación, en la fila que le decía que
+    /// estaba activa. El camino de "Registrar > Medicación" es el de quien ya
+    /// sabe que existe; nadie lo descubre solo.
+    var recordableMedicationID: UUID?
 }
 
 struct DashboardSnapshot: Equatable {
@@ -188,7 +200,8 @@ enum DashboardBuilder {
                     detail: medication.dose,
                     symbolName: HealthCategory.medication.symbolName,
                     date: medication.startDate,
-                    badge: medication.status(on: referenceDate).badge
+                    badge: medication.status(on: referenceDate).badge,
+                    recordableMedicationID: medication.id
                 )
             }
 
@@ -234,6 +247,7 @@ enum DashboardBuilder {
         timeline += companion.appointments.map { $0 as any HealthTimelineItem }
         timeline += companion.documents.map { $0 as any HealthTimelineItem }
         timeline += companion.notes.map { $0 as any HealthTimelineItem }
+        timeline += companion.medications.flatMap(\.doses).map { $0 as any HealthTimelineItem }
 
         // Por cuándo se anotó y no por cuándo pasó. Un estudio de hace dos años
         // que se carga hoy es actividad de hoy: ordenar por la fecha del estudio
@@ -245,7 +259,9 @@ enum DashboardBuilder {
             .map { item in
                 DashboardItem(
                     title: item.timelineTitle,
-                    detail: item.timelineCategory.label,
+                    detail: item is MedicationDose
+                        ? String(localized: "Toma anotada")
+                        : item.timelineCategory.label,
                     symbolName: item.timelineCategory.symbolName,
                     date: item.timelineDate,
                     badge: item.timelineStatus?.badge

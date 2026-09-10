@@ -157,3 +157,29 @@ semilla.
 **Cuándo revisarlo.** Si más adelante hay gente usándola y pidiendo colaborar, ahí
 se puede evaluar la propina por compra dentro de la app con datos en la mano, en
 lugar de suponer.
+
+
+## Lo que dejó la primera prueba con alguien de afuera
+
+Septiembre de 2026. Se le pidió a una segunda persona que le anotara una toma de
+medicación a un animal ya cargado.
+
+**Su primer intento fue tocar la fila del tablero** que decía "Contal 150, media
+pastilla, activo". No fue a "Registrar > Medicación". Es donde está la
+información, así que es donde uno espera actuar.
+
+Eso encontró dos cosas que ninguno de los dos había visto discutiéndolo:
+
+1. Esa fila no hacía nada. Ahora tiene una casilla que dice "Anotar toma".
+2. Las tomas se guardaban y no se mostraban. La medicación aparecía una sola vez,
+   fechada el día en que se la cargó, y cada toma posterior desaparecía. Quien la
+   anotaba concluía razonablemente que no había funcionado, y entonces intentaba
+   cargar la medicación de nuevo.
+
+Vale anotar el orden: el segundo problema causaba el primero. Sin efecto visible,
+lo siguiente que uno hace es volver a empezar.
+
+**Conclusión para el resto del proyecto:** diez minutos de alguien que no
+construyó la app encontraron más que una hora de discusión entre quienes sí. Vale
+para las funciones que faltan —compartir entre dos personas, sobre todo— y es el
+argumento más fuerte para publicar antes de seguir construyendo a ciegas.
