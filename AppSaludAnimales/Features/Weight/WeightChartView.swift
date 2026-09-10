@@ -61,8 +61,10 @@ struct WeightChartView: View {
             .accessibilityElement(children: .combine)
         } header: {
             Text("Último peso")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text("La app muestra cómo cambió, no si está bien o mal. Eso lo dice el veterinario.")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 
@@ -119,8 +121,10 @@ struct WeightChartView: View {
             }
         } header: {
             Text("Todos los pesos")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text("Del más nuevo al más viejo. Para corregir uno, entrá desde el historial.")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 }

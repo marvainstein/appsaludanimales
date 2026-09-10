@@ -16,6 +16,7 @@ struct AboutView: View {
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
                 Text("Qué es")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -24,8 +25,10 @@ struct AboutView: View {
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
                 Text("Lo que no hace")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Esto no es una advertencia legal: es cómo está construida. La app no tiene forma de saber si un peso está bien o si un síntoma es grave, y fingir que sí sería peligroso.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -39,6 +42,7 @@ struct AboutView: View {
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
                 Text("Tus datos")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -47,6 +51,7 @@ struct AboutView: View {
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
                 Text("Cuánto cuesta")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -60,6 +65,7 @@ struct AboutView: View {
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
                 Text("De dónde viene")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {

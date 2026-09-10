@@ -50,6 +50,7 @@ struct QuickRecordSheet: View {
                     }
                 } header: {
                     Text("Qué querés registrar de \(companion.displayName)")
+                        .foregroundStyle(Palette.inkMuted)
                 }
 
                 // Lo que se sostiene en el tiempo, separado de lo que pasó hoy.
@@ -85,6 +86,7 @@ struct QuickRecordSheet: View {
                     }
                 } header: {
                     Text("Lo que viene y lo que dura")
+                        .foregroundStyle(Palette.inkMuted)
                 }
 
                 Section {
@@ -107,6 +109,7 @@ struct QuickRecordSheet: View {
                     }
                 } header: {
                     Text("Archivo")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
             .navigationTitle(Text("Registrar"))

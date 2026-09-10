@@ -97,10 +97,12 @@ struct DocumentBatchImportView: View {
             }
         } header: {
             Text("Qué traer")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text(drafts.isEmpty
                 ? "Podés elegir varios a la vez. Si tenés los estudios guardados en otra aplicación, aparece como una ubicación más dentro de Archivos."
                 : "\(drafts.count) elegidos. Podés agregar más o quitar los que no van.")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 
@@ -138,6 +140,7 @@ struct DocumentBatchImportView: View {
             .accessibilityHint(Text("Este documento no se guarda. El archivo original no se toca."))
         } header: {
             Text(draft.wrappedValue.fileName ?? String(localized: "Foto elegida"))
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 

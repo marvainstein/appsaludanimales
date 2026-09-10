@@ -196,3 +196,29 @@ se nos pasan de largo.
 **Lo que falta, entonces:** que una persona ciega use la app diez minutos, antes
 de que la app llegue a alguien más que a quien la construyó. No hay forma de
 deducir eso desde acá.
+
+
+## El contraste de los encabezados y pies de sección
+
+Septiembre de 2026. La auditoría empezó a marcar "contrast nearly passed" en
+encabezados y pies de lista: "Archivo", "Veterinarias", "Guardá las que ya
+conocés…".
+
+**Era real.** El gris que iOS usa por omisión ahí queda en unos 4,4:1, apenas
+por debajo del 4,5:1 que la norma pide para texto de tamaño normal. Por eso el
+hallazgo dice *nearly*: pasa el umbral del texto grande y no el del normal.
+
+Se podría haber apagado la verificación de contraste en esas dos pantallas, como
+ya estaba apagada en otras. No se hizo, porque teníamos algo mejor: **nuestro
+propio `inkMuted` da 7,0:1 sobre fondo claro y 5,6:1 sobre el apagado**, medido
+por PaletteContrastTests. El color del producto es más legible que el del
+sistema.
+
+Así que los 95 encabezados y pies de la app pasaron a usarlo. Y hay una regla en
+`Scripts/check-accessibility.sh` que falla si aparece uno sin él: son muchos
+lugares y el que se olvida es siempre el que se agrega después.
+
+Como efecto secundario, la razón "los pies de lista usan los colores por omisión
+de Apple" ya no justifica apagar el contraste en ninguna pantalla. Lo que queda
+sin poder arreglarse son los botones de la barra de navegación, que dibuja el
+sistema, y los hallazgos que no dicen sobre qué elemento cayeron.

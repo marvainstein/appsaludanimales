@@ -183,9 +183,14 @@ final class AccessibilityAuditTests: XCTestCase {
     ///
     /// Se usa solo en las pantallas armadas con formularios del sistema. Ahí la
     /// verificación de contraste señala cosas que no son nuestras y que no
-    /// podemos cambiar: los botones de la barra de navegación, el texto de pie
-    /// de una lista —que usa los colores por omisión de Apple— y varios
-    /// hallazgos que ni siquiera pueden decir sobre qué elemento cayeron.
+    /// podemos cambiar: los botones de la barra de navegación, que dibuja el
+    /// sistema, y varios hallazgos que ni siquiera pueden decir sobre qué
+    /// elemento cayeron.
+    ///
+    /// Ya no incluye el texto de los encabezados y pies de lista. Eso era real y
+    /// se arregló: el gris por omisión de iOS queda en unos 4,4:1 y ahora esos
+    /// textos usan `Palette.inkMuted`, que da 7,0:1. Lo cuida una regla de
+    /// Scripts/check-accessibility.sh.
     ///
     /// El contraste de los colores del producto no queda sin verificar, y por
     /// eso esto no es taparlo: PaletteContrastTests calcula el número real de

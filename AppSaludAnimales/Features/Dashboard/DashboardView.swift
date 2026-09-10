@@ -411,6 +411,7 @@ struct DashboardView: View {
                         }
                     } header: {
                         Text("Cambiar")
+                            .foregroundStyle(Palette.inkMuted)
                     }
                 }
 

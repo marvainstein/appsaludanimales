@@ -38,6 +38,7 @@ struct CompanionContactsView: View {
                 )
             } header: {
                 Text("Persona a cargo")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -54,8 +55,10 @@ struct CompanionContactsView: View {
                 )
             } header: {
                 Text("Otra persona a cargo")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Para cuando el cuidado se comparte entre dos personas. Las dos aparecen en el modo emergencia. Si dejás un nombre vacío, ese contacto se quita.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

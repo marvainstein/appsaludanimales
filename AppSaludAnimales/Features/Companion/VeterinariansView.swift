@@ -52,10 +52,12 @@ struct VeterinariansView: View {
                 }
             } header: {
                 Text("Veterinarias")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text(veterinarians.isEmpty
                     ? "Guardá las que ya conocés: la de siempre, la que atiende de urgencia, la que queda cerca del trabajo."
                     : "Aparecen en el modo emergencia en este orden, con un botón para llamar. Para borrar una, deslizala hacia la izquierda.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {

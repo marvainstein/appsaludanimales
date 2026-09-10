@@ -43,6 +43,7 @@ struct HealthRecordDetailView: View {
                     DocumentPreview(document: document, companionName: companion.displayName)
                 } header: {
                     Text("Archivo")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 
@@ -56,6 +57,7 @@ struct HealthRecordDetailView: View {
                 }
             } header: {
                 Text("Detalles")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             if !stateActions.isEmpty {
@@ -72,6 +74,7 @@ struct HealthRecordDetailView: View {
                     }
                 } header: {
                     Text("Acciones")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 
@@ -88,6 +91,7 @@ struct HealthRecordDetailView: View {
                 }
             } footer: {
                 Text("Se elimina solo de la historia de \(companion.displayName). No se puede deshacer.")
+                    .foregroundStyle(Palette.inkMuted)
             }
         }
         .navigationTitle(Text(entry.category.label))
@@ -218,10 +222,12 @@ struct HealthRecordDetailView: View {
             .accessibilityIdentifier("record.attachDocument")
         } header: {
             Text("Documentos")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text(attachedDocuments.isEmpty
                 ? "Un estudio, una receta o una foto de lo que pasó. Queda enganchado acá y también en el historial."
                 : "Aparecen acá y también en el historial, con el resto de los documentos.")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 

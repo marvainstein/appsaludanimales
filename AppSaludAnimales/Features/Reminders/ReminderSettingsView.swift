@@ -54,8 +54,10 @@ struct ReminderSettingsView: View {
                     }
                 } header: {
                     Text("Medicaciones")
+                        .foregroundStyle(Palette.inkMuted)
                 } footer: {
                     Text("El aviso llega con un botón para registrar la toma sin abrir la app.")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 
@@ -75,6 +77,7 @@ struct ReminderSettingsView: View {
                     }
                 } header: {
                     Text("Vacunas")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 
@@ -92,6 +95,7 @@ struct ReminderSettingsView: View {
                     }
                 } header: {
                     Text("Turnos")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 
@@ -151,8 +155,10 @@ struct ReminderSettingsView: View {
             }
         } header: {
             Text("Lo que está programado")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text("Son los avisos que el teléfono tiene guardados ahora mismo. Se rearman solos cada vez que guardás algo.")
+                .foregroundStyle(Palette.inkMuted)
         }
         .task { scheduled = await ReminderScheduler.shared.scheduled() }
     }
@@ -192,6 +198,7 @@ struct ReminderSettingsView: View {
             }
         } header: {
             Text("Permiso")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 

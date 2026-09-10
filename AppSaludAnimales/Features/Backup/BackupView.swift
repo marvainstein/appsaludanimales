@@ -26,6 +26,7 @@ struct BackupView: View {
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
                 Text("Que no se pierda")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             automaticCopySection
@@ -56,8 +57,10 @@ struct BackupView: View {
                 )
             } header: {
                 Text("Un archivo que guardás vos")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("\(lastBackupFooter) El archivo tiene toda la información, los documentos y las fotos. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -74,8 +77,10 @@ struct BackupView: View {
                 .accessibilityIdentifier("backup.restore")
             } header: {
                 Text("Restaurar")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Restaurar agrega lo que falta y no borra ni reemplaza nada de lo que ya tenés. Podés restaurar el mismo archivo dos veces sin que se dupliquen los registros.")
+                    .foregroundStyle(Palette.inkMuted)
             }
         }
         .navigationTitle(Text("Respaldo"))
@@ -178,10 +183,12 @@ struct BackupView: View {
             }
         } header: {
             Text("Que se guarde solo")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text(syncIsOn
                 ? "La copia es tuya y vive en tu cuenta de iCloud. No tenemos servidores ni forma de ver lo que guardás."
                 : "Podés activarlo ahora o cuando quieras: esta pantalla está siempre acá.")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 

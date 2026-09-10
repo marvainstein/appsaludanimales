@@ -112,6 +112,7 @@ struct FarewellSheet: View {
                         .fixedSize(horizontal: false, vertical: true)
                 } header: {
                     Text("Qué pasa")
+                        .foregroundStyle(Palette.inkMuted)
                 }
 
                 Section {
@@ -120,6 +121,7 @@ struct FarewellSheet: View {
                     }
                 } footer: {
                     Text("Si no la recordás con exactitud, una aproximada está bien. Se puede cambiar después.")
+                        .foregroundStyle(Palette.inkMuted)
                 }
 
                 PrimaryButtonSection(

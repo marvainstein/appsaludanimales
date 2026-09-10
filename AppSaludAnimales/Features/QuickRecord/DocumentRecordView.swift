@@ -98,8 +98,10 @@ struct DocumentRecordView: View {
                 }
             } header: {
                 Text("Documento")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Podés adjuntar una foto o un archivo, por ejemplo un PDF de un análisis.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -123,6 +125,7 @@ struct DocumentRecordView: View {
                 }
             } header: {
                 Text("Datos")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -133,6 +136,7 @@ struct DocumentRecordView: View {
                 )
             } header: {
                 Text("Accesibilidad")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

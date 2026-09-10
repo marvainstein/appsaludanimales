@@ -61,6 +61,7 @@ struct EpisodeRecordView: View {
                 }
             } header: {
                 Text("Síntoma")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -95,8 +96,10 @@ struct EpisodeRecordView: View {
                 )
             } header: {
                 Text("Detalles")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Se puede cambiar más adelante, desde el detalle del episodio.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

@@ -55,8 +55,10 @@ struct MedicationRecordView: View {
                     }
                 } header: {
                     Text("Registrar una toma")
+                        .foregroundStyle(Palette.inkMuted)
                 } footer: {
                     Text("Se guarda con la hora de este momento.")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 

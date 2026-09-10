@@ -52,6 +52,7 @@ struct VaccinationRecordView: View {
                 }
             } header: {
                 Text("Vacuna")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -71,8 +72,10 @@ struct VaccinationRecordView: View {
                 )
             } header: {
                 Text("Próxima")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Si cargás la próxima fecha, aparece en Próximamente cuando se acerque.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(
@@ -169,6 +172,7 @@ struct NoteRecordView: View {
                 }
             } header: {
                 Text("Nota")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

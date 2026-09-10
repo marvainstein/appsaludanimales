@@ -71,8 +71,10 @@ struct TreatmentRecordView: View {
                 }
             } header: {
                 Text("Tratamiento")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Marcá prevención para lo que se hace estando sano: antipulgas, desparasitación, control de rutina.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -103,6 +105,7 @@ struct TreatmentRecordView: View {
                 )
             } header: {
                 Text("Duración")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -113,6 +116,7 @@ struct TreatmentRecordView: View {
                 )
             } header: {
                 Text("Detalles")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

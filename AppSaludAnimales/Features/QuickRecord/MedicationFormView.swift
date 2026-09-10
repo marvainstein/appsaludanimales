@@ -91,6 +91,7 @@ struct MedicationFormView: View {
                 )
             } header: {
                 Text("Medicación")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -117,10 +118,12 @@ struct MedicationFormView: View {
                 .accessibilityIdentifier("medicationForm.addTime")
             } header: {
                 Text("Cuándo se administra")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text(times.isEmpty
                     ? "Si todavía no sabés los horarios, podés dejarlo vacío y agregarlos después."
                     : "La app avisa a esa hora, todos los días, mientras dure la medicación. Para borrar un horario, deslizalo hacia la izquierda.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -145,6 +148,7 @@ struct MedicationFormView: View {
                 )
             } header: {
                 Text("Duración")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -153,6 +157,7 @@ struct MedicationFormView: View {
                 }
             } footer: {
                 Text("Avisa a los horarios que cargaste arriba. Si no cargaste ninguno, no hay nada que avisar.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

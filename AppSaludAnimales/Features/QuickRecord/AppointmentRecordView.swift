@@ -92,6 +92,7 @@ struct AppointmentRecordView: View {
                 )
             } header: {
                 Text("Turno")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -115,6 +116,7 @@ struct AppointmentRecordView: View {
                 )
             } header: {
                 Text("Aviso")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 // La app descartaba en silencio un aviso cuya hora ya había
                 // pasado, y quedaba la sensación de que los recordatorios no
@@ -122,6 +124,7 @@ struct AppointmentRecordView: View {
                 Text(reminderIsInThePast
                     ? "Con esa anticipación el aviso caería antes de ahora, así que no va a llegar. Elegí una anticipación menor si querés que suene."
                     : "El turno aparece en Próximamente cuando se acerque, avises o no.")
+                        .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

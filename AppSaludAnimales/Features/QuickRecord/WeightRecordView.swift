@@ -49,9 +49,11 @@ struct WeightRecordView: View {
                 }
             } header: {
                 Text("Peso")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 if let previous = previousWeightSummary {
                     Text(previous)
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 

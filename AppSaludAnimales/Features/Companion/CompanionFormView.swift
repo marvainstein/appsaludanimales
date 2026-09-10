@@ -144,6 +144,7 @@ struct CompanionFormView: View {
             }
         } header: {
             Text("Foto")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 
@@ -200,6 +201,7 @@ struct CompanionFormView: View {
             }
         } header: {
             Text("Datos básicos")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 
@@ -230,8 +232,10 @@ struct CompanionFormView: View {
             }
         } header: {
             Text("Cumpleaños")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text("Muchos perros y gatos llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada.")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 
@@ -263,8 +267,10 @@ struct CompanionFormView: View {
             )
         } header: {
             Text("Más información")
+                .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text("Todo esto es opcional y podés completarlo cuando quieras.")
+                .foregroundStyle(Palette.inkMuted)
         }
     }
 

@@ -42,8 +42,10 @@ struct ExportReportView: View {
                 .accessibilityLabel(Text("Período del resumen"))
             } header: {
                 Text("Período")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text(period.description)
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -54,8 +56,10 @@ struct ExportReportView: View {
                 }
             } header: {
                 Text("Qué incluir")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Las secciones sin información no aparecen en el PDF, aunque estén marcadas.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -77,6 +81,7 @@ struct ExportReportView: View {
                 }
             } header: {
                 Text("Vista previa")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             PrimaryButtonSection(

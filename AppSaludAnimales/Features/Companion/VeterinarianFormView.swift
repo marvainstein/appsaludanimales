@@ -56,8 +56,10 @@ struct VeterinarianFormView: View {
                     )
                 } header: {
                     Text("Datos")
+                        .foregroundStyle(Palette.inkMuted)
                 } footer: {
                     Text("Sin teléfono no se puede llamar desde el modo emergencia, que es para lo que sirve tenerla cargada.")
+                        .foregroundStyle(Palette.inkMuted)
                 }
 
                 Section {
@@ -72,6 +74,7 @@ struct VeterinarianFormView: View {
                     }
                 } footer: {
                     Text("La de cabecera aparece primera en el modo emergencia.")
+                        .foregroundStyle(Palette.inkMuted)
                 }
 
                 PrimaryButtonSection(

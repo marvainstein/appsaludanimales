@@ -50,6 +50,7 @@ struct CompanionProfileView: View {
                     .accessibilityElement(children: .combine)
                 } footer: {
                     Text("Su historia queda guardada entera. La app no te pide nada más por \(companion.displayName).")
+                        .foregroundStyle(Palette.inkMuted)
                 }
             }
 
@@ -61,6 +62,7 @@ struct CompanionProfileView: View {
                 row(label: String(localized: "Sexo"), value: companion.sex.label)
             } header: {
                 Text("Datos básicos")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -78,6 +80,7 @@ struct CompanionProfileView: View {
                 }
             } header: {
                 Text("Cumpleaños")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -88,8 +91,10 @@ struct CompanionProfileView: View {
                 row(label: String(localized: "Alergias"), value: companion.allergies)
             } header: {
                 Text("Salud")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Esta información aparece en el modo emergencia.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -130,8 +135,10 @@ struct CompanionProfileView: View {
                 }
             } header: {
                 Text("Contactos")
+                    .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("Son los teléfonos a los que se puede llamar desde el modo emergencia.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -194,6 +201,7 @@ struct CompanionProfileView: View {
                 .accessibilityIdentifier("profile.about")
             } footer: {
                 Text("Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -225,6 +233,7 @@ struct CompanionProfileView: View {
                 Text(companion.isPresent
                     ? "Se apagan los avisos y sale de la pantalla de todos los días. No se borra nada, y se puede deshacer."
                     : "Vuelve a aparecer en la pantalla de todos los días y se rearman los avisos que tenga cargados.")
+                    .foregroundStyle(Palette.inkMuted)
             }
 
             Section {
@@ -244,6 +253,7 @@ struct CompanionProfileView: View {
                 // fácil confundirlas en el peor momento. Acá se aclara cuál es
                 // cuál, en el lugar donde alguien podría equivocarse.
                 Text("Es para el que se cargó por error o el que ya no cuidás. Borra todo lo que anotaste y no se puede deshacer. Si lo que pasó es que se fue, marcá que cruzó el arcoíris: así queda todo guardado.")
+                    .foregroundStyle(Palette.inkMuted)
             }
         }
         .navigationTitle(Text("Perfil"))
