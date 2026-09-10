@@ -66,8 +66,25 @@ La regla que resuelve la tensión:
   un error. Ahí alguien está asustado o apurado, y un dibujo simpático se lee
   como que la app no entiende la gravedad.
 
-## Pendiente
+## El nombre
 
-El nombre. "Manada y Huellas" ya existe en la App Store argentina. Los nombres no
-son iguales y lo más probable es que Apple no lo rechace, pero hay que revisar el
-INPI antes de que "Huella" quede impreso en todos lados.
+**Estela.** Resuelto en septiembre de 2026, después de llegar a construir la app
+entera bajo el nombre anterior.
+
+Se llamaba "Huella". La búsqueda en el INPI mostró tres cosas: la clase 9
+—software descargable, la nuestra— está libre; la clase 42 tiene una "HUELLA"
+acotada a diseño de software y SaaS; y la clase 44 tiene una "HUELLA" que cubre
+**toda la clase**, que incluye los servicios veterinarios. Esa última es la que
+importaba: una app de salud animal al lado de una marca vigente para servicios
+veterinarios es el escenario exacto en el que alguien puede pedir que se deje de
+usar el nombre.
+
+A eso se sumaban dos cosas que ya habíamos visto por separado. Que "huella" es
+una palabra común y por lo tanto no se encuentra en la App Store. Y que existe
+"HuellaP", una app de cuidado animal con publicidad y cuenta paga: que la
+confundan con esta, cuya identidad entera es *sin publicidad y gratis para
+siempre*, era el peor error posible y el único que no se arregla con abogados.
+
+"Estela" resuelve las tres cosas y no pierde nada: una estela es el rastro que
+deja algo que pasó, así que significa casi lo mismo que "huella" y el ícono
+—una pata en acuarela— pasa a decir el nombre en vez de solo acompañarlo.

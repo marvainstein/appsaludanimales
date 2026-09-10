@@ -1,9 +1,9 @@
-# Encargo: el ícono de Huella
+# Encargo: el ícono de Estela
 
 Este documento es para quien vaya a dibujar el ícono. No hace falta saber nada
 de programación ni de la app para leerlo.
 
-## Qué es Huella
+## Qué es Estela
 
 Una app para llevar la historia de salud de un perro o un gato: las
 medicaciones, los síntomas, el peso, las vacunas, los estudios del veterinario.
@@ -43,9 +43,10 @@ Quien dibuje puede tomar cualquiera de estas, o proponer otra.
 
 ### A. Una pata, con carácter
 
-Es la más fuerte por dos razones: la app se llama Huella, así que el nombre y el
-dibujo se refuerzan; y una pata la tienen tanto un perro como un gato, así que
-no excluye a nadie.
+Es la más fuerte por dos razones: una huella de pata **es** una estela —el
+rastro que deja algo que pasó— así que el dibujo dice el nombre en vez de solo
+acompañarlo; y una pata la tienen tanto un perro como un gato, así que no
+excluye a nadie.
 
 **Lo que hay que resolver, y es todo:** que no parezca la huella genérica de
 cualquier veterinaria. Ahí es donde entra la mano de una persona: trazo

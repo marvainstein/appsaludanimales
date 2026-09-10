@@ -1,17 +1,23 @@
-# Huella
+# Estela
 
 *La historia de su salud en un solo lugar.*
 
 Aplicación iOS para que las personas responsables de perros y gatos organicen y
 sigan la salud de los suyos.
 
-El nombre es la huella de la pata y el rastro que algo deja a lo largo del
-tiempo: las dos cosas son lo que hace la app.
+Una estela es el rastro que deja algo que pasó: la de un barco, la de un cometa.
+Eso es lo que la app guarda. Y el ícono no tuvo que cambiar, porque una huella
+**es** una estela: el dibujo dice el nombre.
+
+La app se llamó "Huella" hasta septiembre de 2026. Se cambió por una razón
+concreta, anotada en docs/buscar-el-nombre-en-el-inpi.md: "huella" es una palabra
+común, imposible de encontrar en la App Store y ya registrada en el INPI para
+toda la clase 44, que incluye los servicios veterinarios. "Estela" está libre en
+las clases 9, 42 y 44, y en la App Store.
 
 En el código el proyecto sigue llamándose `AppSaludAnimales`. Renombrar el
 objetivo de Xcode obligaría a tocar identificadores, esquemas y firma sin ganar
-nada: el nombre que ve una persona usuaria se configura aparte y ya dice
-"Huella".
+nada: el nombre que ve una persona usuaria se configura aparte y dice "Estela".
 
 Estado actual: los **cimientos** (modelo de datos, dominio, sistema de diseño
 accesible, infraestructura de lenguaje), la **primera porción usable**

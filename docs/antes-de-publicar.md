@@ -46,13 +46,13 @@ mejora algo que ya funciona.
 - [~] **Capturas de pantalla**, que se sacan del simulador. El plan de cuáles y en qué orden está en docs/app-store.md; sacarlas es manual.
 - [x] **Respuestas de privacidad de Apple** preparadas: qué datos recoge la app
       (ninguno), si hay rastreo (no), si usa cifrado (no propio).
-- [ ] **Buscar el nombre en el INPI**, antes de que "Huella" quede impreso en
-      todos lados.
+- [x] **Buscar el nombre en el INPI.** Hecho, y cambió el nombre: la app se
+      llamaba "Huella" y ahora se llama **Estela**. El detalle está en
+      docs/buscar-el-nombre-en-el-inpi.md.
 - [ ] **Poner la dirección real de la app en el membrete del PDF.** Hoy dice
-      "Descargala gratis en el App Store", que alcanza para saber que existe
-      pero no para encontrarla: buscar "Huella" en la App Store devuelve
-      cualquier cosa. El día que exista la ficha, ahí va su dirección corta, que
-      es lo que alguien puede tipear desde una hoja impresa.
+      "Descargala gratis en el App Store". Con "Estela" el nombre ya alcanza para
+      encontrarla, pero una dirección corta es lo que alguien puede tipear desde
+      una hoja impresa. El día que exista la ficha, va ahí.
 
 > Las marcadas con `~` están escritas pero necesitan una acción manual: publicar
 > la página, o sacar las capturas.

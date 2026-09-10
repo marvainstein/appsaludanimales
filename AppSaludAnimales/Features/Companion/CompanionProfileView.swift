@@ -185,7 +185,7 @@ struct CompanionProfileView: View {
                     AboutView()
                 } label: {
                     Label {
-                        Text("Acerca de Huella")
+                        Text("Acerca de Estela")
                     } icon: {
                         Image(systemName: "info.circle")
                     }

@@ -6,7 +6,7 @@ Los límites de caracteres son los de Apple; los contadores están verificados.
 ## Nombre
 
 ```
-Huella
+Estela
 ```
 
 *(6 de 30 caracteres)*
@@ -20,7 +20,7 @@ La salud de tu perro o gato
 *(27 de 30 caracteres)*
 
 Es la línea que aparece debajo del nombre en los resultados de búsqueda. Dice
-para qué sirve, no cómo se siente: quien busca todavía no sabe qué es Huella.
+para qué sirve, no cómo se siente: quien busca todavía no sabe qué es Estela.
 
 ## Texto promocional
 
@@ -45,7 +45,7 @@ lugar. Sin cuenta, sin publicidad y sin que nada salga de tu teléfono.
 ## Descripción
 
 ```
-Huella guarda la historia de salud de tu perro o de tu gato en un solo lugar.
+Estela guarda la historia de salud de tu perro o de tu gato en un solo lugar.
 
 Anotar toma segundos
 Una medicación, un síntoma, un peso o un estudio, sin recorrer un laberinto de
@@ -65,14 +65,14 @@ Pensado para el peor momento: sin navegación, con letra grande.
 
 El archivo que ya tenés
 Si tenés años de estudios guardados en otro lado, se pueden traer varios de una
-vez. Huella lee el nombre de cada archivo y propone el título y la fecha.
+vez. Estela lee el nombre de cada archivo y propone el título y la fecha.
 
 Respaldo que es tuyo
 Un archivo con toda la información, para guardar donde quieras y volver a cargar
 en cualquier teléfono. Es un archivo abierto y legible: si algún día esta app
 deja de existir, tu información se abre igual.
 
-QUÉ NO HACE HUELLA
+QUÉ NO HACE ESTELA
 
 No diagnostica, no interpreta y no aconseja. Anota lo que vos le contás y lo
 ordena. Si algo te preocupa, quien tiene que decirlo es un veterinario.
@@ -93,7 +93,7 @@ Llevar la salud de un animal al que se quiere no puede depender de poder pagarla
 
 PENSADA PARA QUE LA PUEDA USAR CUALQUIERA
 
-Huella funciona con VoiceOver, con el texto en el tamaño más grande y en modo
+Estela funciona con VoiceOver, con el texto en el tamaño más grande y en modo
 oscuro. Ningún estado se comunica solo con color. No es una función agregada al
 final: está verificado en cada versión.
 ```
@@ -120,7 +120,7 @@ palabras clave no las ve nadie. Es la única excepción, y es deliberada.
 - **Secundaria: Utilidades.**
 
 **Por qué no Medicina.** Esa categoría trae otro nivel de escrutinio de Apple y
-exige respaldo profesional para lo que la app afirme. Huella no afirma nada
+exige respaldo profesional para lo que la app afirme. Estela no afirma nada
 sobre salud —justamente— así que Medicina sería a la vez incorrecto y caro.
 
 ## Clasificación por edad
@@ -141,7 +141,7 @@ sitio/index.html. Cómo publicarla, en docs/publicar-la-pagina.md.
 
 ## Las respuestas de privacidad de Apple
 
-App Store Connect hace un cuestionario largo. Las respuestas para Huella:
+App Store Connect hace un cuestionario largo. Las respuestas para Estela:
 
 - **¿Recoge datos la app?** No.
 - **¿Rastrea a las personas usuarias?** No.

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Qué es Huella, qué no hace, y de dónde viene.
+/// Qué es Estela, qué no hace, y de dónde viene.
 ///
 /// Existe por tres razones. Alguien que la instala sin conocerla merece saber
 /// con qué se metió. Apple pide poder ver de qué se trata y quién responde. Y
@@ -11,7 +11,7 @@ struct AboutView: View {
     var body: some View {
         List {
             Section {
-                Text("Huella guarda la historia de salud de tu perro o de tu gato: las medicaciones, los síntomas, el peso, las vacunas, los turnos y los estudios del veterinario. Todo en un solo lugar, para poder contarlo cuando hace falta.")
+                Text("Estela guarda la historia de salud de tu perro o de tu gato: las medicaciones, los síntomas, el peso, las vacunas, los turnos y los estudios del veterinario. Todo en un solo lugar, para poder contarlo cuando hace falta.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
@@ -19,7 +19,7 @@ struct AboutView: View {
             }
 
             Section {
-                Text("Huella no diagnostica, no interpreta y no aconseja. Anota lo que vos le contás y lo ordena. Si algo te preocupa, quien tiene que decirlo es un veterinario.")
+                Text("Estela no diagnostica, no interpreta y no aconseja. Anota lo que vos le contás y lo ordena. Si algo te preocupa, quien tiene que decirlo es un veterinario.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
@@ -42,7 +42,7 @@ struct AboutView: View {
             }
 
             Section {
-                Text("Huella es gratis y va a seguir siendo gratis. Sin versión paga, sin prueba por tiempo limitado, sin funciones reservadas y sin publicidad. Llevar la salud de un animal al que se quiere no puede depender de poder pagarla.")
+                Text("Estela es gratis y va a seguir siendo gratis. Sin versión paga, sin prueba por tiempo limitado, sin funciones reservadas y sin publicidad. Llevar la salud de un animal al que se quiere no puede depender de poder pagarla.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
@@ -50,7 +50,7 @@ struct AboutView: View {
             }
 
             Section {
-                Text("Huella nace del seguimiento de la salud de Luli y Pripri, nuestras almas hechas perritas. Llevar su historia en papeles sueltos y en la memoria fue el problema real que esta app resuelve.")
+                Text("Estela nace del seguimiento de la salud de Luli y Pripri, nuestras almas hechas perritas. Llevar su historia en papeles sueltos y en la memoria fue el problema real que esta app resuelve.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
 
@@ -71,7 +71,7 @@ struct AboutView: View {
                 .accessibilityElement(children: .combine)
             }
         }
-        .navigationTitle(Text("Acerca de Huella"))
+        .navigationTitle(Text("Acerca de Estela"))
         .navigationBarTitleDisplayMode(.inline)
         // Barra opaca: translúcida, el texto de sus botones se lee sobre lo que
         // pase por detrás, que puede ser cualquier cosa.

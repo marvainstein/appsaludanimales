@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera el ícono de Huella.
+"""Genera el ícono de Estela.
 
 El ícono es una huella de galgo: terracota sobre crema, los mismos colores de la
 app. Las proporciones están sacadas de una foto de la pata de Luli, la galga por

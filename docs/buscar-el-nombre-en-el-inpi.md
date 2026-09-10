@@ -119,3 +119,45 @@ el nombre.
 Esto no es un dictamen legal. Para una decisión de este peso, una consulta con
 un agente de la propiedad industrial cuesta mucho menos que renombrar una app ya
 publicada.
+
+
+---
+
+# La decisión: la app se llama Estela
+
+Septiembre de 2026. Se cambió el nombre.
+
+**Por qué no alcanzaba con que la clase 9 estuviera libre.** Si algún día la app
+sincroniza entre dispositivos, entra en el terreno de la marca de clase 42
+—software como servicio—. Un nombre que depende de que el producto nunca crezca
+no es un nombre, es una apuesta.
+
+Y la de clase 44 cubre toda la clase, servicios veterinarios incluidos. Una app
+de salud animal con el mismo nombre que una marca vigente del rubro veterinario
+es exactamente el caso en el que alguien puede pedir que se deje de usar.
+
+**Los otros dos motivos, que ya conocíamos por separado.** "Huella" es una
+palabra común y no se encuentra en la App Store. Y existe "HuellaP", una app de
+cuidado animal con publicidad y cuenta paga; que la confundan con esta era el
+único riesgo que no se arregla con abogados.
+
+**Por qué Estela.** Una estela es el rastro que deja algo que pasó: la de un
+barco, la de un cometa. Significa casi lo mismo que "huella", así que el ícono no
+cambió y ahora dice el nombre en vez de solo acompañarlo. Está libre en las
+clases 9, 42 y 44 del INPI, y libre en la App Store.
+
+El lema no cambió: *La historia de su salud en un solo lugar.*
+
+## Lo que no hubo que tocar
+
+El identificador interno de la app, `com.appsaludanimales.compania`, nunca
+contuvo el nombre. Es el único dato que queda congelado para siempre al publicar,
+y no hizo falta cambiarlo. El proyecto de Xcode también sigue llamándose
+`AppSaludAnimales`: el nombre que ve una persona se configura aparte.
+
+## Si algún día hay que volver a decidir esto
+
+El costo de cambiar el nombre fueron 87 apariciones, la mayoría en documentos.
+Media hora. El costo de cambiarlo después de publicar es otro: el nombre queda en
+teléfonos ajenos y en resúmenes impresos guardados en carpetas de veterinarias.
+Es barato antes y caro después.

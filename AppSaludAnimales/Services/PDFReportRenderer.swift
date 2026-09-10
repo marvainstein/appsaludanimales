@@ -24,7 +24,7 @@ enum PDFReportRenderer {
     /// pisándose en el borde de la hoja.
     private static func drawLetterhead(in bounds: CGRect) -> CGFloat {
         let prefix = String(localized: "Informe generado por")
-        let name = String(localized: "Huella")
+        let name = String(localized: "Estela")
         let tagline = String(localized: "La historia de su salud en un solo lugar")
         let invitation = String(localized: "Descargala gratis en el App Store")
 
@@ -126,7 +126,7 @@ enum PDFReportRenderer {
         let format = UIGraphicsPDFRendererFormat()
         format.documentInfo = [
             kCGPDFContextTitle as String: "\(report.companionName) · \(report.periodDescription)",
-            kCGPDFContextCreator as String: String(localized: "Huella")
+            kCGPDFContextCreator as String: String(localized: "Estela")
         ]
 
         let bounds = CGRect(origin: .zero, size: pageSize)

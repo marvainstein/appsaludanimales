@@ -14,7 +14,7 @@ publica solo la página y no el código ni estos documentos internos.
 
 1. Entrá a **github.com** y tocá el **+** de arriba a la derecha → **New
    repository**.
-2. En **Repository name** escribí `huella-privacidad`.
+2. En **Repository name** escribí `estela-privacidad`.
 3. Marcá **Public**. Tiene que ser público: GitHub Pages en repositorios
    privados es un plan pago.
 4. Tocá **Create repository**.
@@ -28,7 +28,7 @@ publica solo la página y no el código ni estos documentos internos.
    dirección, con esta forma:
 
    ```
-   https://TU-USUARIO.github.io/huella-privacidad/
+   https://TU-USUARIO.github.io/estela-privacidad/
    ```
 
 10. Abrila para confirmar que se ve bien, en la computadora y en el teléfono.

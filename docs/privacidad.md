@@ -1,15 +1,15 @@
-# Política de privacidad de Huella
+# Política de privacidad de Estela
 
 **Última actualización:** septiembre de 2026
 
 ## En una frase
 
-Huella no recoge tus datos. No hay cuenta, no hay servidores nuestros, no hay
+Estela no recoge tus datos. No hay cuenta, no hay servidores nuestros, no hay
 publicidad y no hay rastreo. Todo lo que anotás se guarda en tu teléfono.
 
 ## Qué información maneja la app
 
-Huella guarda lo que vos cargás: los datos de tu perro o de tu gato, sus
+Estela guarda lo que vos cargás: los datos de tu perro o de tu gato, sus
 medicaciones, síntomas, pesos, vacunas, turnos, notas, fotos y los documentos que
 adjuntes.
 
@@ -59,12 +59,12 @@ a estar gobernado por las condiciones del lugar donde lo hayas puesto.
 ## Borrar tu información
 
 Se borra desde la app, eliminando lo que quieras, o desinstalándola: al
-desinstalar Huella se borra todo lo que guardaba. No queda ninguna copia en otro
+desinstalar Estela se borra todo lo que guardaba. No queda ninguna copia en otro
 lado, porque nunca la hubo.
 
 ## Menores
 
-Huella no está dirigida a menores de 13 años y no recoge información de nadie.
+Estela no está dirigida a menores de 13 años y no recoge información de nadie.
 
 ## Cambios en esta política
 
