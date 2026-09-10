@@ -66,30 +66,61 @@ struct EmergencyProfileTests {
     }
 
     @Test
-    func prefiereElVeterinarioDeCabeceraSobreOtrosProfesionales() throws {
+    func laDeCabeceraApareceAntesQueLasDemas() throws {
         let companion = try makeCompanion()
-        let otro = Professional(name: "Kinesióloga", role: "Fisioterapia", phone: "1111")
+        let otra = Professional(name: "Kinesióloga", role: "Fisioterapia", phone: "1111")
         let cabecera = Professional(
             name: "Dra. Molina",
             phone: "(011) 4567-8900",
             isPrimaryVeterinarian: true
         )
-        companion.professionals.append(contentsOf: [otro, cabecera])
+        companion.professionals.append(contentsOf: [otra, cabecera])
 
         let profile = EmergencyProfileBuilder.profile(for: companion, on: .test(2024, 5, 20))
 
-        #expect(profile.veterinarian?.name == "Dra. Molina")
-        #expect(profile.veterinarian?.callURL?.absoluteString == "tel:01145678900")
+        #expect(profile.veterinarians.first?.name == "Dra. Molina")
+        #expect(profile.veterinarians.first?.callURL?.absoluteString == "tel:01145678900")
+    }
+
+    /// Todas, no solo la de cabecera: a las tres de la mañana la que atiende
+    /// puede ser la segunda de la lista.
+    @Test
+    func muestraTodasLasVeterinariasCargadas() throws {
+        let companion = try makeCompanion()
+        companion.professionals.append(contentsOf: [
+            Professional(name: "Guardia 24 horas", phone: "1111"),
+            Professional(name: "Dra. Molina", phone: "2222", isPrimaryVeterinarian: true)
+        ])
+
+        let profile = EmergencyProfileBuilder.profile(for: companion, on: .test(2024, 5, 20))
+
+        #expect(profile.veterinarians.map(\.name) == ["Dra. Molina", "Guardia 24 horas"])
     }
 
     @Test
-    func siNoHayVeterinarioDeCabeceraUsaElPrimeroCargado() throws {
+    func siNingunaEsDeCabeceraIgualAparecenTodas() throws {
         let companion = try makeCompanion()
         companion.professionals.append(Professional(name: "Kinesióloga", phone: "1111111"))
 
         let profile = EmergencyProfileBuilder.profile(for: companion, on: .test(2024, 5, 20))
 
-        #expect(profile.veterinarian?.name == "Kinesióloga")
+        #expect(profile.veterinarians.map(\.name) == ["Kinesióloga"])
+        #expect(profile.veterinarians.first?.isPrimary == false)
+    }
+
+    /// Sin esto la pantalla de emergencia llamaría "de cabecera" a la primera de
+    /// la lista aunque nadie la haya marcado.
+    @Test
+    func soloLaMarcadaFiguraComoDeCabecera() throws {
+        let companion = try makeCompanion()
+        companion.professionals.append(contentsOf: [
+            Professional(name: "Guardia 24 horas", phone: "1111"),
+            Professional(name: "Dra. Molina", phone: "2222", isPrimaryVeterinarian: true)
+        ])
+
+        let profile = EmergencyProfileBuilder.profile(for: companion, on: .test(2024, 5, 20))
+
+        #expect(profile.veterinarians.map(\.isPrimary) == [true, false])
     }
 
     @Test
@@ -110,8 +141,8 @@ struct EmergencyProfileTests {
 
         let profile = EmergencyProfileBuilder.profile(for: companion, on: .test(2024, 5, 20))
 
-        #expect(profile.veterinarian?.name == "Dra. Molina")
-        #expect(profile.missingEssentials.contains { $0.contains("veterinario") })
+        #expect(profile.veterinarians.map(\.name) == ["Dra. Molina"])
+        #expect(profile.missingEssentials.contains { $0.contains("veterinaria") })
     }
 
     @Test

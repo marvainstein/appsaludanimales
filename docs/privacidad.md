@@ -36,21 +36,16 @@ elegís vos.
 **Notificaciones.** Para avisarte de una medicación, una vacuna o un turno. Los
 avisos los arma y los muestra tu propio teléfono: no pasan por ningún servidor.
 
-**Ubicación.** Solo cuando tocás "Buscar veterinarias cerca". En ese momento, y
-solo en ese momento, la app le pregunta al servicio de mapas de Apple qué hay
-alrededor tuyo. Ni tu ubicación ni el resultado se guardan. La app nunca pide tu
-ubicación en segundo plano.
+La app **no pide tu ubicación**, ni en primer plano ni en segundo plano. No la
+necesita para nada de lo que hace.
 
 Cualquiera de estos permisos se puede negar, y la app sigue funcionando: se pierde
 solo la función que lo necesitaba.
 
 ## Los servicios de otros que la app usa
 
-**El mapa de Apple**, únicamente para buscar veterinarias cerca, como se explica
-arriba. Ese uso se rige por la política de privacidad de Apple.
-
-No hay ningún otro servicio de terceros. Sin analítica, sin publicidad, sin
-seguimiento de errores.
+Ninguno. La app no usa ningún servicio de terceros: sin analítica, sin
+publicidad, sin seguimiento de errores y sin mapas.
 
 ## Compartir y respaldar
 

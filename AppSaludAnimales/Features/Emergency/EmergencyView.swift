@@ -24,7 +24,6 @@ struct EmergencyView: View {
                     criticalInformation
                     currentCare
                     contacts
-                    nearbyVetsLink
                     missingInformationNote
                 }
                 .padding(Spacing.lg)
@@ -116,43 +115,6 @@ struct EmergencyView: View {
 
     // MARK: - A quién llamar
 
-    /// Para cuando la veterinaria de siempre no atiende, o el problema pasa
-    /// lejos de casa. Va después de los teléfonos propios y no antes: primero se
-    /// llama a quien conoce la historia.
-    private var nearbyVetsLink: some View {
-        NavigationLink {
-            NearbyVetsView()
-        } label: {
-            HStack(spacing: Spacing.md) {
-                Image(systemName: "mappin.and.ellipse")
-                    .accessibilityHidden(true)
-
-                Text("Buscar veterinarias cerca")
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Spacer(minLength: 0)
-
-                Image(systemName: "chevron.right")
-                    .font(AppFont.caption)
-                    .foregroundStyle(Palette.inkMuted)
-                    .accessibilityHidden(true)
-            }
-            .font(AppFont.Emergency.value)
-            .foregroundStyle(Palette.ink)
-            .padding(Spacing.lg)
-            .frame(minHeight: Spacing.minimumTapTarget)
-            .background(
-                RoundedRectangle(cornerRadius: Radius.card, style: .continuous)
-                    .fill(Palette.surface)
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text("Buscar veterinarias cerca"))
-        .accessibilityHint(Text("Busca en el mapa del teléfono las veterinarias más próximas"))
-        .accessibilityIdentifier("emergency.nearbyVets")
-    }
-
     private var contacts: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             Text("A quién llamar")
@@ -160,11 +122,23 @@ struct EmergencyView: View {
                 .foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
 
-            contactCard(
-                title: String(localized: "Veterinario"),
-                contact: profile.veterinarian,
-                emptyValue: String(localized: "No hay un veterinario cargado")
-            )
+            if profile.veterinarians.isEmpty {
+                contactCard(
+                    title: String(localized: "Veterinaria"),
+                    contact: nil,
+                    emptyValue: String(localized: "No hay ninguna veterinaria cargada")
+                )
+            } else {
+                ForEach(Array(profile.veterinarians.enumerated()), id: \.offset) { _, contact in
+                    contactCard(
+                        title: contact.isPrimary
+                            ? String(localized: "Veterinaria de cabecera")
+                            : String(localized: "Veterinaria"),
+                        contact: contact,
+                        emptyValue: String(localized: "Sin teléfono cargado")
+                    )
+                }
+            }
 
             if profile.responsiblePeople.isEmpty {
                 contactCard(

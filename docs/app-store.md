@@ -83,8 +83,8 @@ Se guardan en tu teléfono y no se suben a internet. No hay cuenta, no hay
 servidores nuestros, no hay publicidad y no hay rastreo. Compartir algo es
 siempre una decisión tuya.
 
-La única excepción es buscar veterinarias cerca: ahí, y solo cuando tocás ese
-botón, la app le pregunta al mapa del teléfono qué hay alrededor.
+No hay excepciones: la app no le pregunta nada a ningún servicio de afuera y no
+pide tu ubicación.
 
 GRATIS, Y VA A SEGUIR SIENDO GRATIS
 
@@ -148,16 +148,14 @@ App Store Connect hace un cuestionario largo. Las respuestas para Huella:
 
 Es tan corto porque es cierto: la información nunca sale del teléfono.
 
-**Un punto a mirar con atención al completar el formulario:** la ubicación se usa
-para buscar veterinarias cerca, pero la app no la recibe ni la guarda —se la pasa
-al mapa del sistema y el resultado se descarta al cerrar la pantalla—. Según las
-reglas de Apple eso no cuenta como recolección, pero conviene leer la pregunta
-exacta el día que se complete, porque el formulario cambia.
+No hay ningún punto gris que mirar con lupa: la app no pide permiso de ubicación
+y no habla con ningún servidor. Conviene igual leer las preguntas exactas el día
+que se complete el formulario, porque Apple lo cambia cada tanto.
 
 ## Cumplimiento de exportación (el cuestionario de cifrado)
 
-La app **no usa cifrado propio**. Solo hay tráfico HTTPS estándar del sistema, a
-través del mapa de Apple. Eso entra en la exención habitual.
+La app **no usa cifrado propio**, y de hecho no hace tráfico de red de ningún
+tipo. Eso entra en la exención habitual.
 
 ## Las capturas de pantalla
 

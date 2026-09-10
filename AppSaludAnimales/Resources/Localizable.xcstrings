@@ -1,18 +1,10 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
-    "¡Buenas!" : {
-
-    },
-    "¿Eliminamos este registro?" : {
-
-    },
-    "¿Hacemos un respaldo?" : {
-
-    },
-    "¿Qué vas a encontrar?" : {
-
-    },
+    "¡Buenas!" : {},
+    "¿Eliminamos este registro?" : {},
+    "¿Hacemos un respaldo?" : {},
+    "¿Qué vas a encontrar?" : {},
     "“%@” deja de aparecer en la historia de %@." : {
       "localizations" : {
         "es" : {
@@ -23,12 +15,8 @@
         }
       }
     },
-    "%@ cruzó el arcoíris" : {
-
-    },
-    "%@ siempre va a estar con vos" : {
-
-    },
+    "%@ cruzó el arcoíris" : {},
+    "%@ siempre va a estar con vos" : {},
     "%@: %@" : {
       "localizations" : {
         "es" : {
@@ -59,309 +47,97 @@
         }
       }
     },
-    "A quién llamar" : {
-
-    },
-    "Abre el formulario para agregar a tu perro o tu gato" : {
-
-    },
-    "Abre el perfil" : {
-
-    },
-    "Abre el registro para corregir lo que cargaste" : {
-
-    },
-    "Abre la aplicación de teléfono" : {
-
-    },
-    "Abre las opciones del sistema para enviar o guardar el documento" : {
-
-    },
-    "Abre las opciones del sistema para guardar el archivo" : {
-
-    },
-    "Accesibilidad" : {
-
-    },
-    "Acciones" : {
-
-    },
-    "Agregar un perro o un gato" : {
-
-    },
-    "Agregar una medicación nueva" : {
-
-    },
-    "Ahora no" : {
-
-    },
-    "Anotar una medicación, un síntoma, el peso, una vacuna o una nota" : {
-
-    },
-    "Archivo" : {
-
-    },
-    "Avisarme cuando toca" : {
-
-    },
-    "Busca en el mapa del teléfono las veterinarias más próximas" : {
-
-    },
-    "Buscando veterinarias cerca…" : {
-
-    },
-    "Buscar veterinarias cerca" : {
-
-    },
-    "Cambiar" : {
-
-    },
-    "Cambiar de perro o gato, o agregar uno nuevo" : {
-
-    },
-    "Cancelar" : {
-
-    },
-    "Cerrar" : {
-
-    },
-    "Cierra el teclado y vuelve al formulario" : {
-
-    },
-    "Cómo llegar" : {
-
-    },
-    "Cómo llegar a %@" : {
-
-    },
-    "Compartir" : {
-
-    },
-    "Compartir o guardar el respaldo" : {
-
-    },
-    "Con lo que elegiste no hay nada para incluir todavía. Probá con otro período o marcá más secciones." : {
-
-    },
-    "Contactos" : {
-
-    },
-    "Crear" : {
-
-    },
-    "Cruzó el arcoíris" : {
-
-    },
-    "Cuándo" : {
-
-    },
-    "Cuándo se administra" : {
-
-    },
-    "Cumpleaños" : {
-
-    },
-    "Datos" : {
-
-    },
-    "Datos básicos" : {
-
-    },
-    "Del más nuevo al más viejo. Para corregir uno, entrá desde el historial." : {
-
-    },
-    "Deshacer esta marca" : {
-
-    },
-    "Detalles" : {
-
-    },
-    "Documento" : {
-
-    },
-    "Duración" : {
-
-    },
-    "Editar" : {
-
-    },
-    "Editar contactos" : {
-
-    },
-    "Editar los datos de %@" : {
-
-    },
-    "El aviso llega con un botón para registrar la toma sin abrir la app." : {
-
-    },
-    "El registro sigue guardado. Podés intentar de nuevo en un momento." : {
-
-    },
-    "El respaldo es un archivo con toda la historia de salud de todos tus perros y gatos: los datos, los documentos adjuntos y las fotos. Guardalo donde quieras y volvé a cargarlo en cualquier teléfono." : {
-
-    },
-    "Elegir archivos" : {
-
-    },
-    "Elegir fotos" : {
-
-    },
-    "Eliminar este registro" : {
-
-    },
-    "Emergencia" : {
-
-    },
-    "Empezar" : {
-
-    },
-    "Empieza" : {
-
-    },
-    "Es una búsqueda en el mapa, no una lista revisada. Puede estar incompleta y no dice cuál atiende urgencias." : {
-
-    },
-    "Ese archivo tiene información de salud. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel." : {
-
-    },
-    "Especie" : {
-
-    },
-    "Esta información aparece en el modo emergencia." : {
-
-    },
-    "Este documento no se guarda. El archivo original no se toca." : {
-
-    },
-    "Este es el lugar donde vas a poder anotar y encontrar de manera sencilla el historial de salud de tu perro o de tu gato." : {
-
-    },
-    "Evolución del peso" : {
-
-    },
-    "Fecha" : {
-
-    },
-    "Fecha de aplicación" : {
-
-    },
-    "Fecha de cumpleaños" : {
-
-    },
-    "Fecha del documento" : {
-
-    },
-    "Filtrar" : {
-
-    },
-    "Foto" : {
-
-    },
-    "Gracias por hacernos parte de su vida." : {
-
-    },
-    "Gráfico de la evolución del peso" : {
-
-    },
-    "Hacerlo ahora" : {
-
-    },
-    "Historial" : {
-
-    },
-    "Hoy" : {
-
-    },
-    "Intensidad" : {
-
-    },
-    "La app muestra cómo cambió, no si está bien o mal. Eso lo dice el veterinario." : {
-
-    },
-    "La app no vuelve a preguntarlo por un mes" : {
-
-    },
-    "Las secciones sin información no aparecen en el PDF, aunque estén marcadas." : {
-
-    },
-    "Listo" : {
-
-    },
-    "Llamar" : {
-
-    },
-    "Llamar a %@" : {
-
-    },
-    "Lo que aparece es una búsqueda en el mapa, no una lista revisada. Puede estar incompleta, puede haber lugares cerrados, y no dice cuál atiende urgencias. La app las ordena por distancia y no recomienda ninguna." : {
-
-    },
-    "Lo que cambia es que la app deja de pedirte cosas: se apagan los avisos de medicaciones y de vacunas, y %@ sale de la pantalla de todos los días." : {
-
-    },
-    "Los avisos están activados" : {
-
-    },
-    "Los avisos están desactivados para esta app." : {
-
-    },
-    "Los contactos no se guardaron. Podés intentar de nuevo en un momento." : {
-
-    },
-    "Los datos de esta sesión no se están guardando. Podés seguir usando la app y volver a intentarlo más tarde." : {
-
-    },
-    "Marcar que cruzó el arcoíris" : {
-
-    },
-    "Más información" : {
-
-    },
-    "Medicación" : {
-
-    },
-    "Medicaciones" : {
-
-    },
-    "Modo emergencia" : {
-
-    },
-    "Muchos perros y gatos llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada." : {
-
-    },
-    "Muestra los datos urgentes de %@ y los teléfonos para llamar" : {
-
-    },
-    "No pudimos eliminar" : {
-
-    },
-    "No pudimos generar el PDF" : {
-
-    },
-    "No pudimos guardar" : {
-
-    },
-    "No pudimos hacerlo" : {
-
-    },
-    "Nota" : {
-
-    },
-    "Ordenadas por distancia" : {
-
-    },
-    "Otra persona a cargo" : {
-
-    },
-    "Para avisarte, la app necesita tu permiso." : {
-
-    },
-    "Para buscar veterinarias cerca, la app le pregunta al mapa del teléfono qué hay alrededor tuyo. Es lo único de la app que sale a internet, pasa solo cuando tocás el botón, y no se guarda ni tu ubicación ni el resultado." : {
-
-    },
-    "Para cuando el cuidado se comparte entre dos personas. Las dos aparecen en el modo emergencia. Si dejás un nombre vacío, ese contacto se quita." : {
-
-    },
+    "A quién llamar" : {},
+    "Abre el formulario para agregar a tu perro o tu gato" : {},
+    "Abre el perfil" : {},
+    "Abre el registro para corregir lo que cargaste" : {},
+    "Abre la aplicación de teléfono" : {},
+    "Abre las opciones del sistema para enviar o guardar el documento" : {},
+    "Abre las opciones del sistema para guardar el archivo" : {},
+    "Accesibilidad" : {},
+    "Acciones" : {},
+    "Agregar un perro o un gato" : {},
+    "Agregar una medicación nueva" : {},
+    "Ahora no" : {},
+    "Anotar una medicación, un síntoma, el peso, una vacuna o una nota" : {},
+    "Archivo" : {},
+    "Avisarme cuando toca" : {},
+    "Cambiar" : {},
+    "Cambiar de perro o gato, o agregar uno nuevo" : {},
+    "Cancelar" : {},
+    "Cerrar" : {},
+    "Cierra el teclado y vuelve al formulario" : {},
+    "Compartir" : {},
+    "Compartir o guardar el respaldo" : {},
+    "Con lo que elegiste no hay nada para incluir todavía. Probá con otro período o marcá más secciones." : {},
+    "Contactos" : {},
+    "Crear" : {},
+    "Cruzó el arcoíris" : {},
+    "Cuándo" : {},
+    "Cuándo se administra" : {},
+    "Cumpleaños" : {},
+    "Datos" : {},
+    "Datos básicos" : {},
+    "Del más nuevo al más viejo. Para corregir uno, entrá desde el historial." : {},
+    "Deshacer esta marca" : {},
+    "Detalles" : {},
+    "Documento" : {},
+    "Duración" : {},
+    "Editar" : {},
+    "Editar los datos de %@" : {},
+    "El aviso llega con un botón para registrar la toma sin abrir la app." : {},
+    "El registro sigue guardado. Podés intentar de nuevo en un momento." : {},
+    "El respaldo es un archivo con toda la historia de salud de todos tus perros y gatos: los datos, los documentos adjuntos y las fotos. Guardalo donde quieras y volvé a cargarlo en cualquier teléfono." : {},
+    "Elegir archivos" : {},
+    "Elegir fotos" : {},
+    "Eliminar este registro" : {},
+    "Emergencia" : {},
+    "Empezar" : {},
+    "Empieza" : {},
+    "Ese archivo tiene información de salud. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel." : {},
+    "Especie" : {},
+    "Esta información aparece en el modo emergencia." : {},
+    "Este documento no se guarda. El archivo original no se toca." : {},
+    "Este es el lugar donde vas a poder anotar y encontrar de manera sencilla el historial de salud de tu perro o de tu gato." : {},
+    "Evolución del peso" : {},
+    "Fecha" : {},
+    "Fecha de aplicación" : {},
+    "Fecha de cumpleaños" : {},
+    "Fecha del documento" : {},
+    "Filtrar" : {},
+    "Foto" : {},
+    "Gracias por hacernos parte de su vida." : {},
+    "Gráfico de la evolución del peso" : {},
+    "Hacerlo ahora" : {},
+    "Historial" : {},
+    "Hoy" : {},
+    "Intensidad" : {},
+    "La app muestra cómo cambió, no si está bien o mal. Eso lo dice el veterinario." : {},
+    "La app no vuelve a preguntarlo por un mes" : {},
+    "Las secciones sin información no aparecen en el PDF, aunque estén marcadas." : {},
+    "Listo" : {},
+    "Llamar" : {},
+    "Llamar a %@" : {},
+    "Lo que cambia es que la app deja de pedirte cosas: se apagan los avisos de medicaciones y de vacunas, y %@ sale de la pantalla de todos los días." : {},
+    "Los avisos están activados" : {},
+    "Los avisos están desactivados para esta app." : {},
+    "Los contactos no se guardaron. Podés intentar de nuevo en un momento." : {},
+    "Los datos de esta sesión no se están guardando. Podés seguir usando la app y volver a intentarlo más tarde." : {},
+    "Marcar que cruzó el arcoíris" : {},
+    "Más información" : {},
+    "Medicación" : {},
+    "Medicaciones" : {},
+    "Modo emergencia" : {},
+    "Muchos perros y gatos llegan sin fecha exacta. Una fecha estimada sirve igual, y la app la muestra siempre como aproximada." : {},
+    "Muestra los datos urgentes de %@ y los teléfonos para llamar" : {},
+    "No pudimos eliminar" : {},
+    "No pudimos generar el PDF" : {},
+    "No pudimos guardar" : {},
+    "No pudimos hacerlo" : {},
+    "Nota" : {},
+    "Otra persona a cargo" : {},
+    "Para avisarte, la app necesita tu permiso." : {},
+    "Para cuando el cuidado se comparte entre dos personas. Las dos aparecen en el modo emergencia. Si dejás un nombre vacío, ese contacto se quita." : {},
     "Para que esta pantalla sirva más, podés agregar %@ desde el perfil de %@." : {
       "localizations" : {
         "es" : {
@@ -372,198 +148,68 @@
         }
       }
     },
-    "Perfil" : {
-
-    },
-    "Período" : {
-
-    },
-    "Período del resumen" : {
-
-    },
-    "Permiso" : {
-
-    },
-    "Persona a cargo" : {
-
-    },
-    "Peso" : {
-
-    },
-    "Podés activarlos desde Ajustes del teléfono, en Notificaciones." : {
-
-    },
-    "Podés adjuntar una foto o un archivo, por ejemplo un PDF de un análisis." : {
-
-    },
-    "Podés elegir más de uno, o ninguno si todavía no lo sabés." : {
-
-    },
-    "Podés intentar de nuevo en un momento." : {
-
-    },
-    "Próxima" : {
-
-    },
-    "Próxima aplicación" : {
-
-    },
-    "Qué es" : {
-
-    },
-    "Qué incluir" : {
-
-    },
-    "Qué pasa" : {
-
-    },
-    "Qué querés registrar de %@" : {
-
-    },
-    "Qué sabés de la fecha" : {
-
-    },
-    "Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla." : {
-
-    },
-    "Qué traer" : {
-
-    },
-    "Quitar de la lista" : {
-
-    },
-    "Quitar la foto" : {
-
-    },
-    "Recordatorios" : {
-
-    },
-    "Registra una toma ahora" : {
-
-    },
-    "Registrar" : {
-
-    },
-    "Registrar una toma" : {
-
-    },
-    "Respaldo" : {
-
-    },
-    "Restaurar" : {
-
-    },
-    "Restaurar agrega lo que falta y no borra ni reemplaza nada de lo que ya tenés. Podés restaurar el mismo archivo dos veces sin que se dupliquen los registros." : {
-
-    },
-    "Restaurar desde un archivo" : {
-
-    },
-    "Resumen en PDF" : {
-
-    },
-    "Salud" : {
-
-    },
-    "Sé cuándo toca la próxima" : {
-
-    },
-    "Se elimina solo de la historia de %@. No se puede deshacer." : {
-
-    },
-    "Se guarda como episodio activo. Podés marcarlo en seguimiento o resuelto más adelante." : {
-
-    },
-    "Se guarda con la hora de este momento." : {
-
-    },
-    "Sexo" : {
-
-    },
-    "Si cargás la próxima fecha, aparece en Próximamente cuando se acerque." : {
-
-    },
-    "Si no la recordás con exactitud, una aproximada está bien. Se puede cambiar después." : {
-
-    },
-    "Sin especificar" : {
-
-    },
-    "Síntoma" : {
-
-    },
-    "Son los teléfonos a los que se puede llamar desde el modo emergencia." : {
-
-    },
-    "Su historia queda guardada entera. La app no te pide nada más por %@." : {
-
-    },
-    "Su historia se guarda entera. Vas a poder entrar a su perfil y a todo lo que anotaste, cuando quieras." : {
-
-    },
-    "Su historial de salud entero lo guardamos acá: lo que anotaste, sus estudios y sus fotos. Podés volver cuando quieras." : {
-
-    },
-    "Sugerencias" : {
-
-    },
-    "Termina" : {
-
-    },
-    "Tiene fecha de finalización" : {
-
-    },
-    "Todavía no hay medicaciones en curso. Podés agregar una acá abajo." : {
-
-    },
-    "Todavía no hay nada que pueda avisarte. Cuando cargues una medicación, una vacuna con próxima fecha o un turno, aparecen acá." : {
-
-    },
-    "Todo esto es opcional y podés completarlo cuando quieras." : {
-
-    },
-    "Todos los pesos" : {
-
-    },
-    "Turnos" : {
-
-    },
-    "Tus perros y gatos" : {
-
-    },
-    "Último peso" : {
-
-    },
-    "Usa esta sugerencia como síntoma" : {
-
-    },
-    "Usa los momentos del día que elegiste. Podés cambiarlo después desde Recordatorios." : {
-
-    },
-    "Vacuna" : {
-
-    },
-    "Vacunas" : {
-
-    },
-    "Varios documentos" : {
-
-    },
-    "Ver todo el historial" : {
-
-    },
-    "Veterinarias cerca" : {
-
-    },
-    "Veterinario de cabecera" : {
-
-    },
-    "Vista previa" : {
-
-    },
-    "Vuelve a la pantalla anterior" : {
-
-    }
+    "Perfil" : {},
+    "Período" : {},
+    "Período del resumen" : {},
+    "Permiso" : {},
+    "Persona a cargo" : {},
+    "Peso" : {},
+    "Podés activarlos desde Ajustes del teléfono, en Notificaciones." : {},
+    "Podés adjuntar una foto o un archivo, por ejemplo un PDF de un análisis." : {},
+    "Podés elegir más de uno, o ninguno si todavía no lo sabés." : {},
+    "Podés intentar de nuevo en un momento." : {},
+    "Próxima" : {},
+    "Próxima aplicación" : {},
+    "Qué es" : {},
+    "Qué incluir" : {},
+    "Qué pasa" : {},
+    "Qué querés registrar de %@" : {},
+    "Qué sabés de la fecha" : {},
+    "Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla." : {},
+    "Qué traer" : {},
+    "Quitar de la lista" : {},
+    "Quitar la foto" : {},
+    "Recordatorios" : {},
+    "Registra una toma ahora" : {},
+    "Registrar" : {},
+    "Registrar una toma" : {},
+    "Respaldo" : {},
+    "Restaurar" : {},
+    "Restaurar agrega lo que falta y no borra ni reemplaza nada de lo que ya tenés. Podés restaurar el mismo archivo dos veces sin que se dupliquen los registros." : {},
+    "Restaurar desde un archivo" : {},
+    "Resumen en PDF" : {},
+    "Salud" : {},
+    "Sé cuándo toca la próxima" : {},
+    "Se elimina solo de la historia de %@. No se puede deshacer." : {},
+    "Se guarda como episodio activo. Podés marcarlo en seguimiento o resuelto más adelante." : {},
+    "Se guarda con la hora de este momento." : {},
+    "Sexo" : {},
+    "Si cargás la próxima fecha, aparece en Próximamente cuando se acerque." : {},
+    "Si no la recordás con exactitud, una aproximada está bien. Se puede cambiar después." : {},
+    "Sin especificar" : {},
+    "Síntoma" : {},
+    "Son los teléfonos a los que se puede llamar desde el modo emergencia." : {},
+    "Su historia queda guardada entera. La app no te pide nada más por %@." : {},
+    "Su historia se guarda entera. Vas a poder entrar a su perfil y a todo lo que anotaste, cuando quieras." : {},
+    "Su historial de salud entero lo guardamos acá: lo que anotaste, sus estudios y sus fotos. Podés volver cuando quieras." : {},
+    "Sugerencias" : {},
+    "Termina" : {},
+    "Tiene fecha de finalización" : {},
+    "Todavía no hay medicaciones en curso. Podés agregar una acá abajo." : {},
+    "Todavía no hay nada que pueda avisarte. Cuando cargues una medicación, una vacuna con próxima fecha o un turno, aparecen acá." : {},
+    "Todo esto es opcional y podés completarlo cuando quieras." : {},
+    "Todos los pesos" : {},
+    "Turnos" : {},
+    "Tus perros y gatos" : {},
+    "Último peso" : {},
+    "Usa esta sugerencia como síntoma" : {},
+    "Usa los momentos del día que elegiste. Podés cambiarlo después desde Recordatorios." : {},
+    "Vacuna" : {},
+    "Vacunas" : {},
+    "Varios documentos" : {},
+    "Ver todo el historial" : {},
+    "Vista previa" : {},
+    "Vuelve a la pantalla anterior" : {}
   },
   "version" : "1.0"
 }

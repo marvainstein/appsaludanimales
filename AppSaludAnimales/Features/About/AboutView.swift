@@ -33,7 +33,7 @@ struct AboutView: View {
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
 
-                Text("La única excepción es buscar veterinarias cerca. Ahí, y solo en el momento en que tocás ese botón, la app le pregunta al mapa del teléfono qué hay alrededor tuyo. No se guarda ni tu ubicación ni el resultado.")
+                Text("No hay excepciones. La app no le pregunta nada a ningún servicio de afuera, no pide tu ubicación y no tiene manera de saber quién sos.")
                     .font(AppFont.body)
                     .foregroundStyle(Palette.inkMuted)
                     .fixedSize(horizontal: false, vertical: true)

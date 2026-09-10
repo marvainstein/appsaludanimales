@@ -5,6 +5,11 @@ struct EmergencyContact: Equatable {
     var role: String?
     var phone: String?
 
+    /// Solo la veterinaria que la persona marcó como de cabecera. Sin esto, la
+    /// pantalla llamaría "de cabecera" a la primera de la lista aunque nadie la
+    /// haya marcado, que es afirmar algo que no sabemos.
+    var isPrimary: Bool = false
+
     var callURL: URL? {
         PhoneNumberLink.callURL(for: phone)
     }
@@ -23,7 +28,12 @@ struct EmergencyProfile: Equatable {
     var conditions: String?
     var medications: [String]
     var treatments: [String]
-    var veterinarian: EmergencyContact?
+    /// Las veterinarias guardadas, con la de cabecera primero.
+    ///
+    /// Son varias a propósito: la de siempre puede no atender a las tres de la
+    /// mañana, y la que atiende de urgencia puede no ser la que conoce la
+    /// historia.
+    var veterinarians: [EmergencyContact]
 
     /// Puede haber más de una persona a cargo. Aparecen en orden: primero la
     /// principal, después las demás.
@@ -34,8 +44,8 @@ struct EmergencyProfile: Equatable {
     var missingEssentials: [String] {
         var missing: [String] = []
 
-        if veterinarian?.callURL == nil {
-            missing.append(String(localized: "el teléfono del veterinario"))
+        if !veterinarians.contains(where: { $0.callURL != nil }) {
+            missing.append(String(localized: "el teléfono de una veterinaria"))
         }
 
         if !responsiblePeople.contains(where: { $0.callURL != nil }) {
@@ -63,7 +73,7 @@ enum EmergencyProfileBuilder {
             treatments: companion.activeTreatments(on: referenceDate)
                 .sorted { $0.name < $1.name }
                 .map(\.name),
-            veterinarian: veterinarian(for: companion),
+            veterinarians: veterinarians(for: companion),
             responsiblePeople: companion.orderedResponsiblePeople.map { person in
                 EmergencyContact(
                     name: person.name,
@@ -81,19 +91,23 @@ enum EmergencyProfileBuilder {
         return "\(medication.name) · \(dose)"
     }
 
-    /// El veterinario de cabecera si está marcado; si no, el primer profesional
-    /// cargado, que en una emergencia es mejor que nada.
-    private static func veterinarian(for companion: Companion) -> EmergencyContact? {
-        let professional = companion.professionals.first(where: \.isPrimaryVeterinarian)
-            ?? companion.professionals.first
-
-        guard let professional else { return nil }
-
-        return EmergencyContact(
-            name: professional.name,
-            role: nonEmpty(professional.clinic) ?? nonEmpty(professional.role),
-            phone: nonEmpty(professional.phone)
-        )
+    /// Todas las veterinarias cargadas, con la de cabecera primero y el resto en
+    /// el orden en que se cargaron.
+    private static func veterinarians(for companion: Companion) -> [EmergencyContact] {
+        companion.professionals
+            .sorted { lhs, rhs in
+                lhs.isPrimaryVeterinarian == rhs.isPrimaryVeterinarian
+                    ? lhs.createdAt < rhs.createdAt
+                    : lhs.isPrimaryVeterinarian
+            }
+            .map { professional in
+                EmergencyContact(
+                    name: professional.name,
+                    role: nonEmpty(professional.clinic) ?? nonEmpty(professional.role),
+                    phone: nonEmpty(professional.phone),
+                    isPrimary: professional.isPrimaryVeterinarian
+                )
+            }
     }
 
     private static func nonEmpty(_ value: String?) -> String? {

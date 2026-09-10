@@ -65,6 +65,14 @@ final class AccessibilityAuditTests: XCTestCase {
     }
 
     @MainActor
+    func testLasVeterinariasPasanLaAuditoria() throws {
+        let app = launchApp(withCompanion: true)
+        try open(app, "dashboard.companion", then: "profile.veterinarians")
+
+        try audit(app, pantalla: "las veterinarias", tipos: Self.sinTamanoDeTexto)
+    }
+
+    @MainActor
     func testElRespaldoPasaLaAuditoria() throws {
         let app = launchApp(withCompanion: true)
         try open(app, "dashboard.companion", then: "profile.backup")
@@ -106,30 +114,11 @@ final class AccessibilityAuditTests: XCTestCase {
         Self.element(app, "dashboard.emergency").tap()
 
         XCTAssertTrue(
-            Self.element(app, "emergency.nearbyVets").waitForExistence(timeout: 5),
+            app.staticTexts["A quién llamar"].waitForExistence(timeout: 5),
             "Se esperaba el modo emergencia"
         )
 
         try audit(app, pantalla: "el modo emergencia", tipos: Self.sinTamanoDeTexto)
-    }
-
-    /// La pantalla de veterinarias cerca, antes de pedir el permiso de
-    /// ubicación. Lo que viene después depende de una respuesta del sistema y de
-    /// la red, así que no entra en una prueba.
-    @MainActor
-    func testVeterinariasCercaPasaLaAuditoria() throws {
-        let app = launchApp(withCompanion: true)
-        try waitForDashboard(app)
-
-        Self.element(app, "dashboard.emergency").tap()
-        try tap(app, "emergency.nearbyVets")
-
-        XCTAssertTrue(
-            Self.element(app, "nearbyVets.search").waitForExistence(timeout: 5),
-            "Se esperaba la pantalla de veterinarias cerca"
-        )
-
-        try audit(app, pantalla: "veterinarias cerca", tipos: Self.sinTamanoDeTexto)
     }
 
     // MARK: - Navegación

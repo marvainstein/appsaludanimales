@@ -213,6 +213,23 @@ corrido, y el PDF lo dice explícitamente al pie.
 veterinario no siempre es todo, y esa decisión no debería tomarla la app. Los
 contactos vienen desmarcados por eso mismo.
 
+**Las veterinarias se guardan, no se buscan.** La app llegó a tener un buscador
+de veterinarias cercanas en el mapa y se sacó a propósito. Una lista ordenada por
+distancia es una recomendación aunque el texto aclare que no lo es, y en una
+emergencia nadie lee el descargo: llama al primero. Los datos del mapa no saben
+nada sobre el trato ni sobre quién atiende de madrugada, y recomendar a dónde
+llevar un animal enfermo es el consejo más pesado que existe. En su lugar, la
+persona guarda las que ya conoce, con la de cabecera primero, y todas aparecen en
+el modo emergencia con un botón para llamar. Quien no tenga ninguna cargada
+siempre puede salir a buscar en el mapa del teléfono: es mejor eso que una opción
+a medias adentro de la app. Como efecto secundario, la app dejó de pedir
+ubicación y ya no le habla a ningún servicio externo.
+
+**Cada dato se edita en un solo lugar.** La pantalla de contactos editaba también
+la veterinaria de cabecera, y borraba la que quedaba sin nombre. Con varias
+veterinarias guardadas eso podía hacer desaparecer datos cargados en otra
+pantalla. Contactos quedó solo con las personas a cargo.
+
 **Los teléfonos se aceptan como los escribe la gente.** "(011) 4567-8900",
 "011 4567 8900" y "+54 9 11 4567-8900" tienen que poder tocarse para llamar; la
 app se encarga de convertirlos, no la persona.

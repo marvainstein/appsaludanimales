@@ -55,6 +55,6 @@ mejora algo que ya funciona.
 ## Verificaciones
 
 - [x] **Auditoría de accesibilidad de las pantallas nuevas**: perfil, peso,
-      respaldo, acerca de, despedida, emergencia y veterinarias cerca.
+      respaldo, acerca de, despedida, emergencia y veterinarias.
 - [ ] **Pasada manual en el teléfono** de esas mismas pantallas, según el
       protocolo de docs/accesibilidad.md.

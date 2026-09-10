@@ -1,19 +1,19 @@
 import SwiftData
 import SwiftUI
 
-/// Veterinario de cabecera y persona responsable.
+/// Las personas a cargo de un compañero.
 ///
-/// Son los dos teléfonos del modo emergencia. Se cargan juntos y en una sola
-/// pantalla porque se cargan una vez y casi nunca se vuelven a tocar.
+/// Las veterinarias tienen su propia pantalla, donde se pueden guardar varias.
+/// Acá vivían las dos cosas juntas y era un problema real: esta pantalla
+/// cargaba una sola veterinaria y borraba la que quedaba sin nombre, así que
+/// abrirla después de guardar tres podía hacer desaparecer datos que la persona
+/// había cargado en otro lado. Cada cosa se edita en un solo lugar.
 struct CompanionContactsView: View {
     let companion: Companion
 
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    @State private var veterinarianName = ""
-    @State private var veterinarianClinic = ""
-    @State private var veterinarianPhone = ""
     @State private var responsibleName = ""
     @State private var responsiblePhone = ""
     @State private var secondResponsibleName = ""
@@ -26,29 +26,6 @@ struct CompanionContactsView: View {
             Section {
                 LabeledTextField(
                     label: String(localized: "Nombre"),
-                    text: $veterinarianName,
-                    autocapitalization: .words
-                )
-
-                LabeledTextField(
-                    label: String(localized: "Clínica"),
-                    text: $veterinarianClinic,
-                    autocapitalization: .words
-                )
-
-                LabeledTextField(
-                    label: String(localized: "Teléfono"),
-                    text: $veterinarianPhone,
-                    hint: String(localized: "Se puede tocar para llamar desde el modo emergencia."),
-                    keyboardType: .phonePad
-                )
-            } header: {
-                Text("Veterinario de cabecera")
-            }
-
-            Section {
-                LabeledTextField(
-                    label: String(localized: "Nombre"),
                     text: $responsibleName,
                     autocapitalization: .words
                 )
@@ -56,6 +33,7 @@ struct CompanionContactsView: View {
                 LabeledTextField(
                     label: String(localized: "Teléfono"),
                     text: $responsiblePhone,
+                    hint: String(localized: "Se puede tocar para llamar desde el modo emergencia."),
                     keyboardType: .phonePad
                 )
             } header: {
@@ -85,7 +63,7 @@ struct CompanionContactsView: View {
                 action: save
             )
         }
-        .navigationTitle(Text("Contactos"))
+        .navigationTitle(Text("Personas a cargo"))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: load)
         .alert(Text("No pudimos guardar"), isPresented: $saveFailed) {
@@ -101,12 +79,6 @@ struct CompanionContactsView: View {
         guard !hasLoaded else { return }
         hasLoaded = true
 
-        if let veterinarian = currentVeterinarian {
-            veterinarianName = veterinarian.name
-            veterinarianClinic = veterinarian.clinic ?? ""
-            veterinarianPhone = veterinarian.phone ?? ""
-        }
-
         let people = companion.orderedResponsiblePeople
 
         if let person = people.first {
@@ -120,46 +92,7 @@ struct CompanionContactsView: View {
         }
     }
 
-    private var currentVeterinarian: Professional? {
-        companion.professionals.first(where: \.isPrimaryVeterinarian)
-            ?? companion.professionals.first
-    }
-
     private func save() {
-        saveVeterinarian()
-        saveResponsiblePeople()
-
-        do {
-            try modelContext.save()
-            dismiss()
-        } catch {
-            saveFailed = true
-        }
-    }
-
-    private func saveVeterinarian() {
-        let name = trimmed(veterinarianName)
-        let existing = currentVeterinarian
-
-        guard !name.isEmpty else {
-            if let existing { modelContext.delete(existing) }
-            return
-        }
-
-        let veterinarian = existing ?? {
-            let created = Professional(isPrimaryVeterinarian: true)
-            modelContext.insert(created)
-            companion.professionals.append(created)
-            return created
-        }()
-
-        veterinarian.name = name
-        veterinarian.clinic = optional(veterinarianClinic)
-        veterinarian.phone = optional(veterinarianPhone)
-        veterinarian.isPrimaryVeterinarian = true
-    }
-
-    private func saveResponsiblePeople() {
         let existing = companion.orderedResponsiblePeople
 
         savePerson(
@@ -175,6 +108,13 @@ struct CompanionContactsView: View {
             existing: existing.count > 1 ? existing[1] : nil,
             isPrimary: false
         )
+
+        do {
+            try modelContext.save()
+            dismiss()
+        } catch {
+            saveFailed = true
+        }
     }
 
     private func savePerson(

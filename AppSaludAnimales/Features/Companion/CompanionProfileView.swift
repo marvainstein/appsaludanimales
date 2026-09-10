@@ -94,7 +94,7 @@ struct CompanionProfileView: View {
 
             Section {
                 row(
-                    label: String(localized: "Veterinario de cabecera"),
+                    label: String(localized: "Veterinaria de cabecera"),
                     value: veterinarianValue
                 )
                 ForEach(Array(responsiblePeopleValues.enumerated()), id: \.offset) { index, value in
@@ -107,10 +107,22 @@ struct CompanionProfileView: View {
                 }
 
                 NavigationLink {
+                    VeterinariansView(companion: companion)
+                } label: {
+                    Label {
+                        Text("Veterinarias")
+                    } icon: {
+                        Image(systemName: "cross.case")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+                .accessibilityIdentifier("profile.veterinarians")
+
+                NavigationLink {
                     CompanionContactsView(companion: companion)
                 } label: {
                     Label {
-                        Text("Editar contactos")
+                        Text("Personas a cargo")
                     } icon: {
                         Image(systemName: "person.crop.circle")
                     }
@@ -299,9 +311,11 @@ struct CompanionProfileView: View {
         ReminderSync.refresh(using: modelContext)
     }
 
+    /// La de cabecera es la que aparece acá. Las demás viven en su pantalla,
+    /// que es donde se cargan y se cambian.
     private var veterinarianValue: String? {
         let profile = EmergencyProfileBuilder.profile(for: companion)
-        guard let veterinarian = profile.veterinarian else { return nil }
+        guard let veterinarian = profile.veterinarians.first else { return nil }
 
         return [veterinarian.name, veterinarian.phone]
             .compactMap { $0 }
