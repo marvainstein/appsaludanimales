@@ -130,10 +130,14 @@ restricción, ni contenido generado por otras personas.
 
 ## Direcciones web
 
-- **Soporte:** hace falta una. Puede ser la misma página de la política de
-  privacidad con un correo de contacto.
-- **Política de privacidad:** obligatoria. El texto está en docs/privacidad.md y
-  la página lista para publicar en sitio/privacidad.html.
+La misma dirección sirve para los dos campos: la página incluye la política y
+una sección de soporte con el correo de contacto.
+
+- **Soporte:** la dirección de la página publicada.
+- **Política de privacidad:** la misma. Es obligatoria.
+
+El texto está en docs/privacidad.md y la página lista para publicar en
+sitio/index.html. Cómo publicarla, en docs/publicar-la-pagina.md.
 
 ## Las respuestas de privacidad de Apple
 
