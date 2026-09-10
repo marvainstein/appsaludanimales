@@ -53,7 +53,7 @@ final class AccessibilityAuditTests: XCTestCase {
 
         Self.element(app, "dashboard.companion").tap()
 
-        try audit(app, pantalla: "el perfil", tipos: Self.sinTamanoNiContraste)
+        try audit(app, pantalla: "el perfil", tipos: Self.sinTamanoDeTexto)
     }
 
     @MainActor
@@ -77,7 +77,7 @@ final class AccessibilityAuditTests: XCTestCase {
         let app = launchApp(withCompanion: true)
         try open(app, "dashboard.companion", then: "profile.backup")
 
-        try audit(app, pantalla: "el respaldo", tipos: Self.sinTamanoNiContraste)
+        try audit(app, pantalla: "el respaldo", tipos: Self.sinTamanoDeTexto)
     }
 
     @MainActor
@@ -85,7 +85,7 @@ final class AccessibilityAuditTests: XCTestCase {
         let app = launchApp(withCompanion: true)
         try open(app, "dashboard.companion", then: "profile.about")
 
-        try audit(app, pantalla: "acerca de", tipos: Self.sinTamanoNiContraste)
+        try audit(app, pantalla: "acerca de", tipos: Self.sinTamanoDeTexto)
     }
 
     @MainActor
@@ -102,7 +102,7 @@ final class AccessibilityAuditTests: XCTestCase {
             // arreglar lo que no se puede ubicar. Queda anotado como deuda en
             // docs/accesibilidad.md: se comprueba con VoiceOver en el teléfono,
             // que es donde se escucharía si de verdad hubiera un pedazo mudo.
-            tipos: Self.sinTamanoNiContraste.subtracting(.elementDetection)
+            tipos: Self.sinTamanoDeTexto.subtracting(.elementDetection)
         )
     }
 
@@ -180,6 +180,12 @@ final class AccessibilityAuditTests: XCTestCase {
         XCUIAccessibilityAuditType.all.subtracting(.dynamicType)
 
     /// Todo menos el tamaño de texto y el contraste.
+    ///
+    /// **Hoy no la usa ninguna pantalla.** Quedó disponible por si alguna vuelve
+    /// a necesitarla, pero la razón principal para apagar el contraste —el gris
+    /// por omisión de los encabezados y pies de lista— se arregló usando el
+    /// color del producto, así que se probó devolverles el contraste a las
+    /// cuatro pantallas que la usaban.
     ///
     /// Se usa solo en las pantallas armadas con formularios del sistema. Ahí la
     /// verificación de contraste señala cosas que no son nuestras y que no
