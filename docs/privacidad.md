@@ -16,6 +16,11 @@ adjuntes.
 **Todo eso vive en tu teléfono.** No se envía a ningún servidor, ni nuestro ni de
 nadie. No tenemos forma de verlo, ni siquiera si quisiéramos.
 
+**Si activás que se guarde sola una copia en tu iCloud** —desde Respaldo, y solo
+si vos lo elegís— esa copia viaja a tu propia cuenta de iCloud, administrada por
+Apple. Sigue sin haber servidores nuestros: no la vemos, no la recibimos y no
+tenemos forma de acceder a ella. Viene apagado.
+
 ## Qué no hacemos
 
 - **No creamos cuentas.** No te pedimos correo, teléfono ni contraseña.
@@ -39,13 +44,18 @@ avisos los arma y los muestra tu propio teléfono: no pasan por ningún servidor
 La app **no pide tu ubicación**, ni en primer plano ni en segundo plano. No la
 necesita para nada de lo que hace.
 
+**iCloud.** Solo si activás la copia automática desde Respaldo. Se usa la sesión
+de iCloud que ya tenés en el teléfono: no creamos ninguna cuenta, no pedimos
+correo ni contraseña y no vemos tus credenciales.
+
 Cualquiera de estos permisos se puede negar, y la app sigue funcionando: se pierde
 solo la función que lo necesitaba.
 
 ## Los servicios de otros que la app usa
 
-Ninguno. La app no usa ningún servicio de terceros: sin analítica, sin
-publicidad, sin seguimiento de errores y sin mapas.
+Ninguno, salvo **iCloud**, y solo si activaste la copia automática. Ese uso se
+rige por la política de privacidad de Apple. No hay analítica, no hay publicidad,
+no hay seguimiento de errores y no hay mapas.
 
 ## Compartir y respaldar
 

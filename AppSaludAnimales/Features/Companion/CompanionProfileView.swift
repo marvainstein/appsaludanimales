@@ -188,17 +188,6 @@ struct CompanionProfileView: View {
                 }
                 .accessibilityIdentifier("profile.backup")
 
-                NavigationLink {
-                    AboutView()
-                } label: {
-                    Label {
-                        Text("Acerca de Estela")
-                    } icon: {
-                        Image(systemName: "info.circle")
-                    }
-                    .frame(minHeight: Spacing.minimumTapTarget)
-                }
-                .accessibilityIdentifier("profile.about")
             } footer: {
                 Text("Qué te avisa la app, cómo llevar la información al veterinario, y cómo no perderla.")
                     .foregroundStyle(Palette.inkMuted)
@@ -253,6 +242,27 @@ struct CompanionProfileView: View {
                 // fácil confundirlas en el peor momento. Acá se aclara cuál es
                 // cuál, en el lugar donde alguien podría equivocarse.
                 Text("Es para el que se cargó por error o el que ya no cuidás. Borra todo lo que anotaste y no se puede deshacer. Si lo que pasó es que se fue, marcá que cruzó el arcoíris: así queda todo guardado.")
+                    .foregroundStyle(Palette.inkMuted)
+            }
+
+            // Lo único de esta pantalla que no habla del animal sino de la app.
+            // Estaba mezclado entre el respaldo y el resumen, y con dos o tres
+            // compañeros cargados aparecía repetido en cada perfil como si
+            // fuera parte de la ficha de cada uno.
+            Section {
+                NavigationLink {
+                    AboutView()
+                } label: {
+                    Label {
+                        Text("Acerca de Estela")
+                    } icon: {
+                        Image(systemName: "info.circle")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+                .accessibilityIdentifier("profile.about")
+            } header: {
+                Text("La app")
                     .foregroundStyle(Palette.inkMuted)
             }
         }

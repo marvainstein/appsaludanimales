@@ -97,7 +97,14 @@ palabra.
 
 ## Lo que hay que actualizar antes de publicar
 
-La política de privacidad, la pantalla "Acerca de" y los textos de la App Store
-dicen hoy que la información no sale del teléfono. Con la sincronización activada
-eso deja de ser cierto: pasa a ir al iCloud de la persona, nunca a servidores
-nuestros. Se cambia **antes** de que la app llegue a nadie.
+**Ya está hecho** en la pantalla "Acerca de", en docs/privacidad.md y en
+sitio/index.html: los tres describen la copia en iCloud como lo que es, algo que
+la persona activa si quiere y que va a su propia cuenta.
+
+Se escribió ahora y no cuando la función funcione, por una razón: la app todavía
+no la tiene nadie más que quien la construye, así que no hay nadie a quien el
+texto pueda confundir, y el riesgo real no es adelantarse sino olvidarse.
+
+**Lo que falta:** volver a subir `sitio/index.html` al repositorio
+`estela-privacidad`, para que la página publicada diga lo mismo. Eso se hace
+junto con la publicación de la app, no antes.

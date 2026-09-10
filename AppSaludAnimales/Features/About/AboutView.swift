@@ -32,11 +32,15 @@ struct AboutView: View {
             }
 
             Section {
-                Text("Tu información se guarda en tu teléfono y no se sube a internet. No hay cuenta, no hay servidores nuestros y no hay nada que vender. Compartir algo (el resumen en PDF, un documento, el respaldo) es siempre una decisión tuya.")
+                Text("Tu información se guarda en tu teléfono. No hay cuenta, no hay servidores nuestros y no hay nada que vender. Compartir algo (el resumen en PDF, un documento, el respaldo) es siempre una decisión tuya.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
 
-                Text("No hay excepciones. La app no le pregunta nada a ningún servicio de afuera, no pide tu ubicación y no tiene manera de saber quién sos.")
+                Text("En Respaldo podés pedir que se guarde sola una copia en tu iCloud, para no perderla si el teléfono se rompe. Esa copia es tuya y vive en tu cuenta: nosotros no la vemos ni podríamos. Viene apagado, y se activa solo si vos querés.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("No hay ninguna otra excepción. La app no le pregunta nada a ningún servicio de afuera, no pide tu ubicación y no tiene manera de saber quién sos.")
                     .font(AppFont.body)
                     .foregroundStyle(Palette.inkMuted)
                     .fixedSize(horizontal: false, vertical: true)
