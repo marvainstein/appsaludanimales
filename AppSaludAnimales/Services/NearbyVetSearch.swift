@@ -129,9 +129,10 @@ final class NearbyVetSearch: NSObject, CLLocationManagerDelegate {
                 request.naturalLanguageQuery = query
                 request.region = region
                 request.resultTypes = .pointOfInterest
-                // Además de la palabra, la categoría del mapa: hay lugares
-                // cargados como veterinaria que no la tienen en el nombre.
-                request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.veterinary])
+                // Además de la palabra, la categoría del mapa. Apple la llama
+                // "servicios para animales" y ahí caen las veterinarias, incluso
+                // las que no dicen "veterinaria" en el nombre.
+                request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.animalService])
 
                 do {
                     let response = try await MKLocalSearch(request: request).start()
