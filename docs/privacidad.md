@@ -59,8 +59,12 @@ a estar gobernado por las condiciones del lugar donde lo hayas puesto.
 ## Borrar tu información
 
 Se borra desde la app, eliminando lo que quieras, o desinstalándola: al
-desinstalar Estela se borra todo lo que guardaba. No queda ninguna copia en otro
-lado, porque nunca la hubo.
+desinstalar Estela se borra todo lo que guardaba. No queda ninguna copia nuestra
+en ningún lado, porque nunca la hubo.
+
+Lo único que sobrevive es lo que vos hayas sacado de la app a propósito: un
+respaldo, un PDF o un documento que hayas compartido. Eso está donde vos lo
+pusiste y se borra desde ahí.
 
 ## Menores
 
