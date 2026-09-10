@@ -68,3 +68,54 @@ Una consulta gratis en la base no es un dictamen. El INPI ofrece además una
 **búsqueda de antecedentes** paga, y quien decide si dos marcas se confunden es
 una persona con criterio legal, no un buscador. Para saber si seguimos adelante
 con el nombre, esto alcanza. Para registrarlo, conviene una consulta profesional.
+
+
+---
+
+# Lo que encontramos (septiembre de 2026)
+
+## Clase 9 — software descargable, apps: **libre**
+
+Es la clase de esta app. No hay ninguna "HUELLA" sola vigente. La única que
+existió, acta 1400115 de Agustín Palacios S.A., **venció en 1995**. Todo lo demás
+en clase 9 es compuesto.
+
+## Clase 42 — acta 4662619, Orciuoli Martina Carla: **acotada**
+
+- Concedida el 24/04/2026, vence el 24/04/2036.
+- **Protección: "Solamente"**, con esta limitación textual:
+  `SOFTWARE (DISEÑO DE -) ; SOFTWARE COMO SERVICIO [SAAS] ;`
+
+No cubre toda la clase: cubre dos cosas puntuales. **Diseño de software** es un
+servicio que se le presta a terceros, y **SaaS** es software servido por
+internet. Esta app no es ninguna de las dos: es un producto que se descarga y
+vive en el teléfono, sin servidores.
+
+Pasaría a importar el día que la app se ofrezca como servicio. La decisión de que
+todo viva en el teléfono, que tomamos por privacidad, también nos deja afuera de
+esta marca.
+
+## Clase 44 — acta 3723346, González Lizarraga y Marco: **toda la clase**
+
+- Concedida el 10/09/2019, vence el 10/09/2029.
+- **Protección: "Toda la clase"**, sin ninguna limitación.
+
+La clase 44 incluye servicios veterinarios y cuidado de animales. Sin limitación,
+la cubren entera.
+
+**Esta es la que importa.** No bloquea a la clase 9 por sí sola —las marcas se
+registran por rubro— pero el análisis de confusión mira también qué tan cerca
+están los rubros, y una app de salud animal está al lado de los servicios
+veterinarios. Es el escenario en el que alguien puede pedir que se deje de usar
+el nombre.
+
+## Qué significa en la práctica
+
+- **Para publicar en la App Store: no bloquea nada.** Apple no consulta el INPI.
+- **Para registrar "Huella" en clase 9:** los de clase 44 son oponentes posibles.
+- **Para el riesgo de tener que renombrar después:** los de clase 44 son la
+  amenaza realista, porque están en el mundo animal y se van a enterar.
+
+Esto no es un dictamen legal. Para una decisión de este peso, una consulta con
+un agente de la propiedad industrial cuesta mucho menos que renombrar una app ya
+publicada.
