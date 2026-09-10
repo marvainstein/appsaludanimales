@@ -35,6 +35,14 @@ publica solo la página y no el código ni estos documentos internos.
 
 Esa dirección es la que va en los dos campos de App Store Connect.
 
+**Publicada el 10 de septiembre de 2026 en**
+https://marvainstein.github.io/estela-privacidad/
+
+> Un tropiezo que puede repetirse: al bajar el archivo desde GitHub, el
+> navegador lo guarda como `index (1).html` si ya había uno en Descargas. Subido
+> con ese nombre, Pages devuelve 404, porque busca literalmente `index.html` en
+> la raíz. Se arregla renombrando el archivo desde GitHub, sin volver a subirlo.
+
 ## Cuando haya que cambiar el texto
 
 El texto vive en `docs/privacidad.md` y la página en `sitio/index.html`, los dos

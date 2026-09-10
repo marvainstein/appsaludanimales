@@ -39,8 +39,10 @@ mejora algo que ya funciona.
 
 ## Trámites que llevan tiempo y no dependen de nadie
 
-- [~] **Política de privacidad publicada**, con su dirección web. Se puede alojar
-      gratis en GitHub Pages.
+- [x] **Política de privacidad publicada.** Está en
+      https://marvainstein.github.io/estela-privacidad/ — la misma dirección
+      sirve para el campo de privacidad y para el de soporte en App Store
+      Connect, porque la página tiene las dos secciones.
 - [x] **Textos de la App Store**: nombre, subtítulo, descripción, palabras clave,
       categoría.
 - [~] **Capturas de pantalla**, que se sacan del simulador. El plan de cuáles y en qué orden está en docs/app-store.md; sacarlas es manual.
