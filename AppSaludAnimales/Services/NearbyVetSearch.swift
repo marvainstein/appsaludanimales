@@ -109,7 +109,9 @@ final class NearbyVetSearch: NSObject, CLLocationManagerDelegate {
     /// varias palabras y juntando los resultados aparecen bastantes más.
     private static let queries = [
         String(localized: "veterinaria"),
+        String(localized: "veterinario"),
         String(localized: "clínica veterinaria"),
+        String(localized: "hospital veterinario"),
         String(localized: "urgencias veterinarias")
     ]
 
@@ -129,10 +131,6 @@ final class NearbyVetSearch: NSObject, CLLocationManagerDelegate {
                 request.naturalLanguageQuery = query
                 request.region = region
                 request.resultTypes = .pointOfInterest
-                // Además de la palabra, la categoría del mapa. Apple la llama
-                // "servicios para animales" y ahí caen las veterinarias, incluso
-                // las que no dicen "veterinaria" en el nombre.
-                request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.animalService])
 
                 do {
                     let response = try await MKLocalSearch(request: request).start()
@@ -142,7 +140,25 @@ final class NearbyVetSearch: NSObject, CLLocationManagerDelegate {
                 }
             }
 
-            guard failures < Self.queries.count else {
+            // Una pasada más por categoría, sin texto. Encuentra las que el
+            // mapa tiene marcadas como servicio para animales aunque no digan
+            // "veterinaria" en el nombre.
+            //
+            // Va aparte y no como filtro de las búsquedas de arriba: filtrar por
+            // categoría es una lista blanca, no una ayuda. Puesto encima del
+            // texto dejaba afuera a las que el mapa clasifica de otra manera,
+            // como los hospitales de urgencias para animales.
+            let byCategory = MKLocalPointsOfInterestRequest(
+                center: location.coordinate,
+                radius: 12000
+            )
+            byCategory.pointOfInterestFilter = MKPointOfInterestFilter(including: [.animalService])
+
+            if let response = try? await MKLocalSearch(request: byCategory).start() {
+                found += response.mapItems.compactMap { place(from: $0, origin: location) }
+            }
+
+            guard failures < Self.queries.count || !found.isEmpty else {
                 status = .failed
                 return
             }
