@@ -127,3 +127,33 @@ la otra lo restaura, y restaurar agrega lo que falta sin duplicar ni pisar nada
 —se construyó así a propósito—. No es compartir en vivo, es ponerse al día a
 mano. Para dos personas que conviven suele alcanzar, porque en la práctica una
 sola es la que anota.
+
+
+## Colaborar con la app
+
+Decidido en septiembre de 2026: **el Cafecito va en la web, no adentro de la
+app.**
+
+**Por qué no adentro.** La regla 3.1.1 de Apple prohíbe botones y enlaces
+externos que lleven a cualquier forma de pago que no sea la suya. Las propinas al
+desarrollador están permitidas, pero solo por compra dentro de la app, y ahí hay
+dos costos: la comisión de Apple, y —más grave— que la ficha de la App Store pasa
+a mostrar el cartel "Compras dentro de la app". Para una app cuya posición entera
+es *gratis para siempre, sin trampa*, ese cartel trabaja en contra justo en el
+momento en que alguien decide si la instala.
+
+**Por qué en la web sale gratis.** Apple exige una dirección de soporte para
+publicar. Ese sitio va a existir de todos modos, así que el enlace para colaborar
+no cuesta trabajo extra: vive donde la gente ya va a ir a buscar ayuda.
+
+**Lo que hay hoy.** `sitio/index.html`, la página de privacidad y soporte. Es una
+sola página sin nada más. Cuando se arme el sitio de verdad, esa página es la
+semilla.
+
+**El texto, que ya está escrito y es de quien tuvo la idea:**
+
+> Estela va a ser siempre gratis. Si te gustó, podés colaborar con un cafecito.
+
+**Cuándo revisarlo.** Si más adelante hay gente usándola y pidiendo colaborar, ahí
+se puede evaluar la propina por compra dentro de la app con datos en la mano, en
+lugar de suponer.
