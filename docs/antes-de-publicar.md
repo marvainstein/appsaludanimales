@@ -59,6 +59,14 @@ mejora algo que ya funciona.
 > Las marcadas con `~` están escritas pero necesitan una acción manual: publicar
 > la página, o sacar las capturas.
 
+## Antes de publicar, ahora que hay sincronización
+
+- [ ] **Sincronización con iCloud.** Decidida y documentada en
+      docs/sincronizacion.md. Necesita la cuenta de desarrollador paga: iCloud
+      no se puede activar sin ella.
+- [ ] **Actualizar la política de privacidad, "Acerca de" y los textos de la App
+      Store** para que dejen de decir que la información no sale del teléfono.
+
 ## Verificaciones
 
 - [x] **Auditoría de accesibilidad de las pantallas nuevas**: perfil, peso,
