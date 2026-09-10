@@ -99,3 +99,31 @@ reservadas: llevar la salud de un animal al que se quiere no puede depender de
 poder pagarla. Lo único que queda en pie de esta sección es la difusión de
 refugios y protectoras, sin cobrar y sin rastrear a nadie. El resto queda escrito
 como el razonamiento que llevó ahí.
+
+
+## Compartir el cuidado entre dos personas — 2.0
+
+Decidido en septiembre de 2026: no entra en la primera versión.
+
+**Qué es.** Dos personas, con dos cuentas de iCloud distintas, cuidando al mismo
+animal y anotando las dos. No es lo mismo que la copia automática, que cubre a
+una persona con varios dispositivos.
+
+**Por qué no ahora.** No tiene la urgencia que sí tenía la copia automática: que
+se pierda una historia clínica es irreversible, que la otra persona no vea la app
+se resuelve contándoselo. Y es la clase de función que conviene diseñar con gente
+usándola: cuántas personas cuidan juntas, quién anota en la práctica, si quieren
+ver lo mismo o solo estar al tanto. Diez familias van a mostrar patrones que
+nadie previó desde el escritorio.
+
+**Lo que hay que resolver cuando se encare.** La tecnología es `CKShare`, con
+invitaciones, permisos, qué pasa si quien es dueño de los datos se va, y
+conflictos cuando las dos personas anotan a la vez. Hace falta comprobar en un
+dispositivo real qué tan bien lo soporta SwiftData hoy: es un área que Apple
+cambia versión a versión, y la respuesta que uno recuerda puede estar vencida.
+
+**Lo que funciona mientras tanto.** El respaldo. Una persona exporta el archivo,
+la otra lo restaura, y restaurar agrega lo que falta sin duplicar ni pisar nada
+—se construyó así a propósito—. No es compartir en vivo, es ponerse al día a
+mano. Para dos personas que conviven suele alcanzar, porque en la práctica una
+sola es la que anota.

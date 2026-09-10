@@ -242,9 +242,10 @@ app se encarga de convertirlos, no la persona.
 
 ## Pendiente
 
-- Decisión definitiva sobre compartir datos entre varias personas responsables
-  (SwiftData con CloudKit vs. Core Data con `NSPersistentCloudKitContainer` y
-  `CKShare`), a validar con una prueba de concepto en dispositivo antes de V1.
+- Compartir el cuidado entre dos personas con cuentas distintas quedó para la
+  2.0, decidido en septiembre de 2026. La copia automática en iCloud cubre a una
+  persona con varios dispositivos, que es otra cosa; el detalle está en
+  docs/futuro.md.
 - Editar un registro ya guardado campo por campo: hoy se puede consultar,
   cambiar su estado y eliminarlo.
 - Barra de pestañas: se incorpora cuando existan las pantallas que va a

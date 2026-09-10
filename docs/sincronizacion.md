@@ -11,8 +11,18 @@ o se lo roban, la única red es un respaldo que la persona haya hecho a mano. El
 respaldo protege a quien es ordenado; el problema lo tiene quien no lo es. Y
 ocho años de estudios de un animal no se reconstruyen.
 
-De paso resuelve algo que estaba pendiente desde el principio: dos personas que
-comparten el cuidado de un animal, cada una con su teléfono.
+## Lo que esto NO resuelve
+
+Dos personas distintas, con dos cuentas de iCloud distintas, cuidando al mismo
+animal. Eso quedó para la 2.0 y está en docs/futuro.md.
+
+Es una confusión fácil y conviene dejarla clara acá. Lo de esta página es la
+**base de datos privada** de iCloud: la información de una persona, en su propia
+cuenta, en todos *sus* dispositivos. Su iPhone y su iPad ven lo mismo. Otra
+persona, con otro Apple ID, no ve nada.
+
+Compartir entre cuentas es otra tecnología —`CKShare`— con invitaciones,
+permisos y conflictos de edición simultánea. No sale de acá.
 
 ## Las decisiones tomadas
 
