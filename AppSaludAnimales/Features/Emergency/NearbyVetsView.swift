@@ -29,12 +29,15 @@ struct NearbyVetsView: View {
             case let .results(places):
                 mapSection(places)
                 resultsSection(places)
+                elsewhereSection
 
             case .empty:
                 message(
                     title: String(localized: "No encontramos veterinarias cerca"),
-                    detail: String(localized: "Puede ser que el mapa no las tenga cargadas en esta zona. Probá buscando en la aplicación de mapas del teléfono.")
+                    detail: String(localized: "Puede ser que el mapa del teléfono no las tenga cargadas en esta zona.")
                 )
+
+                elsewhereSection
 
             case .denied:
                 message(
@@ -152,6 +155,46 @@ struct NearbyVetsView: View {
             Text("Ordenadas por distancia")
         } footer: {
             Text("Es una búsqueda en el mapa, no una lista revisada. Puede estar incompleta y no dice cuál atiende urgencias.")
+        }
+    }
+
+    /// La salida cuando el mapa del teléfono no alcanza.
+    ///
+    /// El mapa de Apple tiene bastante menos cargado que otros, sobre todo fuera
+    /// de las grandes ciudades: clínicas conocidas directamente no aparecen. En
+    /// vez de fingir que la lista está completa, la app ofrece abrir la búsqueda
+    /// afuera, donde los datos son mejores.
+    ///
+    /// Se abre el buscador de mapas del sistema, con la búsqueda ya escrita. La
+    /// app no le manda nada a nadie: quien decide salir es la persona.
+    private var elsewhereSection: some View {
+        Section {
+            Button {
+                openWebSearch()
+            } label: {
+                Label {
+                    Text("Buscar en el mapa del navegador")
+                } icon: {
+                    Image(systemName: "safari")
+                }
+                .frame(minHeight: Spacing.minimumTapTarget)
+            }
+            .accessibilityHint(Text("Sale de la app y abre la búsqueda en el navegador"))
+        } footer: {
+            Text("Si la que buscás no aparece, puede ser que el mapa del teléfono no la tenga cargada. Buscarla afuera suele encontrar más.")
+        }
+    }
+
+    private func openWebSearch() {
+        var components = URLComponents(string: "https://www.google.com/maps/search/")
+
+        components?.queryItems = [
+            URLQueryItem(name: "api", value: "1"),
+            URLQueryItem(name: "query", value: String(localized: "veterinaria"))
+        ]
+
+        if let url = components?.url {
+            openURL(url)
         }
     }
 

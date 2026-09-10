@@ -102,26 +102,68 @@ final class NearbyVetSearch: NSObject, CLLocationManagerDelegate {
 
     // MARK: - Búsqueda
 
+    /// Las búsquedas que se hacen, y se juntan.
+    ///
+    /// Una sola consulta se pierde clínicas enteras: el mapa las tiene cargadas
+    /// con el nombre que usa cada una, y no todas dicen "veterinaria". Probando
+    /// varias palabras y juntando los resultados aparecen bastantes más.
+    private static let queries = [
+        String(localized: "veterinaria"),
+        String(localized: "clínica veterinaria"),
+        String(localized: "urgencias veterinarias")
+    ]
+
     private func search(around location: CLLocation) {
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = String(localized: "veterinaria")
-        request.region = MKCoordinateRegion(
+        let region = MKCoordinateRegion(
             center: location.coordinate,
-            latitudinalMeters: 8000,
-            longitudinalMeters: 8000
+            latitudinalMeters: 12000,
+            longitudinalMeters: 12000
         )
 
         Task { @MainActor in
-            do {
-                let response = try await MKLocalSearch(request: request).start()
-                let places = response.mapItems
-                    .compactMap { place(from: $0, origin: location) }
-                    .sorted { $0.distanceInMeters < $1.distanceInMeters }
+            var found: [NearbyPlace] = []
+            var failures = 0
 
-                status = places.isEmpty ? .empty : .results(places)
-            } catch {
-                status = .failed
+            for query in Self.queries {
+                let request = MKLocalSearch.Request()
+                request.naturalLanguageQuery = query
+                request.region = region
+                request.resultTypes = .pointOfInterest
+                // Además de la palabra, la categoría del mapa: hay lugares
+                // cargados como veterinaria que no la tienen en el nombre.
+                request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.veterinary])
+
+                do {
+                    let response = try await MKLocalSearch(request: request).start()
+                    found += response.mapItems.compactMap { place(from: $0, origin: location) }
+                } catch {
+                    failures += 1
+                }
             }
+
+            guard failures < Self.queries.count else {
+                status = .failed
+                return
+            }
+
+            let places = Self.deduplicated(found).sorted { $0.distanceInMeters < $1.distanceInMeters }
+            status = places.isEmpty ? .empty : .results(places)
+        }
+    }
+
+    /// El mismo lugar aparece en varias búsquedas. Se lo reconoce por el nombre
+    /// y por estar prácticamente en el mismo punto.
+    private static func deduplicated(_ places: [NearbyPlace]) -> [NearbyPlace] {
+        var seen: Set<String> = []
+
+        return places.filter { place in
+            let key = [
+                place.name.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil),
+                String(format: "%.4f", place.coordinate.latitude),
+                String(format: "%.4f", place.coordinate.longitude)
+            ].joined(separator: "|")
+
+            return seen.insert(key).inserted
         }
     }
 
