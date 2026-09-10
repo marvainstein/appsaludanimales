@@ -43,31 +43,20 @@ struct EmptyStateIllustration: View {
     // MARK: - Los dibujos
 
     /// La misma huella del ícono, en el tono suave del acento.
+    ///
+    /// La forma sale de `PawPath`, que es la misma que dibuja el membrete del
+    /// PDF. Los dedos y la almohadilla van del mismo tono porque en el ícono
+    /// son del mismo color: con la almohadilla más clara se leían como dos
+    /// dibujos pegados en vez de una huella.
     private func drawPaw(in context: inout GraphicsContext, size: CGSize) {
         let unit = min(size.width, size.height)
-        let fill = GraphicsContext.Shading.color(Palette.accentSoft)
-        let toes = GraphicsContext.Shading.color(Palette.accent.opacity(0.55))
+        let ink = GraphicsContext.Shading.color(Palette.accent.opacity(0.55))
 
-        // Angosta y con los dedos largos, como la pata de una galga. Con los
-        // dedos cortos y separados parece la huella de un oso.
-        // Las mismas proporciones que el ícono de la app: los dos dedos del
-        // medio bien juntos y adelante, los de las puntas más abajo y afuera.
-        let toeRects = [
-            CGRect(x: 0.16, y: 0.28, width: 0.13, height: 0.24),
-            CGRect(x: 0.35, y: 0.13, width: 0.14, height: 0.28),
-            CGRect(x: 0.51, y: 0.13, width: 0.14, height: 0.28),
-            CGRect(x: 0.71, y: 0.28, width: 0.13, height: 0.24)
-        ]
+        context.fill(Path(PawPath.pad(side: unit)), with: ink)
 
-        for rect in toeRects {
-            context.fill(Path(ellipseIn: scaled(rect, by: unit)), with: toes)
+        for toe in PawPath.toes(side: unit) {
+            context.fill(Path(toe), with: ink)
         }
-
-        let pad = CGRect(x: 0.28, y: 0.50, width: 0.44, height: 0.40)
-        context.fill(
-            Path(roundedRect: scaled(pad, by: unit), cornerRadius: unit * 0.20),
-            with: fill
-        )
     }
 
     /// Tres hojas apiladas, apenas corridas: lo que se va juntando.

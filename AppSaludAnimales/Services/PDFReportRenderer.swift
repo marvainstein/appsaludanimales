@@ -11,55 +11,95 @@ enum PDFReportRenderer {
     static let pageSize = CGSize(width: 595.2, height: 841.8)
     static let margin: CGFloat = 48
 
-    /// El membrete, arriba a la derecha.
+    /// El membrete, arriba a la derecha y por encima de todo lo demás.
     ///
     /// Este papel termina en la mano de un veterinario, muchas veces impreso y
     /// muchas veces junto a otros. Que diga de dónde salió es lo que lo vuelve
     /// reconocible la segunda vez, y es la única forma de difusión que la app
     /// tiene sin molestar a nadie: aparece en un papel que alguien eligió
     /// compartir.
-    private static func drawLetterhead(in bounds: CGRect) {
-        let symbol = UIImage(systemName: "pawprint.fill")?
-            .withTintColor(brand, renderingMode: .alwaysOriginal)
-
+    ///
+    /// Devuelve dónde termina, para que el contenido arranque abajo. Antes se
+    /// dibujaba a la misma altura que el nombre del animal y los dos quedaban
+    /// pisándose en el borde de la hoja.
+    private static func drawLetterhead(in bounds: CGRect) -> CGFloat {
+        let prefix = String(localized: "Informe generado por")
         let name = String(localized: "Huella")
         let tagline = String(localized: "La historia de su salud en un solo lugar")
 
+        let prefixFont = UIFont.systemFont(ofSize: 11, weight: .regular)
+        let nameFont = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        let taglineFont = UIFont.systemFont(ofSize: 9, weight: .regular)
+
+        let prefixAttributes: [NSAttributedString.Key: Any] = [
+            .font: prefixFont,
+            .foregroundColor: UIColor.darkGray
+        ]
+
         let nameAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 13, weight: .semibold),
+            .font: nameFont,
             .foregroundColor: brand
         ]
 
         let taglineAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 9, weight: .regular),
+            .font: taglineFont,
             .foregroundColor: UIColor.darkGray
         ]
 
+        let prefixSize = (prefix as NSString).size(withAttributes: prefixAttributes)
         let nameSize = (name as NSString).size(withAttributes: nameAttributes)
         let taglineSize = (tagline as NSString).size(withAttributes: taglineAttributes)
+
+        let paw: CGFloat = 15
+        let gap: CGFloat = 5
         let right = bounds.maxX - margin
+        let top = margin
+        let lineWidth = prefixSize.width + gap + paw + gap + nameSize.width
+        var x = right - lineWidth
 
-        (name as NSString).draw(
-            at: CGPoint(x: right - nameSize.width, y: margin - 6),
-            withAttributes: nameAttributes
+        // Todo apoyado en la misma línea de base: el prefijo es más chico que
+        // el nombre, así que sin esto flotaría.
+        (prefix as NSString).draw(
+            at: CGPoint(x: x, y: top + nameFont.ascender - prefixFont.ascender),
+            withAttributes: prefixAttributes
         )
+        x += prefixSize.width + gap
 
+        drawPaw(at: CGPoint(x: x, y: top + (nameSize.height - paw) / 2), side: paw)
+        x += paw + gap
+
+        (name as NSString).draw(at: CGPoint(x: x, y: top), withAttributes: nameAttributes)
+
+        let taglineY = top + nameSize.height + 1
         (tagline as NSString).draw(
-            at: CGPoint(x: right - taglineSize.width, y: margin + nameSize.height - 4),
+            at: CGPoint(x: right - taglineSize.width, y: taglineY),
             withAttributes: taglineAttributes
         )
 
-        if let symbol {
-            let side: CGFloat = 16
-            symbol.draw(
-                in: CGRect(
-                    x: right - nameSize.width - side - 6,
-                    y: margin - 4,
-                    width: side,
-                    height: side
-                )
-            )
+        return taglineY + taglineSize.height
+    }
+
+    /// La huella del ícono, dibujada con las mismas formas que la ilustración
+    /// de las pantallas vacías.
+    ///
+    /// Se dibuja en vez de usar un símbolo del sistema porque el símbolo salía
+    /// como un cuadrado lleno en el PDF, y porque la huella de la app no es la
+    /// de Apple.
+    private static func drawPaw(at origin: CGPoint, side: CGFloat) {
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+
+        context.saveGState()
+        context.translateBy(x: origin.x, y: origin.y)
+        context.setFillColor(brand.cgColor)
+
+        context.addPath(PawPath.pad(side: side))
+
+        for toe in PawPath.toes(side: side) {
+            context.addPath(toe)
         }
+
+        context.fillPath()
+        context.restoreGState()
     }
 
     /// El terracota de la app, en el mismo valor que PaletteValues.
@@ -78,8 +118,7 @@ enum PDFReportRenderer {
         return renderer.pdfData { context in
             let writer = PageWriter(context: context, bounds: bounds)
             writer.beginPage()
-
-            drawLetterhead(in: bounds)
+            writer.moveBelow(drawLetterhead(in: bounds), padding: 28)
 
             writer.draw(report.companionName, style: .title)
             writer.draw(report.subtitle, style: .subtitle)
@@ -176,6 +215,12 @@ private final class PageWriter {
 
     func space(_ amount: CGFloat) {
         cursor += amount
+    }
+
+    /// Baja el cursor por debajo de algo ya dibujado, como el membrete. No sube
+    /// nunca: si el contenido ya iba más abajo, se queda donde estaba.
+    func moveBelow(_ y: CGFloat, padding: CGFloat) {
+        cursor = max(cursor, y + padding)
     }
 
     func draw(_ text: String, style: Style) {
