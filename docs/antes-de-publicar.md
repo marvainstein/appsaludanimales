@@ -48,6 +48,11 @@ mejora algo que ya funciona.
       (ninguno), si hay rastreo (no), si usa cifrado (no propio).
 - [ ] **Buscar el nombre en el INPI**, antes de que "Huella" quede impreso en
       todos lados.
+- [ ] **Poner la dirección real de la app en el membrete del PDF.** Hoy dice
+      "Descargala gratis en el App Store", que alcanza para saber que existe
+      pero no para encontrarla: buscar "Huella" en la App Store devuelve
+      cualquier cosa. El día que exista la ficha, ahí va su dirección corta, que
+      es lo que alguien puede tipear desde una hoja impresa.
 
 > Las marcadas con `~` están escritas pero necesitan una acción manual: publicar
 > la página, o sacar las capturas.

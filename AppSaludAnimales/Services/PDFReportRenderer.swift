@@ -26,6 +26,7 @@ enum PDFReportRenderer {
         let prefix = String(localized: "Informe generado por")
         let name = String(localized: "Huella")
         let tagline = String(localized: "La historia de su salud en un solo lugar")
+        let invitation = String(localized: "Descargala gratis en el App Store")
 
         let prefixFont = UIFont.systemFont(ofSize: 11, weight: .regular)
         let nameFont = UIFont.systemFont(ofSize: 15, weight: .semibold)
@@ -46,9 +47,15 @@ enum PDFReportRenderer {
             .foregroundColor: UIColor.darkGray
         ]
 
+        let invitationAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 8.5, weight: .regular),
+            .foregroundColor: UIColor.gray
+        ]
+
         let prefixSize = (prefix as NSString).size(withAttributes: prefixAttributes)
         let nameSize = (name as NSString).size(withAttributes: nameAttributes)
         let taglineSize = (tagline as NSString).size(withAttributes: taglineAttributes)
+        let invitationSize = (invitation as NSString).size(withAttributes: invitationAttributes)
 
         let paw: CGFloat = 15
         let gap: CGFloat = 5
@@ -76,7 +83,17 @@ enum PDFReportRenderer {
             withAttributes: taglineAttributes
         )
 
-        return taglineY + taglineSize.height
+        // La única invitación que la app hace, y la hace en un papel que alguien
+        // eligió compartir. Más chica y más gris que el lema: está para quien
+        // sostiene la hoja y se pregunta de dónde salió, no para interrumpir a
+        // quien la está leyendo por otra cosa.
+        let invitationY = taglineY + taglineSize.height + 3
+        (invitation as NSString).draw(
+            at: CGPoint(x: right - invitationSize.width, y: invitationY),
+            withAttributes: invitationAttributes
+        )
+
+        return invitationY + invitationSize.height
     }
 
     /// La huella del ícono, dibujada con las mismas formas que la ilustración
