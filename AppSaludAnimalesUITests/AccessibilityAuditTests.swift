@@ -53,7 +53,7 @@ final class AccessibilityAuditTests: XCTestCase {
 
         Self.element(app, "dashboard.companion").tap()
 
-        try audit(app, pantalla: "el perfil", tipos: Self.sinTamanoDeTexto)
+        try audit(app, pantalla: "el perfil", tipos: Self.sinTamanoNiContraste)
     }
 
     @MainActor
@@ -85,7 +85,7 @@ final class AccessibilityAuditTests: XCTestCase {
         let app = launchApp(withCompanion: true)
         try open(app, "dashboard.companion", then: "profile.about")
 
-        try audit(app, pantalla: "acerca de", tipos: Self.sinTamanoDeTexto)
+        try audit(app, pantalla: "acerca de", tipos: Self.sinTamanoNiContraste)
     }
 
     @MainActor
@@ -102,7 +102,7 @@ final class AccessibilityAuditTests: XCTestCase {
             // arreglar lo que no se puede ubicar. Queda anotado como deuda en
             // docs/accesibilidad.md: se comprueba con VoiceOver en el teléfono,
             // que es donde se escucharía si de verdad hubiera un pedazo mudo.
-            tipos: Self.sinTamanoDeTexto.subtracting(.elementDetection)
+            tipos: Self.sinTamanoNiContraste.subtracting(.elementDetection)
         )
     }
 
@@ -181,11 +181,23 @@ final class AccessibilityAuditTests: XCTestCase {
 
     /// Todo menos el tamaño de texto y el contraste.
     ///
-    /// **Hoy no la usa ninguna pantalla.** Quedó disponible por si alguna vuelve
-    /// a necesitarla, pero la razón principal para apagar el contraste —el gris
-    /// por omisión de los encabezados y pies de lista— se arregló usando el
-    /// color del producto, así que se probó devolverles el contraste a las
-    /// cuatro pantallas que la usaban.
+    /// La razón vieja —que los pies de lista usaban los colores por omisión de
+    /// Apple— se arregló, así que en septiembre de 2026 se probó devolverle el
+    /// contraste a las cuatro pantallas que la usaban. **El respaldo pasó y se
+    /// quedó con la verificación puesta.** Las otras tres siguen acá, y esto es
+    /// exactamente lo que reportó cada una:
+    ///
+    /// - **El perfil:** el botón "Editar" de la barra de navegación. Lo dibuja
+    ///   el sistema sobre una barra translúcida, y el color que usa es el
+    ///   nuestro: `#A0472C` sobre el fondo agrupado da 5,5:1, verificado a mano
+    ///   y en PaletteContrastTests. Lo que la auditoría mide ahí es el botón
+    ///   contra lo que se ve por detrás del vidrio, que no controlamos.
+    /// - **Acerca de:** un hallazgo sin elemento asociado. No se puede arreglar
+    ///   lo que no se puede ubicar.
+    /// - **La despedida:** el encabezado "Qué pasa". **Este no lo pudimos
+    ///   explicar**, y queda anotado como deuda en docs/accesibilidad.md: usa
+    ///   `Palette.inkMuted`, que da entre 5,5:1 y 9:1 contra todos los fondos
+    ///   que esa pantalla puede tener. Se mira con el ojo en la pasada manual.
     ///
     /// Se usa solo en las pantallas armadas con formularios del sistema. Ahí la
     /// verificación de contraste señala cosas que no son nuestras y que no

@@ -222,3 +222,42 @@ Como efecto secundario, la razón "los pies de lista usan los colores por omisi�
 de Apple" ya no justifica apagar el contraste en ninguna pantalla. Lo que queda
 sin poder arreglarse son los botones de la barra de navegación, que dibuja el
 sistema, y los hallazgos que no dicen sobre qué elemento cayeron.
+
+
+## Deuda: el encabezado "Qué pasa" de la despedida
+
+Septiembre de 2026. Al devolverle el contraste a las pantallas que lo tenían
+apagado, la despedida reportó **"Contrast failed"** sobre el encabezado de
+sección "Qué pasa".
+
+**No lo pudimos explicar, y por eso queda anotado en vez de tapado.** Ese texto
+usa `Palette.inkMuted`, y contra todos los fondos que esa pantalla puede tener
+—el claro del sistema, el apagado, y el celeste de la tarjeta— da entre 5,5:1 y
+9:1. Los números están calculados a mano y verificados por PaletteContrastTests.
+El hallazgo dice "failed", no "nearly", o sea que la auditoría midió algo por
+debajo de 3:1, que ninguno de esos pares puede dar.
+
+Se comprobó además que la pantalla no tiene un fondo propio: ninguna pantalla de
+la app toca `scrollContentBackground`, así que todas están sobre el fondo
+agrupado del sistema.
+
+**Cómo se salda:** mirándolo. Es la misma pasada manual que ya debe esa pantalla
+por el hallazgo de detección de elementos. Se abre la despedida en el teléfono,
+en claro y en oscuro, y se mira si "Qué pasa" se lee bien o si hay algo ahí que
+el código no muestra.
+
+## Lo que quedó del experimento de contraste
+
+Cuatro pantallas tenían la verificación de contraste apagada. Después de arreglar
+el color de los encabezados y pies, se probó devolvérsela a las cuatro:
+
+| Pantalla | Resultado |
+|---|---|
+| El respaldo | **Pasó.** Se queda con la verificación puesta |
+| El perfil | El botón "Editar" de la barra de navegación, que dibuja el sistema |
+| Acerca de | Un hallazgo sin elemento asociado |
+| La despedida | El encabezado "Qué pasa" — sin explicación, ver arriba |
+
+Se ganó una pantalla y, más importante, las tres exclusiones que quedan dicen
+ahora qué las causa, medido en esta corrida, en lugar de repetir un motivo que
+ya no era cierto.
