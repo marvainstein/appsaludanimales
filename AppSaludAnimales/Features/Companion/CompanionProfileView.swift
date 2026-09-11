@@ -89,6 +89,20 @@ struct CompanionProfileView: View {
                     value: companion.relevantConditions
                 )
                 row(label: String(localized: "Alergias"), value: companion.allergies)
+
+                // El peso es un dato de salud, no un ajuste de la app. Estaba
+                // entre el respaldo y el resumen, que son herramientas.
+                NavigationLink {
+                    WeightChartView(companion: companion)
+                } label: {
+                    Label {
+                        Text("Evolución del peso")
+                    } icon: {
+                        Image(systemName: "chart.xyaxis.line")
+                    }
+                    .frame(minHeight: Spacing.minimumTapTarget)
+                }
+                .accessibilityIdentifier("profile.weight")
             } header: {
                 Text("Salud")
                     .foregroundStyle(Palette.inkMuted)
@@ -142,18 +156,6 @@ struct CompanionProfileView: View {
             }
 
             Section {
-                NavigationLink {
-                    WeightChartView(companion: companion)
-                } label: {
-                    Label {
-                        Text("Evolución del peso")
-                    } icon: {
-                        Image(systemName: "chart.xyaxis.line")
-                    }
-                    .frame(minHeight: Spacing.minimumTapTarget)
-                }
-                .accessibilityIdentifier("profile.weight")
-
                 NavigationLink {
                     ReminderSettingsView(companion: companion)
                 } label: {

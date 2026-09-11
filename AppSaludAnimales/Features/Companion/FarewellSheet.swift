@@ -101,7 +101,16 @@ struct FarewellSheet: View {
     private var form: some View {
         Group {
             Form {
+                // Sin encabezado a propósito. "Qué pasa" convertía esto en un
+                // apartado técnico de una pantalla que no lo es: acá alguien
+                // está por marcar que su animal se murió. Primero se lo
+                // acompaña, después se le explica, y nada de eso necesita un
+                // título que lo anuncie.
                 Section {
+                    Text("El vínculo no desaparece, se transforma. Te abrazamos y te mandamos muchísimo cariño en este momento.")
+                        .font(AppFont.body)
+                        .fixedSize(horizontal: false, vertical: true)
+
                     Text("Su historia se guarda entera. Vas a poder entrar a su perfil y a todo lo que anotaste, cuando quieras.")
                         .font(AppFont.body)
                         .fixedSize(horizontal: false, vertical: true)
@@ -110,9 +119,6 @@ struct FarewellSheet: View {
                         .font(AppFont.body)
                         .foregroundStyle(Palette.inkMuted)
                         .fixedSize(horizontal: false, vertical: true)
-                } header: {
-                    Text("Qué pasa")
-                        .foregroundStyle(Palette.inkMuted)
                 }
 
                 Section {

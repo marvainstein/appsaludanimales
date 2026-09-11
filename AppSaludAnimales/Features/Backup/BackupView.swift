@@ -20,16 +20,18 @@ struct BackupView: View {
 
     var body: some View {
         List {
+            // Sin encabezado: la frase misma presenta lo que viene abajo, y un
+            // título arriba de ella la anunciaba dos veces.
             Section {
                 Text("Hay dos maneras de que la historia de salud de tus perros y gatos no se pierda si el teléfono se rompe o se pierde. Una la hacés vos cuando querés; la otra se hace sola.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
-            } header: {
-                Text("Que no se pierda")
-                    .foregroundStyle(Palette.inkMuted)
-            }
 
-            automaticCopySection
+                Text("Las dos guardan a **todos** tus animales con su historia completa, no solo al que estás mirando.")
+                    .font(AppFont.body)
+                    .foregroundStyle(Palette.inkMuted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             Section {
                 if let backupURL {
@@ -56,12 +58,14 @@ struct BackupView: View {
                     action: createBackup
                 )
             } header: {
-                Text("Un archivo que guardás vos")
+                Text("En el teléfono")
                     .foregroundStyle(Palette.inkMuted)
             } footer: {
                 Text("\(lastBackupFooter) El archivo tiene toda la información, los documentos y las fotos. Guardalo en un lugar en el que confíes, igual que harías con los estudios en papel.")
                     .foregroundStyle(Palette.inkMuted)
             }
+
+            automaticCopySection
 
             Section {
                 Button {
@@ -182,7 +186,7 @@ struct BackupView: View {
                 )
             }
         } header: {
-            Text("Que se guarde solo")
+            Text("En iCloud")
                 .foregroundStyle(Palette.inkMuted)
         } footer: {
             Text(syncIsOn
@@ -246,20 +250,10 @@ struct BackupView: View {
     // MARK: - Restaurar
 
     private func restore(_ result: Result<[URL], Error>) {
-        guard case let .success(urls) = result, let url = urls.first else { return }
-
-        let needsAccess = url.startAccessingSecurityScopedResource()
-        defer { if needsAccess { url.stopAccessingSecurityScopedResource() } }
-
-        do {
-            let data = try Data(contentsOf: url)
-            let archive = try BackupService.decode(data)
-            restoreSummary = try BackupService.restore(archive, into: modelContext)
-            ReminderSync.refresh(using: modelContext)
-        } catch let error as BackupError {
-            errorMessage = error.errorDescription
-        } catch {
-            errorMessage = String(localized: "No pudimos leer ese archivo. Fijate que sea el respaldo que bajaste de esta app.")
+        switch RestoreFromFile.load(result, into: modelContext) {
+        case let .restored(summary): restoreSummary = summary
+        case let .failed(message): errorMessage = message
+        case nil: break
         }
     }
 }

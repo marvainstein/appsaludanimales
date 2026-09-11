@@ -1,4 +1,6 @@
+import SwiftData
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// Bienvenida y primer alta.
 ///
@@ -6,6 +8,11 @@ import SwiftUI
 /// junto al principio es la forma más rápida de que alguien abandone antes de
 /// llegar a usar la app.
 struct OnboardingView: View {
+    @Environment(\.modelContext) private var modelContext
+
+    @State private var isRestoring = false
+    @State private var restoreFailed: String?
+
     var body: some View {
         NavigationStack {
             // El contenido va centrado a lo alto, con márgenes parecidos arriba
@@ -35,6 +42,8 @@ struct OnboardingView: View {
                     .buttonStyle(.borderedProminent)
                     .accessibilityHint(Text("Abre el formulario para agregar a tu perro o tu gato"))
                     .accessibilityIdentifier("onboarding.start")
+
+                    restoreOffer
                 }
                     .padding(Spacing.xl)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -42,6 +51,54 @@ struct OnboardingView: View {
                 }
                 .background(Palette.background)
             }
+            .fileImporter(
+                isPresented: $isRestoring,
+                allowedContentTypes: [.json],
+                allowsMultipleSelection: false
+            ) { result in
+                if case let .failed(message) = RestoreFromFile.load(result, into: modelContext) {
+                    restoreFailed = message
+                }
+            }
+            .alert(
+                Text("No pudimos leerlo"),
+                isPresented: Binding(
+                    get: { restoreFailed != nil },
+                    set: { if !$0 { restoreFailed = nil } }
+                )
+            ) {
+                Button("Entendido", role: .cancel) { restoreFailed = nil }
+            } message: {
+                Text(restoreFailed ?? "")
+            }
+        }
+    }
+
+    /// Para quien ya usaba la app y cambió de teléfono.
+    ///
+    /// Sin esto había que inventar un animal para poder recuperar los propios, y
+    /// esa persona terminaba con un compañero fantasma al lado de los suyos. Va
+    /// abajo y en tono menor porque no es lo que hace la mayoría: quien recién
+    /// empieza no tiene ningún archivo.
+    private var restoreOffer: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            Button {
+                isRestoring = true
+            } label: {
+                Text("¿Ya usabas Estela? Restaurá tu respaldo")
+                    .font(AppFont.secondary)
+                    .foregroundStyle(Palette.accent)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, minHeight: Spacing.minimumTapTarget, alignment: .center)
+            }
+            .accessibilityHint(Text("Abre tus archivos para elegir el respaldo"))
+            .accessibilityIdentifier("onboarding.restore")
+
+            Text("Recuperás todos tus animales con su historia, sin tener que cargar nada de nuevo.")
+                .font(AppFont.caption)
+                .foregroundStyle(Palette.inkMuted)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 

@@ -11,54 +11,6 @@ struct AboutView: View {
     var body: some View {
         List {
             Section {
-                Text("Estela guarda la historia de salud de tu perro o de tu gato: las medicaciones, los síntomas, el peso, las vacunas, los turnos y los estudios del veterinario. Todo en un solo lugar, para poder contarlo cuando hace falta.")
-                    .font(AppFont.body)
-                    .fixedSize(horizontal: false, vertical: true)
-            } header: {
-                Text("Qué es")
-                    .foregroundStyle(Palette.inkMuted)
-            }
-
-            Section {
-                Text("Estela no diagnostica, no interpreta y no aconseja. Anota lo que vos le contás y lo ordena. Si algo te preocupa, quien tiene que decirlo es un veterinario.")
-                    .font(AppFont.body)
-                    .fixedSize(horizontal: false, vertical: true)
-            } header: {
-                Text("Lo que no hace")
-                    .foregroundStyle(Palette.inkMuted)
-            } footer: {
-                Text("Esto no es una advertencia legal: es cómo está construida. La app no tiene forma de saber si un peso está bien o si un síntoma es grave, y fingir que sí sería peligroso.")
-                    .foregroundStyle(Palette.inkMuted)
-            }
-
-            Section {
-                Text("Tu información se guarda en tu teléfono. No hay cuenta, no hay servidores nuestros y no hay nada que vender. Compartir algo (el resumen en PDF, un documento, el respaldo) es siempre una decisión tuya.")
-                    .font(AppFont.body)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Text("En Respaldo podés pedir que se guarde sola una copia en tu iCloud, para no perderla si el teléfono se rompe. Esa copia es tuya y vive en tu cuenta: nosotros no la vemos ni podríamos. Viene apagado, y se activa solo si vos querés.")
-                    .font(AppFont.body)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Text("No hay ninguna otra excepción. La app no le pregunta nada a ningún servicio de afuera, no pide tu ubicación y no tiene manera de saber quién sos.")
-                    .font(AppFont.body)
-                    .foregroundStyle(Palette.inkMuted)
-                    .fixedSize(horizontal: false, vertical: true)
-            } header: {
-                Text("Tus datos")
-                    .foregroundStyle(Palette.inkMuted)
-            }
-
-            Section {
-                Text("Estela es gratis y va a seguir siendo gratis. Sin versión paga, sin prueba por tiempo limitado, sin funciones reservadas y sin publicidad. Llevar la salud de un animal al que se quiere no puede depender de poder pagarla.")
-                    .font(AppFont.body)
-                    .fixedSize(horizontal: false, vertical: true)
-            } header: {
-                Text("Cuánto cuesta")
-                    .foregroundStyle(Palette.inkMuted)
-            }
-
-            Section {
                 Text("Estela nace del seguimiento de la salud de Luli y Pripri, nuestras almas hechas perritas. Llevar su historia en papeles sueltos y en la memoria fue el problema real que esta app resuelve.")
                     .font(AppFont.body)
                     .fixedSize(horizontal: false, vertical: true)
@@ -68,7 +20,51 @@ struct AboutView: View {
                     .foregroundStyle(Palette.inkMuted)
                     .fixedSize(horizontal: false, vertical: true)
             } header: {
-                Text("De dónde viene")
+                Text("Idea inicial")
+                    .foregroundStyle(Palette.inkMuted)
+            }
+
+            Section {
+                Text("Estela guarda la historia de salud de tu perro o de tu gato: las medicaciones, los síntomas, el peso, las vacunas, los turnos y los estudios del veterinario. Todo en un solo lugar, para poder contarlo cuando haga falta.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+            } header: {
+                Text("Qué es")
+                    .foregroundStyle(Palette.inkMuted)
+            }
+
+            Section {
+                Text("Estela no diagnostica, no interpreta y no aconseja. Anota lo que vos le contás y lo ordena. Si algo te preocupa, quien tiene que decidirlo es un veterinario.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+            } header: {
+                Text("Lo que no hace")
+                    .foregroundStyle(Palette.inkMuted)
+            }
+
+            Section {
+                Text("Tu información se guarda en tu teléfono. No hay cuenta, no hay servidores nuestros y no hay nada que vender.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("Si preferís, en Respaldo podés activar que se guarde sola una copia en tu iCloud. Viene apagado y lo elegís vos.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("Compartir algo —el resumen en PDF, un documento, el respaldo— es siempre una decisión tuya.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+            } header: {
+                Text("Tus datos")
+                    .foregroundStyle(Palette.inkMuted)
+            }
+
+            Section {
+                Text("Estela es gratis y va a seguir siendo gratis. Llevar la salud de un animal al que se quiere no puede depender de poder pagarla.")
+                    .font(AppFont.body)
+                    .fixedSize(horizontal: false, vertical: true)
+            } header: {
+                Text("Cuánto cuesta")
                     .foregroundStyle(Palette.inkMuted)
             }
 
