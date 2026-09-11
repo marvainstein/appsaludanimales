@@ -140,6 +140,9 @@ enum HistoryBuilder {
             )
         }
 
+        entries += doseEntries(for: companion)
+        entries += sessionEntries(for: companion)
+
         return entries
             .filter { categories.isEmpty || categories.contains($0.category) }
             .filter { entry in
@@ -152,6 +155,74 @@ enum HistoryBuilder {
                 )
             }
             .sorted { $0.date > $1.date }
+    }
+
+    /// Las tomas de cada medicación, agrupadas por día.
+    ///
+    /// El historial completo es la extensión de la actividad reciente, no una
+    /// lista aparte: si anotás una toma a las 20:57, tiene que aparecer arriba
+    /// de todo. Antes no aparecía en ningún lado y la medicación figuraba en la
+    /// fecha en que empezó, así que un Contal que empezó en 2024 quedaba al
+    /// fondo aunque se hubiera dado hoy.
+    ///
+    /// Agrupadas por día y no una por una porque dos tomas diarias durante un
+    /// año son setecientos treinta renglones repitiendo el mismo nombre. El día
+    /// es además la unidad con la que uno controla: lo que se quiere saber es si
+    /// faltó alguna. Cada toma con su hora está en "Ver todas las tomas".
+    private static func doseEntries(for companion: Companion) -> [HistoryEntry] {
+        let calendar = Calendar.current
+
+        return companion.medications.flatMap { medication in
+            Dictionary(grouping: medication.doses) { calendar.startOfDay(for: $0.administeredAt) }
+                .map { day, doses in
+                    let latest = doses.map(\.administeredAt).max() ?? day
+
+                    return HistoryEntry(
+                        id: doses.map(\.id).min() ?? medication.id,
+                        title: medication.name,
+                        detail: doseDetail(count: doses.count, dose: doses.first?.dose),
+                        date: latest,
+                        category: .medication,
+                        badge: nil,
+                        reference: .medication(medication)
+                    )
+                }
+        }
+    }
+
+    private static func doseDetail(count: Int, dose: String?) -> String {
+        let tomas = count == 1
+            ? String(localized: "1 toma")
+            : String(localized: "\(count) tomas")
+
+        guard let dose, !dose.isEmpty else { return tomas }
+        return "\(tomas) · \(dose)"
+    }
+
+    /// Lo mismo para las sesiones de un tratamiento. Luli empezó yendo a
+    /// fisioterapia dos veces por semana y terminó yendo cada quince días: esa
+    /// historia no está en ningún campo, está en cuándo fue.
+    private static func sessionEntries(for companion: Companion) -> [HistoryEntry] {
+        let calendar = Calendar.current
+
+        return companion.treatments.flatMap { treatment in
+            Dictionary(grouping: treatment.sessions) { calendar.startOfDay(for: $0.attendedAt) }
+                .map { day, sessions in
+                    let latest = sessions.map(\.attendedAt).max() ?? day
+
+                    return HistoryEntry(
+                        id: sessions.map(\.id).min() ?? treatment.id,
+                        title: treatment.name,
+                        detail: sessions.count == 1
+                            ? String(localized: "1 sesión")
+                            : String(localized: "\(sessions.count) sesiones"),
+                        date: latest,
+                        category: treatment.isPreventive ? .preventive : .treatment,
+                        badge: nil,
+                        reference: .treatment(treatment)
+                    )
+                }
+        }
     }
 
     static func sections(

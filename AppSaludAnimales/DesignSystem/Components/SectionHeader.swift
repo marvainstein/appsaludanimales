@@ -32,9 +32,13 @@ struct DashboardItemCard: View {
     let item: DashboardItem
     var referenceDate: Date = .now
 
-    /// Qué hacer cuando alguien toca la casilla de anotar una toma. Sin esto la
-    /// casilla no aparece.
+    /// Qué hacer cuando alguien toca la casilla de anotar. Sin esto la casilla
+    /// no aparece.
     var onRecordDose: (() -> Void)?
+
+    /// Qué dice la casilla: "Anotar toma" para una medicación, "Anotar sesión"
+    /// para un tratamiento.
+    var recordLabel: String = String(localized: "Anotar toma")
 
     /// Qué hacer cuando alguien toca la tarjeta para ver la ficha completa. Sin
     /// esto la tarjeta no es tocable, que es como se comporta en las secciones
@@ -136,7 +140,7 @@ struct DashboardItemCard: View {
                 Image(systemName: "checkmark.circle")
                     .font(.title2)
 
-                Text("Anotar toma")
+                Text(recordLabel)
                     .font(AppFont.caption)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -144,7 +148,7 @@ struct DashboardItemCard: View {
             .frame(minWidth: Spacing.minimumTapTarget, minHeight: Spacing.minimumTapTarget)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(Text("Anotar una toma de \(item.title)"))
+        .accessibilityLabel(Text("\(recordLabel): \(item.title)"))
         .accessibilityHint(Text("Se guarda con la hora de este momento"))
         .accessibilityIdentifier("dashboard.recordDose")
     }

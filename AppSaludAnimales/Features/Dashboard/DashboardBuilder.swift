@@ -22,10 +22,10 @@ struct DashboardItem: Identifiable, Equatable {
     /// sabe que existe; nadie lo descubre solo.
     var record: DashboardRecord?
 
-    /// Solo una medicación se toma. Un tratamiento se abre pero no se "anota".
-    var recordableMedicationID: UUID? {
-        if case let .medication(id) = record { id } else { nil }
-    }
+    /// Lo que se anota de esta fila: una toma si es una medicación, una sesión
+    /// si es un tratamiento. Las dos contestan la misma pregunta —¿ya fue, ya
+    /// tomó?— y las dos se anotan tocando donde la información está.
+    var recordableID: DashboardRecord? { record }
 }
 
 /// Qué registro hay detrás de una fila del tablero.
@@ -261,6 +261,16 @@ enum DashboardBuilder {
     /// Incluye todo lo del día, no solo lo anterior a este instante: algo
     /// registrado hoy más tarde sigue siendo actividad reciente, y así lo recién
     /// anotado nunca queda invisible por unos minutos de diferencia.
+    /// Una toma y una sesión son cosas que pasaron, no categorías: decir
+    /// "Medicación" al lado de una toma no agrega nada que el título no diga.
+    static func activityDetail(for item: any HealthTimelineItem) -> String {
+        switch item {
+        case is MedicationDose: String(localized: "Toma anotada")
+        case is TreatmentSession: String(localized: "Sesión anotada")
+        default: item.timelineCategory.label
+        }
+    }
+
     private static func recentActivityItems(for companion: Companion) -> [DashboardItem] {
         var timeline: [any HealthTimelineItem] = []
         timeline += companion.medications.map { $0 as any HealthTimelineItem }
@@ -272,6 +282,7 @@ enum DashboardBuilder {
         timeline += companion.documents.map { $0 as any HealthTimelineItem }
         timeline += companion.notes.map { $0 as any HealthTimelineItem }
         timeline += companion.medications.flatMap(\.doses).map { $0 as any HealthTimelineItem }
+        timeline += companion.treatments.flatMap(\.sessions).map { $0 as any HealthTimelineItem }
 
         // Por cuándo se anotó y no por cuándo pasó. Un estudio de hace dos años
         // que se carga hoy es actividad de hoy: ordenar por la fecha del estudio
@@ -283,9 +294,7 @@ enum DashboardBuilder {
             .map { item in
                 DashboardItem(
                     title: item.timelineTitle,
-                    detail: item is MedicationDose
-                        ? String(localized: "Toma anotada")
-                        : item.timelineCategory.label,
+                    detail: Self.activityDetail(for: item),
                     symbolName: item.timelineCategory.symbolName,
                     date: item.timelineDate,
                     badge: item.timelineStatus?.badge

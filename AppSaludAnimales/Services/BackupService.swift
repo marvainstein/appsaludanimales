@@ -145,7 +145,16 @@ enum BackupService {
                     isSuspended: $0.isSuspended,
                     isPreventive: $0.isPreventive,
                     reminderEnabled: $0.reminderEnabled,
-                    createdAt: $0.createdAt
+                    createdAt: $0.createdAt,
+                    sessions: $0.sessions.map { session in
+                        SessionBackup(
+                            id: session.id,
+                            attendedAt: session.attendedAt,
+                            notes: session.notes,
+                            recordedByName: session.recordedByName,
+                            createdAt: session.createdAt
+                        )
+                    }
                 )
             },
             vaccinations: companion.vaccinations.map {
@@ -313,6 +322,18 @@ enum BackupService {
             treatment.isPreventive = item.isPreventive
             treatment.reminderEnabled = item.reminderEnabled
             treatment.createdAt = item.createdAt
+
+            for session in item.sessions ?? [] {
+                let recorded = TreatmentSession(
+                    attendedAt: session.attendedAt,
+                    recordedByName: session.recordedByName,
+                    notes: session.notes
+                )
+                recorded.id = session.id
+                recorded.createdAt = session.createdAt
+                treatment.sessions.append(recorded)
+            }
+
             companion.treatments.append(treatment)
         }
 

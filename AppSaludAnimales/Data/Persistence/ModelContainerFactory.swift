@@ -7,6 +7,7 @@ enum AppSchema {
         Medication.self,
         MedicationDose.self,
         Treatment.self,
+        TreatmentSession.self,
         Vaccination.self,
         HealthEpisode.self,
         HealthMeasurement.self,

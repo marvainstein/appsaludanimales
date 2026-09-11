@@ -24,6 +24,9 @@ final class Treatment {
     var companion: Companion?
     var professional: Professional?
 
+    @Relationship(deleteRule: .cascade, inverse: \TreatmentSession.treatment)
+    var sessions: [TreatmentSession] = []
+
     init(
         name: String = "",
         category: String? = nil,
@@ -48,6 +51,44 @@ extension Treatment {
             on: referenceDate
         )
     }
+}
+
+/// Cada vez que el animal fue.
+///
+/// La frecuencia de un tratamiento no es un dato fijo: Luli empezó yendo a
+/// fisioterapia dos veces por semana, después cada quince días, y fue cambiando
+/// toda su vida. El campo `frequency` dice cómo es ahora; estas sesiones dicen
+/// cómo fue.
+@Model
+final class TreatmentSession {
+    var id: UUID = UUID()
+    var attendedAt: Date = Date()
+    var notes: String?
+
+    /// Quién la anotó. Con dos personas cuidando, saber quién anotó qué es más
+    /// útil que impedir un registro doble.
+    var recordedByName: String?
+    var createdAt: Date = Date()
+
+    var treatment: Treatment?
+
+    init(attendedAt: Date = Date(), recordedByName: String? = nil, notes: String? = nil) {
+        self.attendedAt = attendedAt
+        self.recordedByName = recordedByName
+        self.notes = notes
+    }
+}
+
+extension TreatmentSession: HealthTimelineItem {
+    var timelineRecordedAt: Date { createdAt }
+    var timelineDate: Date { attendedAt }
+    var timelineTitle: String { treatment?.name ?? String(localized: "Tratamiento") }
+    var timelineCategory: HealthCategory {
+        treatment?.isPreventive == true ? .preventive : .treatment
+    }
+
+    /// El estado es el del tratamiento, no el de la sesión: una sesión pasó.
+    var timelineStatus: (any StatusPresentable)? { nil }
 }
 
 extension Treatment: HealthTimelineItem {

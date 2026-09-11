@@ -81,6 +81,17 @@ struct DoseBackup: Codable {
     var createdAt: Date
 }
 
+/// Una sesión de tratamiento. Como `DoseBackup`, la lista es opcional para que
+/// un respaldo hecho antes de que existieran se siga leyendo sin subir la
+/// versión del formato.
+struct SessionBackup: Codable {
+    var id: UUID
+    var attendedAt: Date
+    var notes: String?
+    var recordedByName: String?
+    var createdAt: Date
+}
+
 struct TreatmentBackup: Codable {
     var id: UUID
     var name: String
@@ -95,6 +106,7 @@ struct TreatmentBackup: Codable {
     var isPreventive: Bool
     var reminderEnabled: Bool
     var createdAt: Date
+    var sessions: [SessionBackup]?
 }
 
 struct VaccinationBackup: Codable {

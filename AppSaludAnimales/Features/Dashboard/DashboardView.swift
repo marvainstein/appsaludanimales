@@ -43,12 +43,12 @@ struct DashboardView: View {
 
     /// Los dos avisos que puede dar anotar una toma.
     private enum DoseAlert: Identifiable {
-        case duplicate(medicationID: UUID, message: String)
+        case duplicate(record: DashboardRecord, message: String)
         case saveFailed
 
         var id: String {
             switch self {
-            case let .duplicate(id, _): "duplicate-\(id)"
+            case let .duplicate(record, _): "duplicate-\(record.hashValue)"
             case .saveFailed: "saveFailed"
             }
         }
@@ -140,12 +140,12 @@ struct DashboardView: View {
         }
         .alert(item: $doseAlert) { alert in
             switch alert {
-            case let .duplicate(medicationID, message):
+            case let .duplicate(target, message):
                 Alert(
                     title: Text("¿La anotamos igual?"),
                     message: Text(message),
                     primaryButton: .default(Text("Anotarla")) {
-                        recordDose(medicationID: medicationID, force: true)
+                        record(target, force: true)
                     },
                     secondaryButton: .cancel(Text("No"))
                 )
@@ -406,9 +406,10 @@ struct DashboardView: View {
                     DashboardItemCard(
                         item: item,
                         referenceDate: referenceDate,
-                        onRecordDose: item.recordableMedicationID.map { id in
-                            { recordDose(medicationID: id, force: false) }
+                        onRecordDose: item.record.map { record in
+                            { record(record, force: false) }
                         },
+                        recordLabel: item.record.map(Self.recordLabel) ?? "",
                         onOpen: item.record.map { record in
                             { openedRecord = record }
                         }
@@ -458,24 +459,39 @@ struct DashboardView: View {
         }
     }
 
-    private func recordDose(medicationID: UUID, force: Bool) {
-        guard let medication = medication(with: medicationID) else { return }
+    static func recordLabel(for record: DashboardRecord) -> String {
+        switch record {
+        case .medication: String(localized: "Anotar toma")
+        case .treatment: String(localized: "Anotar sesión")
+        }
+    }
 
+    /// Anota una toma o una sesión, según qué sea la fila.
+    private func record(_ record: DashboardRecord, force: Bool) {
         let now = Date()
 
-        if !force, let conflict = medication.conflictingDose(for: now) {
-            doseAlert = .duplicate(
-                medicationID: medicationID,
-                message: DoseDuplicationCheck.warningMessage(for: conflict)
-            )
-            return
-        }
+        switch record {
+        case let .medication(id):
+            guard let medication = medication(with: id) else { return }
 
-        medication.doses.append(MedicationDose(administeredAt: now, dose: medication.dose))
+            if !force, let conflict = medication.conflictingDose(for: now) {
+                doseAlert = .duplicate(
+                    record: record,
+                    message: DoseDuplicationCheck.warningMessage(for: conflict)
+                )
+                return
+            }
+
+            medication.doses.append(MedicationDose(administeredAt: now, dose: medication.dose))
+
+        case let .treatment(id):
+            guard let treatment = companion.treatments.first(where: { $0.id == id }) else { return }
+            treatment.sessions.append(TreatmentSession(attendedAt: now))
+        }
 
         do {
             try modelContext.save()
-            // Sin esto la toma recién anotada queda "en el futuro" respecto del
+            // Sin esto lo recién anotado queda "en el futuro" respecto del
             // momento que el tablero tiene guardado, y no aparece.
             referenceDate = Date()
         } catch {

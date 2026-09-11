@@ -61,6 +61,7 @@ struct HealthRecordDetailView: View {
             }
 
             dosesSection
+            sessionsSection
 
             if !stateActions.isEmpty {
                 Section {
@@ -289,6 +290,58 @@ struct HealthRecordDetailView: View {
                     .foregroundStyle(Palette.inkMuted)
             }
         }
+    }
+
+    /// Las dos últimas sesiones, y el acceso a todas. Mismo criterio que las
+    /// tomas: lo que uno viene a mirar es cuándo fue la última y si el ritmo
+    /// cambió, y para eso hace falta ver la anterior.
+    @ViewBuilder
+    private var sessionsSection: some View {
+        if case let .treatment(treatment) = entry.reference {
+            Section {
+                if treatment.sessions.isEmpty {
+                    Text("Todavía no anotaste ninguna. Se anotan desde «En curso», en la pantalla de hoy.")
+                        .font(AppFont.secondary)
+                        .foregroundStyle(Palette.inkMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    ForEach(latestSessions(of: treatment)) { session in
+                        VStack(alignment: .leading, spacing: Spacing.xs) {
+                            Text(DateDescription.absolute(session.attendedAt))
+                                .font(AppFont.body)
+                                .foregroundStyle(Palette.ink)
+
+                            Text(ReminderPlanBuilder.time(session.attendedAt))
+                                .font(AppFont.secondary)
+                                .foregroundStyle(Palette.inkMuted)
+                        }
+                        .padding(.vertical, Spacing.xs)
+                        .accessibilityElement(children: .combine)
+                    }
+
+                    NavigationLink {
+                        TreatmentSessionsView(treatment: treatment)
+                    } label: {
+                        Label {
+                            Text("Ver todas las sesiones")
+                        } icon: {
+                            Image(systemName: "list.bullet")
+                        }
+                        .frame(minHeight: Spacing.minimumTapTarget)
+                    }
+                    .accessibilityIdentifier("record.allSessions")
+                }
+            } header: {
+                Text(treatment.sessions.isEmpty
+                    ? String(localized: "Sesiones")
+                    : String(localized: "Sesiones · \(treatment.sessions.count)"))
+                    .foregroundStyle(Palette.inkMuted)
+            }
+        }
+    }
+
+    private func latestSessions(of treatment: Treatment) -> [TreatmentSession] {
+        Array(treatment.sessions.sorted { $0.attendedAt > $1.attendedAt }.prefix(2))
     }
 
     private func latestDoses(of medication: Medication) -> [MedicationDose] {
