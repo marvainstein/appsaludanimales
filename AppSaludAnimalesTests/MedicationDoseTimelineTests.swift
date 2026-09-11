@@ -211,6 +211,82 @@ struct MedicationDoseTimelineTests {
         #expect(tomas.first?.detail == "2 tomas · Media pastilla")
     }
 
+    // MARK: - Un resumen puede resumir, no puede afirmar algo que no pasó
+
+    /// Si en el día hubo dosis distintas, el renglón agrupado las dice todas.
+    /// Antes mostraba una cualquiera del montón: alguien que dio cinco
+    /// pastillas, después dos y después una, leía que había dado tres veces una.
+    @Test
+    func elRenglonAgrupadoDiceTodasLasDosisDelDia() throws {
+        let companion = try makeCompanion()
+        let medication = Medication(name: "Contal 150", startDate: .test(2024, 10, 9))
+        companion.medications.append(medication)
+
+        for (hour, dose) in [(9, "5 pastillas"), (14, "2 pastillas"), (21, "1 pastilla")] {
+            medication.doses.append(
+                MedicationDose(administeredAt: .test(2026, 9, 11, hour: hour), dose: dose)
+            )
+        }
+
+        let entrada = try #require(
+            HistoryBuilder.entries(for: companion).first { $0.detail?.contains("tomas") == true }
+        )
+
+        #expect(entrada.detail == "3 tomas · 5 pastillas, 2 pastillas, 1 pastilla")
+    }
+
+    /// El resumen que se exporta no agrupa: ese papel termina en la mano de un
+    /// veterinario y ahí el desglose es el dato.
+    @Test
+    func elResumenExportadoTraeCadaTomaPorSeparado() throws {
+        let companion = try makeCompanion()
+        let medication = Medication(name: "Contal 150", startDate: .test(2024, 10, 9))
+        companion.medications.append(medication)
+
+        for (hour, dose) in [(9, "5 pastillas"), (14, "2 pastillas"), (21, "1 pastilla")] {
+            medication.doses.append(
+                MedicationDose(administeredAt: .test(2026, 9, 11, hour: hour), dose: dose)
+            )
+        }
+
+        let sueltas = HistoryBuilder.entries(for: companion, groupingDoses: false)
+            .filter { $0.detail?.contains("1 toma") == true }
+
+        #expect(sueltas.count == 3)
+        #expect(sueltas.contains { $0.detail?.contains("5 pastillas") == true })
+        #expect(sueltas.contains { $0.detail?.contains("2 pastillas") == true })
+        #expect(sueltas.contains { $0.detail?.contains("1 pastilla") == true })
+    }
+
+    /// La dosis actual pegada a la fecha de inicio se leía como que venía
+    /// tomando eso desde entonces. Una dosis cambia.
+    @Test
+    func elResumenNoDiceQueLaDosisDeAhoraVieneDesdeElComienzo() throws {
+        let companion = try makeCompanion()
+        let medication = Medication(
+            name: "Contal 150",
+            dose: "1 pastilla",
+            startDate: .test(2024, 10, 9)
+        )
+        companion.medications.append(medication)
+
+        let report = HealthReportBuilder.report(
+            for: companion,
+            period: .all,
+            sections: [.currentCare],
+            on: .test(2026, 9, 11)
+        )
+
+        let linea = try #require(
+            report.sections.first?.lines.first { $0.text == "Contal 150" }
+        )
+        let detalle = try #require(linea.detail)
+
+        #expect(detalle.contains("ahora 1 pastilla"))
+        #expect(detalle.contains("empezó el"))
+        #expect(!detalle.contains("1 pastilla · desde"))
+    }
+
     private func makeCompanion() throws -> Companion {
         let companion = Companion(name: "Lu", species: .dog)
         context.insert(companion)

@@ -265,12 +265,20 @@ enum HealthReportBuilder {
 
         for medication in companion.activeMedications(on: referenceDate).sorted(by: { $0.name < $1.name }) {
             var parts: [String] = []
-            if let dose = medication.dose, !dose.isEmpty { parts.append(dose) }
+
+            // "Ahora" y no la dosis a secas: pegada a la fecha de inicio se leía
+            // como que venía tomando eso desde entonces, y una dosis cambia. Lo
+            // que pasó de verdad está en el historial, toma por toma.
+            if let dose = medication.dose, !dose.isEmpty {
+                parts.append(String(localized: "ahora \(dose)"))
+            }
+
             if !medication.timesOfDay.isEmpty {
                 parts.append(medication.timesOfDay.map(\.label).joined(separator: ", "))
             }
+
             parts.append(
-                String(localized: "desde \(DateDescription.absolute(medication.startDate))")
+                String(localized: "empezó el \(DateDescription.absolute(medication.startDate))")
             )
 
             lines.append(
@@ -285,7 +293,7 @@ enum HealthReportBuilder {
             lines.append(
                 HealthReport.Line(
                     text: treatment.name,
-                    detail: String(localized: "desde \(DateDescription.absolute(treatment.startDate))")
+                    detail: String(localized: "empezó el \(DateDescription.absolute(treatment.startDate))")
                 )
             )
         }
@@ -381,7 +389,11 @@ enum HealthReportBuilder {
         from start: Date?,
         to end: Date
     ) -> [HealthReport.Line] {
-        HistoryBuilder.entries(for: companion)
+        // Sin agrupar: en pantalla conviene juntar las tomas del día, pero este
+        // papel termina en la mano de un veterinario y ahí el desglose es el
+        // dato. Un renglón que diga "7 tomas · media pastilla" cuando fueron
+        // cinco, dos y una es peor que no decir nada.
+        HistoryBuilder.entries(for: companion, groupingDoses: false)
             .filter { isInPeriod($0.date, from: start, to: end) }
             .map { entry in
                 HealthReport.Line(

@@ -37,10 +37,16 @@ enum HistoryBuilder {
     /// Un conjunto de categorías vacío significa "todo": es más simple que
     /// mantener seleccionadas todas las categorías por defecto y sincronizarlas
     /// cada vez que aparece una nueva.
+    /// - Parameter groupingDoses: junta en un renglón las tomas y las sesiones
+    ///   del mismo día. Va en verdadero para mirar en pantalla, donde dos tomas
+    ///   diarias durante un año serían setecientos treinta renglones repitiendo
+    ///   el mismo nombre. Va en falso para el resumen que se exporta: ese papel
+    ///   termina en la mano de un veterinario y ahí el desglose es el dato.
     static func entries(
         for companion: Companion,
         categories: Set<HealthCategory> = [],
-        search: String = ""
+        search: String = "",
+        groupingDoses: Bool = true
     ) -> [HistoryEntry] {
         var entries: [HistoryEntry] = []
 
@@ -140,8 +146,8 @@ enum HistoryBuilder {
             )
         }
 
-        entries += doseEntries(for: companion)
-        entries += sessionEntries(for: companion)
+        entries += groupingDoses ? doseEntries(for: companion) : everyDoseEntry(for: companion)
+        entries += groupingDoses ? sessionEntries(for: companion) : everySessionEntry(for: companion)
 
         return entries
             .filter { categories.isEmpty || categories.contains($0.category) }
@@ -180,7 +186,7 @@ enum HistoryBuilder {
                     return HistoryEntry(
                         id: doses.map(\.id).min() ?? medication.id,
                         title: medication.name,
-                        detail: doseDetail(count: doses.count, dose: doses.first?.dose),
+                        detail: doseDetail(for: doses),
                         date: latest,
                         category: .medication,
                         badge: nil,
@@ -190,13 +196,67 @@ enum HistoryBuilder {
         }
     }
 
-    private static func doseDetail(count: Int, dose: String?) -> String {
-        let tomas = count == 1
+    /// Cuántas tomas, y con qué dosis.
+    ///
+    /// Si en el día hubo dosis distintas las dice todas. Antes mostraba una
+    /// cualquiera del montón y la presentaba como si fuera la de las tres:
+    /// alguien que dio cinco pastillas, después dos y después una, leía que
+    /// había dado tres veces una. Un resumen puede resumir; no puede afirmar
+    /// algo que no pasó.
+    private static func doseDetail(for doses: [MedicationDose]) -> String {
+        let tomas = doses.count == 1
             ? String(localized: "1 toma")
-            : String(localized: "\(count) tomas")
+            : String(localized: "\(doses.count) tomas")
 
-        guard let dose, !dose.isEmpty else { return tomas }
-        return "\(tomas) · \(dose)"
+        var vistas: [String] = []
+        for dose in doses.sorted(by: { $0.administeredAt < $1.administeredAt }) {
+            guard let value = dose.dose, !value.isEmpty, !vistas.contains(value) else { continue }
+            vistas.append(value)
+        }
+
+        guard !vistas.isEmpty else { return tomas }
+        return "\(tomas) · \(vistas.joined(separator: ", "))"
+    }
+
+    /// Cada toma por separado, con su hora y su dosis. Es lo que va al resumen
+    /// que se exporta.
+    private static func everyDoseEntry(for companion: Companion) -> [HistoryEntry] {
+        companion.medications.flatMap { medication in
+            medication.doses.map { dose in
+                HistoryEntry(
+                    id: dose.id,
+                    title: medication.name,
+                    detail: [
+                        ReminderPlanBuilder.time(dose.administeredAt),
+                        dose.dose,
+                        String(localized: "1 toma")
+                    ].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: " · "),
+                    date: dose.administeredAt,
+                    category: .medication,
+                    badge: nil,
+                    reference: .medication(medication)
+                )
+            }
+        }
+    }
+
+    private static func everySessionEntry(for companion: Companion) -> [HistoryEntry] {
+        companion.treatments.flatMap { treatment in
+            treatment.sessions.map { session in
+                HistoryEntry(
+                    id: session.id,
+                    title: treatment.name,
+                    detail: [
+                        ReminderPlanBuilder.time(session.attendedAt),
+                        String(localized: "1 sesión")
+                    ].joined(separator: " · "),
+                    date: session.attendedAt,
+                    category: treatment.isPreventive ? .preventive : .treatment,
+                    badge: nil,
+                    reference: .treatment(treatment)
+                )
+            }
+        }
     }
 
     /// Lo mismo para las sesiones de un tratamiento. Luli empezó yendo a
