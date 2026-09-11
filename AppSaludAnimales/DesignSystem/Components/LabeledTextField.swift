@@ -51,13 +51,19 @@ struct LabeledTextField: View {
                     .accessibilityHidden(true)
             }
         }
-        // Más aire arriba que abajo, a propósito. Con el mismo espacio en los
-        // dos lados el texto quedaba flotando a media altura entre su etiqueta y
-        // el renglón de abajo, y ese renglón se lee como la línea sobre la que
-        // uno escribe. Ahora el texto se apoya en ella y el aire separa este
-        // campo del anterior, que es donde hace falta.
-        .padding(.top, Spacing.sm)
-        .padding(.bottom, 2)
+        // Los márgenes de la fila, tomados a mano.
+        //
+        // El renglón de abajo de un campo se lee como la línea sobre la que uno
+        // escribe, y el texto quedaba flotando a media altura entre su etiqueta
+        // y esa línea. Dos intentos de arreglarlo con `padding` no sirvieron, y
+        // el motivo es que ese espacio no lo ponía el padding: cada fila de un
+        // formulario trae unos once puntos de relleno propio abajo, y el padding
+        // se le sumaba en vez de reemplazarlo.
+        //
+        // Los márgenes laterales quedan en veinte, que es el valor del sistema:
+        // si se cambiaran, este campo se desalinearía de los interruptores y los
+        // selectores de fecha, que siguen usando el suyo.
+        .listRowInsets(EdgeInsets(top: 12, leading: 20, bottom: 4, trailing: 20))
         // Una salida del teclado que no dependa de tocar en el lugar correcto de
         // la pantalla.
         //
