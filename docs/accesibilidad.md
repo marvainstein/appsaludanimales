@@ -268,10 +268,11 @@ el color de los encabezados y pies, se probó devolvérsela a las cuatro:
 | Pantalla | Resultado |
 |---|---|
 | El respaldo | **Pasó.** Se queda con la verificación puesta |
+| La despedida | **Pasó**, después de sacarle el encabezado "Qué pasa" |
 | El perfil | El botón "Editar" de la barra de navegación, que dibuja el sistema |
 | Acerca de | Un hallazgo sin elemento asociado |
-| La despedida | El encabezado "Qué pasa" — sin explicación, ver arriba |
 
-Se ganó una pantalla y, más importante, las tres exclusiones que quedan dicen
-ahora qué las causa, medido en esta corrida, en lugar de repetir un motivo que
-ya no era cierto.
+De cuatro pantallas sin verificar el contraste quedaron dos, y las dos dicen qué
+las causa —medido, no supuesto—. Las dos que quedan tienen en común que lo que
+reportan no es nuestro: una lo dibuja el sistema y la otra ni siquiera puede
+decir sobre qué elemento cayó.
