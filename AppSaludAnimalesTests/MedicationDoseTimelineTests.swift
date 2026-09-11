@@ -235,27 +235,77 @@ struct MedicationDoseTimelineTests {
         #expect(entrada.detail == "3 tomas · 5 pastillas, 2 pastillas, 1 pastilla")
     }
 
-    /// El resumen que se exporta no agrupa: ese papel termina en la mano de un
-    /// veterinario y ahí el desglose es el dato.
+    /// El resumen que se exporta marca los cambios, no cada toma. Exportar toda
+    /// la historia pastilla por pastilla son miles de renglones que repiten lo
+    /// mismo; si entre dos renglones no hay nada, siguió igual.
     @Test
-    func elResumenExportadoTraeCadaTomaPorSeparado() throws {
+    func elResumenExportadoMarcaLosCambiosDeDosis() throws {
         let companion = try makeCompanion()
         let medication = Medication(name: "Contal 150", startDate: .test(2024, 10, 9))
         companion.medications.append(medication)
 
-        for (hour, dose) in [(9, "5 pastillas"), (14, "2 pastillas"), (21, "1 pastilla")] {
+        // Cuatro meses de una pastilla, y después media.
+        for day in 1...4 {
             medication.doses.append(
-                MedicationDose(administeredAt: .test(2026, 9, 11, hour: hour), dose: dose)
+                MedicationDose(administeredAt: .test(2026, 5, day), dose: "1 pastilla")
+            )
+        }
+        for day in 5...6 {
+            medication.doses.append(
+                MedicationDose(administeredAt: .test(2026, 5, day), dose: "Media pastilla")
             )
         }
 
-        let sueltas = HistoryBuilder.entries(for: companion, groupingDoses: false)
-            .filter { $0.detail?.contains("1 toma") == true }
+        let cambios = HistoryBuilder.entries(for: companion, rhythm: .byChange)
+            .filter { $0.title == "Contal 150" }
+            .sorted { $0.date < $1.date }
 
-        #expect(sueltas.count == 3)
-        #expect(sueltas.contains { $0.detail?.contains("5 pastillas") == true })
-        #expect(sueltas.contains { $0.detail?.contains("2 pastillas") == true })
-        #expect(sueltas.contains { $0.detail?.contains("1 pastilla") == true })
+        #expect(cambios.count == 2)
+        #expect(cambios.first?.detail == "1 pastilla · 4 tomas anotadas")
+        #expect(cambios.last?.detail == "Media pastilla · 2 tomas anotadas")
+    }
+
+    /// El renglón del cambio cae el día en que la dosis empezó a usarse, no el
+    /// día en que se exportó: así queda en el lugar correcto de la historia.
+    @Test
+    func elCambioSeFechaCuandoEmpezoAUsarse() throws {
+        let companion = try makeCompanion()
+        let medication = Medication(name: "Contal 150", startDate: .test(2024, 10, 9))
+        companion.medications.append(medication)
+
+        medication.doses.append(MedicationDose(administeredAt: .test(2025, 3, 1), dose: "1 pastilla"))
+        medication.doses.append(MedicationDose(administeredAt: .test(2026, 7, 14), dose: "5 pastillas"))
+
+        let cambios = HistoryBuilder.entries(for: companion, rhythm: .byChange)
+            .filter { $0.title == "Contal 150" }
+            .sorted { $0.date < $1.date }
+
+        #expect(cambios.first?.date == .test(2025, 3, 1))
+        #expect(cambios.last?.date == .test(2026, 7, 14))
+    }
+
+    /// Las sesiones se cuentan por mes. Es contar, no interpretar: la app no
+    /// dice "pasó de dos veces por semana a cada quince días".
+    @Test
+    func lasSesionesSeCuentanPorMesEnElResumen() throws {
+        let companion = try makeCompanion()
+        let treatment = Treatment(name: "Fisioterapia", startDate: .test(2026, 1, 1))
+        companion.treatments.append(treatment)
+
+        for day in [3, 10, 17, 24] {
+            treatment.sessions.append(TreatmentSession(attendedAt: .test(2026, 3, day)))
+        }
+        for day in [5, 20] {
+            treatment.sessions.append(TreatmentSession(attendedAt: .test(2026, 4, day)))
+        }
+
+        let meses = HistoryBuilder.entries(for: companion, rhythm: .byChange)
+            .filter { $0.title == "Fisioterapia" }
+            .sorted { $0.date < $1.date }
+
+        #expect(meses.count == 2)
+        #expect(meses.first?.detail == "4 sesiones en el mes")
+        #expect(meses.last?.detail == "2 sesiones en el mes")
     }
 
     /// La dosis actual pegada a la fecha de inicio se leía como que venía

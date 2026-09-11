@@ -389,11 +389,12 @@ enum HealthReportBuilder {
         from start: Date?,
         to end: Date
     ) -> [HealthReport.Line] {
-        // Sin agrupar: en pantalla conviene juntar las tomas del día, pero este
-        // papel termina en la mano de un veterinario y ahí el desglose es el
-        // dato. Un renglón que diga "7 tomas · media pastilla" cuando fueron
-        // cinco, dos y una es peor que no decir nada.
-        HistoryBuilder.entries(for: companion, groupingDoses: false)
+        // Por cambios y no toma por toma. Exportar toda la historia de un animal
+        // con una línea por cada pastilla son miles de renglones que repiten lo
+        // mismo; lo que importa es cuándo cambió algo. Si entre dos renglones no
+        // hay nada, es porque siguió igual, y esa ausencia dice tanto como el
+        // dato.
+        HistoryBuilder.entries(for: companion, rhythm: .byChange)
             .filter { isInPeriod($0.date, from: start, to: end) }
             .map { entry in
                 HealthReport.Line(

@@ -31,22 +31,31 @@ struct HistorySection: Identifiable {
     let entries: [HistoryEntry]
 }
 
+/// Cómo se cuentan las tomas y las sesiones en una lista.
+enum RhythmDetail {
+    /// Juntas por día. Es lo que se mira en pantalla: dos tomas diarias durante
+    /// un año serían setecientos treinta renglones repitiendo el mismo nombre.
+    case byDay
+
+    /// Un renglón por cada cambio de dosis, y uno por mes para las sesiones. Es
+    /// lo que va al papel que se exporta: ahí lo que importa no es cada toma
+    /// sino cuándo cambió algo. Si entre dos renglones no hay nada, siguió
+    /// igual.
+    case byChange
+}
+
 enum HistoryBuilder {
     /// Todo lo registrado, de lo más nuevo a lo más viejo.
     ///
     /// Un conjunto de categorías vacío significa "todo": es más simple que
     /// mantener seleccionadas todas las categorías por defecto y sincronizarlas
     /// cada vez que aparece una nueva.
-    /// - Parameter groupingDoses: junta en un renglón las tomas y las sesiones
-    ///   del mismo día. Va en verdadero para mirar en pantalla, donde dos tomas
-    ///   diarias durante un año serían setecientos treinta renglones repitiendo
-    ///   el mismo nombre. Va en falso para el resumen que se exporta: ese papel
-    ///   termina en la mano de un veterinario y ahí el desglose es el dato.
+    /// - Parameter rhythm: cómo se cuentan las tomas y las sesiones.
     static func entries(
         for companion: Companion,
         categories: Set<HealthCategory> = [],
         search: String = "",
-        groupingDoses: Bool = true
+        rhythm: RhythmDetail = .byDay
     ) -> [HistoryEntry] {
         var entries: [HistoryEntry] = []
 
@@ -146,8 +155,14 @@ enum HistoryBuilder {
             )
         }
 
-        entries += groupingDoses ? doseEntries(for: companion) : everyDoseEntry(for: companion)
-        entries += groupingDoses ? sessionEntries(for: companion) : everySessionEntry(for: companion)
+        switch rhythm {
+        case .byDay:
+            entries += doseEntries(for: companion)
+            entries += sessionEntries(for: companion)
+        case .byChange:
+            entries += doseChangeEntries(for: companion)
+            entries += monthlySessionEntries(for: companion)
+        }
 
         return entries
             .filter { categories.isEmpty || categories.contains($0.category) }
@@ -218,20 +233,40 @@ enum HistoryBuilder {
         return "\(tomas) · \(vistas.joined(separator: ", "))"
     }
 
-    /// Cada toma por separado, con su hora y su dosis. Es lo que va al resumen
-    /// que se exporta.
-    private static func everyDoseEntry(for companion: Companion) -> [HistoryEntry] {
-        companion.medications.flatMap { medication in
-            medication.doses.map { dose in
+    /// Cuándo cambió la dosis, y cuántas tomas hubo con cada una.
+    ///
+    /// Exportar toda la historia toma por toma es un delirio: son miles de
+    /// renglones que repiten lo mismo. Lo que importa es el cambio. Si entre
+    /// dos renglones no hay nada, es porque siguió tomando igual, y esa
+    /// ausencia dice tanto como el dato.
+    ///
+    /// El renglón lleva la fecha en que la dosis empezó a usarse, así que cae
+    /// en la línea de tiempo el día que cambió y no el día que se exportó.
+    ///
+    /// Esto cuenta lo anotado, sin interpretarlo. No dice si la dosis estuvo
+    /// bien ni por qué cambió: dice qué se registró y cuándo.
+    private static func doseChangeEntries(for companion: Companion) -> [HistoryEntry] {
+        companion.medications.flatMap { medication -> [HistoryEntry] in
+            let ordenadas = medication.doses.sorted { $0.administeredAt < $1.administeredAt }
+            guard !ordenadas.isEmpty else { return [] }
+
+            var tramos: [(dose: String?, desde: Date, cuantas: Int)] = []
+
+            for toma in ordenadas {
+                if var ultimo = tramos.last, ultimo.dose == toma.dose {
+                    ultimo.cuantas += 1
+                    tramos[tramos.count - 1] = ultimo
+                } else {
+                    tramos.append((dose: toma.dose, desde: toma.administeredAt, cuantas: 1))
+                }
+            }
+
+            return tramos.map { tramo in
                 HistoryEntry(
-                    id: dose.id,
+                    id: UUID(),
                     title: medication.name,
-                    detail: [
-                        ReminderPlanBuilder.time(dose.administeredAt),
-                        dose.dose,
-                        String(localized: "1 toma")
-                    ].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: " · "),
-                    date: dose.administeredAt,
+                    detail: changeDetail(dose: tramo.dose, count: tramo.cuantas),
+                    date: tramo.desde,
                     category: .medication,
                     badge: nil,
                     reference: .medication(medication)
@@ -240,48 +275,41 @@ enum HistoryBuilder {
         }
     }
 
-    private static func everySessionEntry(for companion: Companion) -> [HistoryEntry] {
-        companion.treatments.flatMap { treatment in
-            treatment.sessions.map { session in
+    private static func changeDetail(dose: String?, count: Int) -> String {
+        let tomas = count == 1
+            ? String(localized: "1 toma anotada")
+            : String(localized: "\(count) tomas anotadas")
+
+        guard let dose, !dose.isEmpty else { return tomas }
+        return "\(dose) · \(tomas)"
+    }
+
+    /// Cuántas sesiones hubo cada mes.
+    ///
+    /// Es contar, no interpretar: la app no dice "pasó de dos veces por semana a
+    /// cada quince días", dice cuántas veces fue cada mes y deja que eso se lea
+    /// solo. Quien mira el papel sabe leer un ritmo mejor que nosotros.
+    private static func monthlySessionEntries(for companion: Companion) -> [HistoryEntry] {
+        let calendar = Calendar.current
+
+        return companion.treatments.flatMap { treatment in
+            Dictionary(grouping: treatment.sessions) { session in
+                calendar.dateInterval(of: .month, for: session.attendedAt)?.start
+                    ?? calendar.startOfDay(for: session.attendedAt)
+            }
+            .map { month, sessions in
                 HistoryEntry(
-                    id: session.id,
+                    id: UUID(),
                     title: treatment.name,
-                    detail: [
-                        ReminderPlanBuilder.time(session.attendedAt),
-                        String(localized: "1 sesión")
-                    ].joined(separator: " · "),
-                    date: session.attendedAt,
+                    detail: sessions.count == 1
+                        ? String(localized: "1 sesión en el mes")
+                        : String(localized: "\(sessions.count) sesiones en el mes"),
+                    date: sessions.map(\.attendedAt).max() ?? month,
                     category: treatment.isPreventive ? .preventive : .treatment,
                     badge: nil,
                     reference: .treatment(treatment)
                 )
             }
-        }
-    }
-
-    /// Lo mismo para las sesiones de un tratamiento. Luli empezó yendo a
-    /// fisioterapia dos veces por semana y terminó yendo cada quince días: esa
-    /// historia no está en ningún campo, está en cuándo fue.
-    private static func sessionEntries(for companion: Companion) -> [HistoryEntry] {
-        let calendar = Calendar.current
-
-        return companion.treatments.flatMap { treatment in
-            Dictionary(grouping: treatment.sessions) { calendar.startOfDay(for: $0.attendedAt) }
-                .map { day, sessions in
-                    let latest = sessions.map(\.attendedAt).max() ?? day
-
-                    return HistoryEntry(
-                        id: sessions.map(\.id).min() ?? treatment.id,
-                        title: treatment.name,
-                        detail: sessions.count == 1
-                            ? String(localized: "1 sesión")
-                            : String(localized: "\(sessions.count) sesiones"),
-                        date: latest,
-                        category: treatment.isPreventive ? .preventive : .treatment,
-                        badge: nil,
-                        reference: .treatment(treatment)
-                    )
-                }
         }
     }
 
