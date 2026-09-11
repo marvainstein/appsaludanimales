@@ -135,3 +135,42 @@ Solo si ya sacaste el respaldo del paso de arriba.
 - [ ] **¿Pide algún permiso antes de dejarte usar la app?** No tiene que pedir
       ninguno.
 - [ ] Restaurar el respaldo. ¿Vuelve todo?
+
+
+---
+
+# Resultado de la primera corrida — 12 de septiembre de 2026
+
+Todo pasó, después de arreglar lo que la prueba encontró. Lo que salió:
+
+**Errores de verdad**
+
+- La fila de una medicación en el historial mostraba la dosis de ahora, así que
+  al cambiarla parecía que siempre había sido esa. Ahora dice "empezó".
+- Esa misma fila se veía igual que las de tomas, y parecía que se duplicaban.
+  Pasaba también con los tratamientos.
+- Los tratamientos no avisaban de una sesión repetida: tocando seis veces se
+  anotaban seis.
+- "Lo que está programado" listaba los avisos de todos los animales.
+- El texto de los campos flotaba a media altura en vez de apoyarse en su
+  renglón. Dos intentos de arreglarlo fallaron porque el espacio lo pone iOS en
+  cada fila, no el padding.
+- **No se podía restaurar sin crear antes un animal.** Quien cambiaba de
+  teléfono terminaba con un compañero fantasma al lado de los suyos.
+
+**Lo que parecía error y no lo era**
+
+- El permiso de notificaciones no vuelve a pedirse: iOS lo pide una sola vez en
+  la vida de la app.
+- El ícono viejo en los avisos es caché del sistema, no código.
+
+**Textos**
+
+"Acerca de" reordenado y acortado, la despedida arranca con un mensaje en vez de
+una explicación, y Respaldo quedó en el orden en que se decide.
+
+**Lo que la prueba dejó dicho de fondo**
+
+Que alguien mire la app con atención encuentra cosas que ningún test automático
+ve: casi todo lo de arriba está en código que compilaba, pasaba las
+verificaciones y hacía exactamente lo que decía hacer.

@@ -102,7 +102,7 @@ final class AccessibilityAuditTests: XCTestCase {
             // arreglar lo que no se puede ubicar. Queda anotado como deuda en
             // docs/accesibilidad.md: se comprueba con VoiceOver en el teléfono,
             // que es donde se escucharía si de verdad hubiera un pedazo mudo.
-            tipos: Self.sinTamanoNiContraste.subtracting(.elementDetection)
+            tipos: Self.sinTamanoDeTexto.subtracting(.elementDetection)
         )
     }
 
@@ -194,10 +194,10 @@ final class AccessibilityAuditTests: XCTestCase {
     ///   contra lo que se ve por detrás del vidrio, que no controlamos.
     /// - **Acerca de:** un hallazgo sin elemento asociado. No se puede arreglar
     ///   lo que no se puede ubicar.
-    /// - **La despedida:** el encabezado "Qué pasa". **Este no lo pudimos
-    ///   explicar**, y queda anotado como deuda en docs/accesibilidad.md: usa
-    ///   `Palette.inkMuted`, que da entre 5,5:1 y 9:1 contra todos los fondos
-    ///   que esa pantalla puede tener. Se mira con el ojo en la pasada manual.
+    ///
+    /// La despedida ya no está acá: lo único que reportaba era el encabezado
+    /// "Qué pasa", que se sacó porque sobraba, y el hallazgo se fue con él.
+    /// Conserva su exclusión de detección de elementos, que es otra cosa.
     ///
     /// Se usa solo en las pantallas armadas con formularios del sistema. Ahí la
     /// verificación de contraste señala cosas que no son nuestras y que no

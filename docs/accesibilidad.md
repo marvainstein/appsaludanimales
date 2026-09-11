@@ -224,7 +224,21 @@ sin poder arreglarse son los botones de la barra de navegación, que dibuja el
 sistema, y los hallazgos que no dicen sobre qué elemento cayeron.
 
 
-## Deuda: el encabezado "Qué pasa" de la despedida
+## Cerrada: el encabezado "Qué pasa" de la despedida
+
+**Se saldó sin arreglarla, y vale anotar cómo.** Mirando la pantalla en el
+teléfono, quien la usa dijo dos cosas: que no veía ningún problema de contraste,
+y que ese encabezado sobraba —convertía en apartado técnico una pantalla donde
+alguien está marcando que su animal se murió—. Se lo sacó por esa razón, y el
+hallazgo desapareció con él.
+
+Queda como recordatorio de algo: un hallazgo que no se puede explicar puede ser
+la auditoría señalando, con el único vocabulario que tiene, que ahí hay algo que
+no corresponde. No era un problema de color. Era un título de más.
+
+Lo que sigue abajo es el registro de cómo estaba antes.
+
+### Cómo era
 
 Septiembre de 2026. Al devolverle el contraste a las pantallas que lo tenían
 apagado, la despedida reportó **"Contrast failed"** sobre el encabezado de
