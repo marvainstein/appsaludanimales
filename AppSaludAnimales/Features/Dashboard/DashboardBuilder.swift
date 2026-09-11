@@ -21,11 +21,6 @@ struct DashboardItem: Identifiable, Equatable {
     /// estaba activa. El camino de "Registrar > Medicación" es el de quien ya
     /// sabe que existe; nadie lo descubre solo.
     var record: DashboardRecord?
-
-    /// Lo que se anota de esta fila: una toma si es una medicación, una sesión
-    /// si es un tratamiento. Las dos contestan la misma pregunta —¿ya fue, ya
-    /// tomó?— y las dos se anotan tocando donde la información está.
-    var recordableID: DashboardRecord? { record }
 }
 
 /// Qué registro hay detrás de una fila del tablero.

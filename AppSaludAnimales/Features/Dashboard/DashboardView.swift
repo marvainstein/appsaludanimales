@@ -145,7 +145,7 @@ struct DashboardView: View {
                     title: Text("¿La anotamos igual?"),
                     message: Text(message),
                     primaryButton: .default(Text("Anotarla")) {
-                        record(target, force: true)
+                        annotate(target, force: true)
                     },
                     secondaryButton: .cancel(Text("No"))
                 )
@@ -406,8 +406,8 @@ struct DashboardView: View {
                     DashboardItemCard(
                         item: item,
                         referenceDate: referenceDate,
-                        onRecordDose: item.record.map { record in
-                            { record(record, force: false) }
+                        onRecordDose: item.record.map { target in
+                            { annotate(target, force: false) }
                         },
                         recordLabel: item.record.map(Self.recordLabel) ?? "",
                         onOpen: item.record.map { record in
@@ -467,16 +467,19 @@ struct DashboardView: View {
     }
 
     /// Anota una toma o una sesión, según qué sea la fila.
-    private func record(_ record: DashboardRecord, force: Bool) {
+    ///
+    /// No se llama `record` porque el parámetro se llamaría igual y lo taparía:
+    /// adentro del cierre, `record` sería el valor y no la función.
+    private func annotate(_ target: DashboardRecord, force: Bool) {
         let now = Date()
 
-        switch record {
+        switch target {
         case let .medication(id):
             guard let medication = medication(with: id) else { return }
 
             if !force, let conflict = medication.conflictingDose(for: now) {
                 doseAlert = .duplicate(
-                    record: record,
+                    record: target,
                     message: DoseDuplicationCheck.warningMessage(for: conflict)
                 )
                 return

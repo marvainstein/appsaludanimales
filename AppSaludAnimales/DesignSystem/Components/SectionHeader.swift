@@ -150,7 +150,7 @@ struct DashboardItemCard: View {
         .buttonStyle(.plain)
         .accessibilityLabel(Text("\(recordLabel): \(item.title)"))
         .accessibilityHint(Text("Se guarda con la hora de este momento"))
-        .accessibilityIdentifier("dashboard.recordDose")
+        .accessibilityIdentifier("dashboard.record")
     }
 }
 
