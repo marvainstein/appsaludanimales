@@ -489,6 +489,15 @@ struct DashboardView: View {
 
         case let .treatment(id):
             guard let treatment = companion.treatments.first(where: { $0.id == id }) else { return }
+
+            if !force, let conflict = treatment.conflictingSession(for: now) {
+                doseAlert = .duplicate(
+                    record: target,
+                    message: DoseDuplicationCheck.warningMessage(for: conflict, kind: .session)
+                )
+                return
+            }
+
             treatment.sessions.append(TreatmentSession(attendedAt: now))
         }
 

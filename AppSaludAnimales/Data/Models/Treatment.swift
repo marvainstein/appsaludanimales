@@ -79,6 +79,23 @@ final class TreatmentSession {
     }
 }
 
+extension Treatment {
+    var recordedSessions: [RecordedDose] {
+        sessions.map {
+            RecordedDose(administeredAt: $0.attendedAt, recordedByName: $0.recordedByName)
+        }
+    }
+
+    /// Sesión en conflicto con el momento propuesto, si la hay.
+    ///
+    /// Anotar seis sesiones seguidas tocando seis veces era demasiado fácil, y
+    /// una sesión de fisioterapia repetida seis veces en un minuto no es algo
+    /// que pueda haber pasado.
+    func conflictingSession(for proposedDate: Date) -> RecordedDose? {
+        DoseDuplicationCheck.conflictingDose(for: proposedDate, among: recordedSessions)
+    }
+}
+
 extension TreatmentSession: HealthTimelineItem {
     var timelineRecordedAt: Date { createdAt }
     var timelineDate: Date { attendedAt }

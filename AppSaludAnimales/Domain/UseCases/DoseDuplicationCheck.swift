@@ -31,18 +31,35 @@ enum DoseDuplicationCheck {
             }
     }
 
+    /// Qué se está por anotar, para que el aviso lo diga con la palabra correcta.
+    enum Kind {
+        case dose
+        case session
+    }
+
     /// Texto del aviso. En pregunta abierta, nunca como reproche ni como error.
     static func warningMessage(
         for dose: RecordedDose,
+        kind: Kind = .dose,
         formatter: DateFormatter = .doseTime
     ) -> String {
         let time = formatter.string(from: dose.administeredAt)
 
-        if let name = dose.recordedByName, !name.isEmpty {
-            return String(localized: "\(name) ya registró esta dosis a las \(time). ¿Querés registrarla igual?")
-        }
+        switch kind {
+        case .dose:
+            if let name = dose.recordedByName, !name.isEmpty {
+                return String(localized: "\(name) ya registró esta dosis a las \(time). ¿Querés registrarla igual?")
+            }
 
-        return String(localized: "Ya hay una dosis registrada a las \(time). ¿Querés registrarla igual?")
+            return String(localized: "Ya hay una dosis registrada a las \(time). ¿Querés registrarla igual?")
+
+        case .session:
+            if let name = dose.recordedByName, !name.isEmpty {
+                return String(localized: "\(name) ya registró una sesión a las \(time). ¿Querés registrarla igual?")
+            }
+
+            return String(localized: "Ya hay una sesión registrada a las \(time). ¿Querés registrarla igual?")
+        }
     }
 }
 

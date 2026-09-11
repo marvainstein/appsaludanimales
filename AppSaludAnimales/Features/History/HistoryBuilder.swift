@@ -59,11 +59,20 @@ enum HistoryBuilder {
     ) -> [HistoryEntry] {
         var entries: [HistoryEntry] = []
 
+        // La fila de la medicación en sí dice que empezó, no con qué dosis.
+        //
+        // Antes mostraba `medication.dose`, que es la de ahora: al cambiarla,
+        // esta fila —fechada el día en que arrancó— cambiaba con ella y parecía
+        // que siempre había sido así. Con qué dosis se dio cada vez está en las
+        // filas de tomas, que guardan su propia copia.
+        //
+        // Decir "empezó" además la distingue de las filas de tomas, que hasta
+        // ahora se veían iguales y parecían duplicadas.
         entries += companion.medications.map { medication in
             HistoryEntry(
                 id: medication.id,
                 title: medication.name,
-                detail: medication.dose,
+                detail: String(localized: "empezó"),
                 date: medication.startDate,
                 category: .medication,
                 badge: medication.status().badge,
@@ -75,7 +84,10 @@ enum HistoryBuilder {
             HistoryEntry(
                 id: treatment.id,
                 title: treatment.name,
-                detail: treatment.category,
+                detail: [String(localized: "empezó"), treatment.category]
+                    .compactMap { $0 }
+                    .filter { !$0.isEmpty }
+                    .joined(separator: " · "),
                 date: treatment.startDate,
                 category: treatment.isPreventive ? .preventive : .treatment,
                 badge: treatment.status().badge,

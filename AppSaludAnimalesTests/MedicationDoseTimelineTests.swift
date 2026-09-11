@@ -342,6 +342,57 @@ struct MedicationDoseTimelineTests {
         #expect(!detalle.contains("1 pastilla · desde"))
     }
 
+    /// La fila de la medicación en sí dice que empezó, no con qué dosis.
+    /// Mostraba la dosis actual, así que al cambiarla esa fila —fechada el día
+    /// en que arrancó— cambiaba con ella y parecía que siempre había sido así.
+    @Test
+    func laFilaDeOrigenNoCambiaAlCambiarLaDosis() throws {
+        let companion = try makeCompanion()
+        let medication = Medication(
+            name: "Vitamina",
+            dose: "Una pastilla",
+            startDate: .test(2026, 9, 11)
+        )
+        companion.medications.append(medication)
+
+        medication.dose = "Media pastilla"
+
+        let origen = try #require(
+            HistoryBuilder.entries(for: companion).first { $0.detail == "empezó" }
+        )
+
+        #expect(origen.title == "Vitamina")
+        #expect(origen.date == .test(2026, 9, 11))
+    }
+
+    /// Anotar seis sesiones seguidas tocando seis veces era demasiado fácil, y
+    /// una sesión de fisioterapia repetida seis veces en un minuto no pasó.
+    @Test
+    func anotarDosSesionesSeguidasAvisa() throws {
+        let companion = try makeCompanion()
+        let treatment = Treatment(name: "Fisioterapia", startDate: .test(2026, 9, 1))
+        companion.treatments.append(treatment)
+
+        let ahora = Date()
+        treatment.sessions.append(TreatmentSession(attendedAt: ahora))
+
+        let conflicto = treatment.conflictingSession(for: ahora.addingTimeInterval(60))
+
+        #expect(conflicto != nil)
+    }
+
+    /// El aviso de una sesión habla de sesiones, no de dosis.
+    @Test
+    func elAvisoDeSesionNoHablaDeDosis() {
+        let mensaje = DoseDuplicationCheck.warningMessage(
+            for: RecordedDose(administeredAt: .test(2026, 9, 11, hour: 10)),
+            kind: .session
+        )
+
+        #expect(mensaje.contains("sesión"))
+        #expect(!mensaje.lowercased().contains("dosis"))
+    }
+
     private func makeCompanion() throws -> Companion {
         let companion = Companion(name: "Lu", species: .dog)
         context.insert(companion)

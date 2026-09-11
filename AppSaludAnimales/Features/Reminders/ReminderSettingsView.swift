@@ -157,10 +157,36 @@ struct ReminderSettingsView: View {
             Text("Lo que está programado")
                 .foregroundStyle(Palette.inkMuted)
         } footer: {
-            Text("Son los avisos que el teléfono tiene guardados ahora mismo. Se rearman solos cada vez que guardás algo.")
+            Text("Son los avisos de \(companion.displayName) que el teléfono tiene guardados ahora mismo. Se rearman solos cada vez que guardás algo.")
                 .foregroundStyle(Palette.inkMuted)
         }
-        .task { scheduled = await ReminderScheduler.shared.scheduled() }
+        .task {
+            let todos = await ReminderScheduler.shared.scheduled()
+            scheduled = todos.filter { belongsToThisCompanion($0) }
+        }
+    }
+
+    /// Si un aviso programado es de este animal.
+    ///
+    /// `scheduled()` devuelve lo que el teléfono tiene guardado, que es todo:
+    /// los avisos de todos los animales cargados. Sin filtrar, en el perfil de
+    /// uno aparecían los del otro, y esta pantalla es parte del perfil de un
+    /// animal, no de la app.
+    ///
+    /// El identificador de cada aviso lleva adentro el del registro que lo
+    /// generó —`medication-<uuid>-0`, `vaccination-<uuid>`, `appointment-<uuid>`—
+    /// así que alcanza con mirar si alguno de los registros de este animal está
+    /// nombrado ahí.
+    private func belongsToThisCompanion(_ reminder: ScheduledReminder) -> Bool {
+        ownRecordIDs.contains { reminder.id.contains($0) }
+    }
+
+    private var ownRecordIDs: [String] {
+        let medications = companion.medications.map(\.id.uuidString)
+        let vaccinations = companion.vaccinations.map(\.id.uuidString)
+        let appointments = companion.appointments.map(\.id.uuidString)
+
+        return medications + vaccinations + appointments
     }
 
     private var permissionSection: some View {
