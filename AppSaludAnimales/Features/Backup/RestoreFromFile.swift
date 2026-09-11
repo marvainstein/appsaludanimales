@@ -14,6 +14,11 @@ enum RestoreFromFile {
         case failed(String)
     }
 
+    /// En el hilo principal, como todo lo que toca la base y los avisos.
+    ///
+    /// Adentro de una `View` esto venía puesto solo; al sacarlo afuera hubo que
+    /// decirlo.
+    @MainActor
     static func load(_ result: Result<[URL], Error>, into context: ModelContext) -> Outcome? {
         guard case let .success(urls) = result, let url = urls.first else { return nil }
 
