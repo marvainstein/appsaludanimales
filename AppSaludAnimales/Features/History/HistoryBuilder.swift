@@ -233,6 +233,35 @@ enum HistoryBuilder {
         return "\(tomas) · \(vistas.joined(separator: ", "))"
     }
 
+    /// Las sesiones de cada tratamiento, agrupadas por día. Es la versión de
+    /// pantalla, hermana de `doseEntries`.
+    ///
+    /// Luli empezó yendo a fisioterapia dos veces por semana y terminó yendo
+    /// cada quince días: esa historia no está en el campo de frecuencia, que
+    /// solo dice cómo es ahora, sino en cuándo fue.
+    private static func sessionEntries(for companion: Companion) -> [HistoryEntry] {
+        let calendar = Calendar.current
+
+        return companion.treatments.flatMap { treatment in
+            Dictionary(grouping: treatment.sessions) { calendar.startOfDay(for: $0.attendedAt) }
+                .map { day, sessions in
+                    let latest = sessions.map(\.attendedAt).max() ?? day
+
+                    return HistoryEntry(
+                        id: sessions.map(\.id).min() ?? treatment.id,
+                        title: treatment.name,
+                        detail: sessions.count == 1
+                            ? String(localized: "1 sesión")
+                            : String(localized: "\(sessions.count) sesiones"),
+                        date: latest,
+                        category: treatment.isPreventive ? .preventive : .treatment,
+                        badge: nil,
+                        reference: .treatment(treatment)
+                    )
+                }
+        }
+    }
+
     /// Cuándo cambió la dosis, y cuántas tomas hubo con cada una.
     ///
     /// Exportar toda la historia toma por toma es un delirio: son miles de
