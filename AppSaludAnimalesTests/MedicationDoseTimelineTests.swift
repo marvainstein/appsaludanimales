@@ -235,6 +235,11 @@ struct MedicationDoseTimelineTests {
         #expect(entrada.detail == "3 tomas · 5 pastillas, 2 pastillas, 1 pastilla")
     }
 
+    /// Los tramos se filtran por su detalle y no por el título: `entries`
+    /// devuelve además el registro de la medicación en sí, fechado el día en que
+    /// empezó. En el resumen eso se lee bien —primero cuándo empezó, después los
+    /// cambios— pero al contar hay que distinguirlos.
+    ///
     /// El resumen que se exporta marca los cambios, no cada toma. Exportar toda
     /// la historia pastilla por pastilla son miles de renglones que repiten lo
     /// mismo; si entre dos renglones no hay nada, siguió igual.
@@ -257,7 +262,7 @@ struct MedicationDoseTimelineTests {
         }
 
         let cambios = HistoryBuilder.entries(for: companion, rhythm: .byChange)
-            .filter { $0.title == "Contal 150" }
+            .filter { $0.detail?.contains("tomas anotadas") == true }
             .sorted { $0.date < $1.date }
 
         #expect(cambios.count == 2)
@@ -277,7 +282,7 @@ struct MedicationDoseTimelineTests {
         medication.doses.append(MedicationDose(administeredAt: .test(2026, 7, 14), dose: "5 pastillas"))
 
         let cambios = HistoryBuilder.entries(for: companion, rhythm: .byChange)
-            .filter { $0.title == "Contal 150" }
+            .filter { $0.detail?.contains("anotada") == true }
             .sorted { $0.date < $1.date }
 
         #expect(cambios.first?.date == .test(2025, 3, 1))
@@ -300,7 +305,7 @@ struct MedicationDoseTimelineTests {
         }
 
         let meses = HistoryBuilder.entries(for: companion, rhythm: .byChange)
-            .filter { $0.title == "Fisioterapia" }
+            .filter { $0.detail?.contains("en el mes") == true }
             .sorted { $0.date < $1.date }
 
         #expect(meses.count == 2)
